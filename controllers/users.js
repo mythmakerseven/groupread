@@ -3,16 +3,32 @@ const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 const config = require('../utils/config')
-const { response } = require('express')
 const { v4: uuidv4 } = require('uuid')
 
 usersRouter.post('/', async (req, res) => {
   const body = req.body
-  console.log(body)
 
   if (!body.password || body.password.length < 8) {
     return res.status(400).json({
       error: 'must include password of at least 8 characters'
+    })
+  }
+
+  if (body.username.length > 32) {
+    return res.status(400).json({
+      error: 'username must be fewer than 32 characters'
+    })
+  }
+
+  if (body.displayName && body.displayName.length > 32) {
+    return res.status(400).json({
+      error: 'display name must be fewer than 32 characters'
+    })
+  }
+
+  if (body.email > 64) {
+    return res.status(400).json({
+      error: 'email must be fewer than 64 characters'
     })
   }
 
@@ -43,7 +59,7 @@ usersRouter.post('/', async (req, res) => {
 
   const token = jwt.sign(userForToken, config.SECRET_TOKEN_KEY)
 
-  response
+  res
     .status(200)
     .send({ token, username: user.username, displayName: user.displayName })
 })

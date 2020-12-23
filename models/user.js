@@ -1,7 +1,10 @@
-const { Sequelize, DataTypes } = require('sequelize')
-const sequelize = new Sequelize('postgres::memory:')
+const { DataTypes } = require('sequelize')
+const { getPool } = require('../utils/db')
+const Group = require('./group')
 
-const User = sequelize.define('User', {
+const db = getPool()
+
+const User = db.define('User', {
   user_id: {
     type: DataTypes.STRING,
     allowNull: false
@@ -26,7 +29,12 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING(6),
     allowNull: false,
     defaultValue: '000000'
+  },
+  groups: {
+    type: DataTypes.ARRAY(DataTypes.STRING)
   }
 })
+
+User.belongsToMany(Group, { through: 'UserGroups' })
 
 module.exports = User

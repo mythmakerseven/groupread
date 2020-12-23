@@ -1,25 +1,24 @@
 const config = require('./utils/config')
 const middleware = require('./utils/middleware')
-const logger = require('./utils/logger')
 const express = require('express')
 const app = express()
+const { getPool } = require('./utils/db')
+const logger = require('./utils/logger')
 
-const { Sequelize } = require('sequelize')
 const usersRouter = require('./controllers/users')
-
-const sequelize = new Sequelize(config.DB_NAME, config.DB_USERNAME, config.DB_PASSWORD, {
-  host: config.DB_URL,
-  dialect: 'postgres'
-})
+const groupsRouter = require('./controllers/groups')
 
 app.use(express.json())
 app.use(middleware.requestLogger)
 
 app.use('/api/users', usersRouter)
+app.use('/api/groups', groupsRouter)
 
-sequelize.sync({ force: true })
+const db = getPool()
+
+db.sync()
   .then(() => {
-    logger.info('Connected to PostgreSQL')
+    logger.info(`Connected to ${config.DB_URL}`)
   })
   .catch((error) => {
     logger.error(`Error connecting to PostgreSQL: ${error.message}`)
