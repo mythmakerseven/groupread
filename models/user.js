@@ -5,9 +5,10 @@ const Group = require('./group')
 const db = getPool()
 
 const User = db.define('User', {
-  user_id: {
+  id: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true
   },
   username: {
     type: DataTypes.STRING(32),
@@ -29,12 +30,10 @@ const User = db.define('User', {
     type: DataTypes.STRING(6),
     allowNull: false,
     defaultValue: '000000'
-  },
-  groups: {
-    type: DataTypes.ARRAY(DataTypes.STRING)
   }
 })
 
 User.belongsToMany(Group, { through: 'UserGroups' })
+Group.belongsToMany(User, { through: 'UserGroups' })
 
 module.exports = User

@@ -24,18 +24,6 @@ db.sync()
     logger.error(`Error connecting to PostgreSQL: ${error.message}`)
   })
 
-// Testing code for sequelize
-// app.get('/', async (req, res) => {
-//   try {
-//     await sequelize.authenticate()
-//     console.log('Connection has been established successfully.')
-//   } catch (error) {
-//     console.error('Unable to connect to the database:', error)
-//   }
-
-//   res.send('<h1>Hello World!</h1>')
-// })
-
 app.get('/health', (req, res) => {
   res.send('ok')
 })

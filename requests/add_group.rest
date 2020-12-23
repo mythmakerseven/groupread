@@ -2,5 +2,6 @@ POST http://localhost:3000/api/groups
 Content-Type: application/json
 
 {
-  "bookName": "Das Kapital"
+  "bookName": "Discipline and Punish",
+  "groupName": "Epic reading group"
 }

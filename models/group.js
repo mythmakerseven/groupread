@@ -4,11 +4,16 @@ const { getPool } = require('../utils/db')
 const db = getPool()
 
 const Group = db.define('Group', {
-  group_id: {
+  id: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true
   },
   bookName: {
+    type: DataTypes.STRING(64),
+    allowNull: false
+  },
+  groupName: {
     type: DataTypes.STRING(64),
     allowNull: false
   }

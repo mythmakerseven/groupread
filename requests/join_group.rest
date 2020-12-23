@@ -1,0 +1,1 @@
+POST http://localhost:3000/api/groups/join/1655cab1-209f-4187-b60a-2a5eacbe08b4/82248379-5b8b-4f3d-9b34-716a50f52073
