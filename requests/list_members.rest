@@ -1,0 +1,1 @@
+GET http://localhost:3000/api/groups/0e767634-a7b2-47f1-92d6-94ea6b171241/members

@@ -18,7 +18,7 @@ const User = db.define('User', {
     type: DataTypes.STRING(32),
     allowNull: false
   },
-  passwordHash: {
+  passwordHash: { // TODO: there's probably a better way to do this....
     type: DataTypes.STRING,
     allowNull: false
   },

@@ -5,6 +5,16 @@ const User = require('../models/user')
 const config = require('../utils/config')
 const { v4: uuidv4 } = require('uuid')
 
+usersRouter.get('/:user/groups', async (req, res) => {
+  const user = await User.findOne({ where: { id: req.params.user } })
+
+  if (!user) res.status(400).send({ error: 'invalid user id' })
+
+  const groups = await user.getGroups()
+
+  res.status(200).send(groups)
+})
+
 usersRouter.post('/', async (req, res) => {
   const body = req.body
 
@@ -43,7 +53,7 @@ usersRouter.post('/', async (req, res) => {
   const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
   const user = User.build({
-    user_id: uuidv4(),
+    id: uuidv4(),
     username: body.username,
     displayName: handleDisplayName(body.username, body.displayName),
     email: body.email,
@@ -54,7 +64,7 @@ usersRouter.post('/', async (req, res) => {
 
   const userForToken = {
     username: savedUser.username,
-    id: savedUser.user_id
+    id: savedUser.id
   }
 
   const token = jwt.sign(userForToken, config.SECRET_TOKEN_KEY)
