@@ -40,16 +40,22 @@ groupsRouter.post('/', async (req, res) => {
 })
 
 groupsRouter.post('/join/:group', async (req, res) => {
+  console.log(req)
   const token = req.token
 
   if (!token) {
     return res.status(401).json({ error: 'token missing or invalid' })
   }
 
-  const decodedToken = jwt.verify(token, process.env.SECRET)
+  let decodedToken
+  try {
+    decodedToken = jwt.verify(token, process.env.SECRET)
+  } catch {
+    return res.status(400).json({ error: 'invalid token' })
+  }
 
   if (!decodedToken.id) {
-    return res.status(401).json({ error: 'token missing or invalid' })
+    return res.status(401).json({ error: 'missing token' })
   }
 
   const user = await User.findOne({ where: { id: decodedToken.id } })
@@ -60,7 +66,7 @@ groupsRouter.post('/join/:group', async (req, res) => {
 
   user.addGroup(group)
 
-  res.status(200).send({ success: `Added ${user.username} (${user.id}) to group ${group.bookName} (${group.id})` })
+  res.status(200).send({ success: `Added ${user.username} to group ${group.bookName} (${group.id})` })
 })
 
 module.exports = groupsRouter
