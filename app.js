@@ -7,12 +7,14 @@ const logger = require('./utils/logger')
 
 const usersRouter = require('./controllers/users')
 const groupsRouter = require('./controllers/groups')
+const loginRouter = require('./controllers/login')
 
 app.use(express.json())
 app.use(middleware.requestLogger)
 
 app.use('/api/users', usersRouter)
 app.use('/api/groups', groupsRouter)
+app.use('/api/login', loginRouter)
 
 const db = getPool()
 

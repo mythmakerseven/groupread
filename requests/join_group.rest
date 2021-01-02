@@ -1,1 +1,3 @@
-POST http://localhost:3000/api/groups/join/0e767634-a7b2-47f1-92d6-94ea6b171241/619cd52d-a1c9-44c4-b47e-656ede5e732c
+POST http://localhost:3001/api/groups/join/0e767634-a7b2-47f1-92d6-94ea6b171241
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdlcmdlcmVncmVnciIsImlkIjoiNjE5Y2Q1MmQtYTFjOS00NGM0LWI0N2UtNjU2ZWRlNWU3MzJjIiwiaWF0IjoxNjA5NTU3NjU2fQ._bohuKpdvpKC5IGUaURjl2oIho7AaPGNCFKqfKIeiVU

@@ -3,6 +3,7 @@ const Group = require('../models/group')
 const { v4: uuidv4 } = require('uuid')
 const User = require('../models/user')
 const logger = require('../utils/logger')
+const jwt = require('jsonwebtoken')
 
 groupsRouter.get('/:id/members', async (req, res) => {
   const group = await Group.findOne({ where: { id: req.params.id } })
@@ -38,8 +39,20 @@ groupsRouter.post('/', async (req, res) => {
     .send({ id: group.id, bookName: group.bookName })
 })
 
-groupsRouter.post('/join/:group/:user', async (req, res) => {
-  const user = await User.findOne({ where: { id: req.params.user } })
+groupsRouter.post('/join/:group', async (req, res) => {
+  const token = req.token
+
+  if (!token) {
+    return res.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  const user = await User.findOne({ where: { id: decodedToken.id } })
   const group = await Group.findOne({ where: { id: req.params.group } })
 
   if (!user) return res.status(400).send({ error: 'user not found' })
