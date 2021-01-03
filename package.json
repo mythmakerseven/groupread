@@ -7,7 +7,9 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build:ui": "cd frontend && webpack --mode=production",
+    "start:ui": "cd frontend && webpack serve --mode=development"
   },
   "author": "",
   "license": "ISC",
@@ -18,11 +20,22 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "sequelize": "^6.3.5",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.0.1",
     "eslint": "^7.16.0",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.11.1",
+    "webpack-cli": "^4.3.1",
+    "webpack-dev-server": "^3.11.1"
   }
 }

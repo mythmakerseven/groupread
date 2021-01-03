@@ -1,0 +1,8 @@
+{
+  "name": "groupread-frontend",
+  "version": "0.0.1",
+  "description": "An application for hosting and managing group reads.",
+  "scripts": {},
+  "license": "ISC",
+  "browserslist": "> 0.25%, not dead, not ie 11, not op_mini all"
+}
