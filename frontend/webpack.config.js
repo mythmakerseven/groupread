@@ -17,14 +17,22 @@ const config = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
+        include: [/node_modules/]
+      },
+      {
+        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+        loader: 'url-loader',
+        options: {
+            limit: 10000,
+        },
       },
     ],
   },
   devServer: {
     contentBase: path.resolve(__dirname, 'build'),
     compress: true,
-    port: 3000,
+    port: 3001,
   },
   devtool: 'source-map',
 }

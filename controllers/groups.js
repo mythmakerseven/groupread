@@ -5,6 +5,20 @@ const User = require('../models/user')
 const logger = require('../utils/logger')
 const jwt = require('jsonwebtoken')
 
+groupsRouter.get('/all', async (req, res) => {
+  const groups = await Group.findAll()
+
+  res.status(200).send(groups)
+})
+
+groupsRouter.get('/:id', async (req, res) => {
+  const group = await Group.findOne({ where: { id: req.params.id } })
+
+  if (!group) res.status(400).send({ error: 'invalid group id' })
+
+  res.status(200).send(group)
+})
+
 groupsRouter.get('/:id/members', async (req, res) => {
   const group = await Group.findOne({ where: { id: req.params.id } })
 

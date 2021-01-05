@@ -1,6 +1,7 @@
 const config = require('./utils/config')
 const middleware = require('./utils/middleware')
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const { getPool } = require('./utils/db')
 const logger = require('./utils/logger')
@@ -10,6 +11,7 @@ const groupsRouter = require('./controllers/groups')
 const loginRouter = require('./controllers/login')
 
 app.use(express.json())
+app.use(cors())
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 
