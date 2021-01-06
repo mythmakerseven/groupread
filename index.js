@@ -6,7 +6,7 @@ const path = require('path')
 
 const server = http.createServer(app)
 
-app.get('/*', function (req, res) {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 

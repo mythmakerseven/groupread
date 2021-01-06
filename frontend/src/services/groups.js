@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3000/api/groups' // TODO: make this work without hardcoding
+const baseUrl = '/api/groups'
 
 let token = null
 

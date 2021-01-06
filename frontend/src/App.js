@@ -1,37 +1,31 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
 import 'semantic-ui-css/semantic.min.css'
 
-import { getAllGroups } from './reducers/groupReducer'
+import GroupView from './components/GroupView'
+import HomePage from './components/HomePage'
 
-import { Container, Header, List } from 'semantic-ui-react'
+import { Container, Header } from 'semantic-ui-react'
+
+import { Switch, Route, Link } from 'react-router-dom'
 
 // webpack-dev-server does not refresh the browser when code is updated
 // due to this bug: https://github.com/webpack/webpack-dev-server/issues/2758
 // TODO: either upgrade to the webpack beta or wait for bugfix
 
 const App = () => {
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getAllGroups())
-  }, [dispatch])
-
-  const groups = useSelector(({ groups }) => groups)
-
   return (
     <Container>
-      <Header as='h1'>Group Read</Header>
-      <List>
-        {groups.map(group => 
-          <List.Item key={group.id}>
-            <List.Content>
-              <List.Header as='p'>{group.groupName}</List.Header>
-              <List.Description as='p'>{group.bookName}</List.Description>
-            </List.Content>
-          </List.Item>
-        )}
-      </List>
+      <Header as='h1'><Link to='/'>Group Read</Link></Header>
+
+      <Switch>
+        <Route path="/group/:id">
+          <GroupView />
+        </Route>
+        <Route path="/">
+          <HomePage />
+        </Route>
+      </Switch>
+
     </Container>
   )
 }

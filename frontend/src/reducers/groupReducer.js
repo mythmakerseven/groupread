@@ -1,21 +1,21 @@
 import groupService from '../services/groups'
 
-export const getAllGroups = () => {
+export const getGroupDetails = id => {
   return async dispatch => {
-    const groups = await groupService.getAllGroups()
+    const group = await groupService.getGroupDetails(id)
     dispatch({
-      type: 'INIT_GROUPS',
-      data: groups
+      type: 'VIEW_GROUP',
+      data: group
     })
   }
 }
 
-export const getGroupDetails = () => {
+export const getGroupMembers = id => {
   return async dispatch => {
-    const group = await groupService.getGroupDetails()
+    const members = await groupService.getGroupMembers(id)
     dispatch({
-      type: 'VIEW_GROUP',
-      data: group
+      type: 'LIST_MEMBERS',
+      data: members
     })
   }
 }
@@ -25,9 +25,9 @@ const groupReducer = (state = [], action) => {
     case 'VIEW_GROUP':
       const group = action.data
       return group
-    case 'INIT_GROUPS':
-      const groups = action.data
-      return groups
+    case 'LIST_MEMBERS':
+      const members = action.data
+      return { ...state, members: members }
     default:
       return state
   }

@@ -30,11 +30,17 @@ const config = {
     ],
   },
   devServer: {
+    proxy: {
+      '/api': 'http://localhost:3000'
+    },
     contentBase: path.resolve(__dirname, 'build'),
     compress: true,
     port: 3001,
+    publicPath: '/',
+    historyApiFallback: { index: 'index.html' }
   },
   devtool: 'source-map',
+  node: { __dirname: true },
 }
 
 module.exports = config
