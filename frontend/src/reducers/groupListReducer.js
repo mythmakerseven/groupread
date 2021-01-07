@@ -14,11 +14,13 @@ export const getAllGroups = () => {
 
 const groupListReducer = (state = [], action) => {
   switch(action.type) {
-    case 'INIT_GROUPS':
-      const groups = action.data
-      return groups
-    default:
-      return state
+  case 'INIT_GROUPS':
+  {
+    const groups = action.data
+    return groups
+  }
+  default:
+    return state
   }
 }
 

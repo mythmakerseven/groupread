@@ -1,7 +1,7 @@
 {
   "name": "groupread",
   "version": "1.0.0",
-  "description": "",
+  "description": "Read books with your friends.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -43,6 +43,7 @@
     "babel-loader": "^8.2.2",
     "css-loader": "^5.0.1",
     "eslint": "^7.16.0",
+    "eslint-plugin-react": "^7.22.0",
     "nodemon": "^2.0.6",
     "style-loader": "^2.0.0",
     "webpack": "^5.11.1",

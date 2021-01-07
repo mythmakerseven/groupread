@@ -22,14 +22,18 @@ export const getGroupMembers = id => {
 
 const groupReducer = (state = [], action) => {
   switch(action.type) {
-    case 'VIEW_GROUP':
-      const group = action.data
-      return group
-    case 'LIST_MEMBERS':
-      const members = action.data
-      return { ...state, members: members }
-    default:
-      return state
+  case 'VIEW_GROUP':
+  {
+    const group = action.data
+    return group
+  }
+  case 'LIST_MEMBERS':
+  {
+    const members = action.data
+    return { ...state, members: members }
+  }
+  default:
+    return state
   }
 }
 
