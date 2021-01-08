@@ -1,2 +1,0 @@
-POST http://localhost:3000/api/groups/join/cad2d287-ec2f-4e54-8c80-7fbea5c97086
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdlcmdlcmVncmVnciIsImlkIjoiMDNiNTdkNzQtNWUwZS00NGZmLTkwY2EtZWVjNTIyZWQ5OWYxIiwiaWF0IjoxNjEwMDYxMzUzfQ.O-zkqSYrfGg2kQJphXQszEt4vLwOhOB5MRY22zf7I68
