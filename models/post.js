@@ -11,6 +11,10 @@ const Post = db.define('Post', {
     allowNull: false,
     primaryKey: true
   },
+  parent: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   title: {
     type: DataTypes.STRING,
     allowNull: true
@@ -23,7 +27,10 @@ const Post = db.define('Post', {
   updatedAt: Sequelize.DATE
 })
 
-Post.belongsToOne(Group, { through: 'GroupPosts' })
-Post.belongsToOne(User, { through: 'UserPosts' })
+Post.belongsTo(Group)
+Group.hasMany(Post)
+
+Post.belongsTo(User)
+User.hasMany(Post)
 
 module.exports = Post

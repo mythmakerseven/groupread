@@ -31,7 +31,8 @@ const GroupView = () => {
     <div>
       <h1>{group.groupName}</h1>
       <h4>Members:</h4>
-      {members.map(member => <p key={member.id}>{member.displayName}</p>)}
+      {members.map(member => <span key={member.id}>{member.displayName} </span>)}
+      <span>are reading {group.bookName}</span>
     </div>
   )
 }

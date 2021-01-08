@@ -9,6 +9,7 @@ const logger = require('./utils/logger')
 const usersRouter = require('./controllers/users')
 const groupsRouter = require('./controllers/groups')
 const loginRouter = require('./controllers/login')
+const postsRouter = require('./controllers/posts')
 
 app.use(express.json())
 app.use(cors())
@@ -18,6 +19,7 @@ app.use(middleware.tokenExtractor)
 app.use('/api/users', usersRouter)
 app.use('/api/groups', groupsRouter)
 app.use('/api/login', loginRouter)
+app.use('/api/posts', postsRouter)
 
 const db = getPool()
 
