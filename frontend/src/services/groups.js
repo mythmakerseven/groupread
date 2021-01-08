@@ -19,10 +19,16 @@ const getGroupDetails = async id => {
     .then(res => res.data)
 }
 
+const getGroupPosts = async id => {
+  const req = axios.get(`${baseUrl}/${id}/posts`)
+  return req
+    .then(res => res.data)
+}
+
 const getGroupMembers = async id => {
   const req = axios.get(`${baseUrl}/${id}/members`)
   return req
     .then(res => res.data)
 }
 
-export default { getAllGroups, getGroupDetails, getGroupMembers }
+export default { getAllGroups, getGroupDetails, getGroupPosts, getGroupMembers }

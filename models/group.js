@@ -13,6 +13,7 @@ const Group = db.define('Group', {
     type: DataTypes.STRING(64),
     allowNull: false
   },
+  // TODO: remove groupName next time dev database is reset
   groupName: {
     type: DataTypes.STRING(64),
     allowNull: false

@@ -15,6 +15,16 @@ usersRouter.get('/:user/groups', async (req, res) => {
   res.status(200).send(groups)
 })
 
+usersRouter.get('/:user/posts', async (req, res) => {
+  const user = await User.findOne({ where: { id: req.params.user } })
+
+  if (!user) res.status(400).send({ error: 'invalid user id' })
+
+  const posts = await user.getPosts()
+
+  res.status(200).send(posts)
+})
+
 usersRouter.post('/', async (req, res) => {
   const body = req.body
 

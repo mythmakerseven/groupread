@@ -29,6 +29,16 @@ groupsRouter.get('/:id/members', async (req, res) => {
   res.status(200).send(users)
 })
 
+groupsRouter.get('/:id/posts', async (req, res) => {
+  const group = await Group.findOne({ where: { id: req.params.id } })
+
+  if (!group) res.status(400).send({ error: 'invalid group id' })
+
+  const posts = await group.getPosts()
+
+  res.status(200).send(posts)
+})
+
 groupsRouter.post('/', async (req, res) => {
   const body = req.body
   logger.info(`Received POST request:\n ${body}`)
