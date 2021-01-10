@@ -36,7 +36,19 @@ groupsRouter.get('/:id/posts', async (req, res) => {
 
   const posts = await group.getPosts()
 
-  res.status(200).send(posts)
+  const sortPosts = posts => {
+    const parentPosts = posts.filter(post => !post.parent)
+
+    // Prior to refactor (when this function returned a simple array of posts),
+    // we didn't need this weird hack to unpack the dataValues field.
+    // No idea why it suddenly formats the parentPosts (and ONLY those) that way,
+    // but this workaround works!
+    const sortedPosts = parentPosts.map(post => post = { ...post.dataValues, replies: posts.filter(childPost => childPost.parent === post.id) } )
+    return sortedPosts
+  }
+
+  const sortedPosts = await sortPosts(posts)
+  res.status(200).send(sortedPosts)
 })
 
 groupsRouter.post('/', async (req, res) => {

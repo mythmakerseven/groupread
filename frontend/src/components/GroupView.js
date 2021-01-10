@@ -29,19 +29,55 @@ const GroupView = () => {
 
   const members = group.members
   const posts = group.posts
+  console.log(posts)
 
   if (group.id !== id || !members || !posts) {
     return <p>loading...</p>
+  }
+
+  const displayMembers = members => {
+    if (members.length === 0) {
+      return <p>No one is reading {group.bookName} :(</p>
+    } if (members.length === 1) {
+      return <p>{members[0].displayName} is reading {group.bookName} alone. Give them some company!</p>
+    } else {
+      return members.map(member => {
+        if (members.indexOf(member) === (members.length - 1)) {
+          return <span key={member.id}>and {member.displayName} are reading {group.bookName}</span>
+        } else {
+          return <span key={member.id}>{member.displayName}, </span>
+        }
+      })
+    }
+  }
+
+  // I <3 recursion
+  const displayPosts = posts => {
+    return posts.map(post => {
+      if (post.replies) {
+        return (
+          <div key={post.id}>
+            <li>{post.text}</li>
+            <ol>
+              {displayPosts(post.replies)}
+            </ol>
+          </div>
+        )
+      } else {
+        return <li key={post.id}>{post.text}</li>
+      }
+    })
   }
 
   return (
     <div>
       <h1>{group.groupName}</h1>
       <h4>Members:</h4>
-      {members.map(member => <span key={member.id}>{member.displayName} </span>)}
-      <span>are reading {group.bookName}</span>
+      {displayMembers(members)}
       <h4>Posts:</h4>
-      {posts.map(post => <p key={post.id}>{post.text}</p>)}
+      <ol>
+        {displayPosts(posts)}
+      </ol>
     </div>
   )
 }
