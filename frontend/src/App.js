@@ -25,7 +25,7 @@ const App = () => {
           <HomePage />
         </Route>
       </Switch>
-
+      <p>book metadata provided by the <a href="https://openlibrary.org/">Open Library API</a></p>
     </Container>
   )
 }

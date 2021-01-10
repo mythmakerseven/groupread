@@ -20,7 +20,7 @@ const HomePage = () => {
           <List.Content>
             <List.Header as='p'>
               <Link to={`/group/${group.id}`}>
-                {group.groupName}
+                {group.bookTitle}
               </Link>
             </List.Header>
             <List.Description as='p'>{group.bookName}</List.Description>

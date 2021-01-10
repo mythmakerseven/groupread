@@ -55,24 +55,19 @@ groupsRouter.post('/', async (req, res) => {
   const body = req.body
   logger.info(`Received POST request:\n ${body}`)
 
-  const handleGroupName = (bookName, groupName) => {
-    if (!groupName) {
-      return bookName
-    }
-    return groupName
-  }
-
   const group = Group.build({
     id: uuidv4(),
-    bookName: body.bookName,
-    groupName: handleGroupName(body.bookName, body.groupName)
+    bookTitle: body.bookTitle,
+    isbn: body.isbn
   })
+
+  // TODO: strip all non-number chars from isbn
 
   await group.save()
 
   res
     .status(200)
-    .send({ id: group.id, bookName: group.bookName })
+    .send({ id: group.id, bookTitle: group.bookTitle, isbn: group.isbn })
 })
 
 groupsRouter.post('/join/:group', async (req, res) => {
@@ -102,7 +97,7 @@ groupsRouter.post('/join/:group', async (req, res) => {
 
   user.addGroup(group)
 
-  res.status(200).send({ success: `Added ${user.username} to group ${group.bookName} (${group.id})` })
+  res.status(200).send({ success: `Added ${user.username} to group ${group.id}` })
 })
 
 module.exports = groupsRouter

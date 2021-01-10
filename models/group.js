@@ -9,13 +9,12 @@ const Group = db.define('Group', {
     allowNull: false,
     primaryKey: true
   },
-  bookName: {
+  bookTitle: {
     type: DataTypes.STRING(64),
     allowNull: false
   },
-  // TODO: remove groupName next time dev database is reset
-  groupName: {
-    type: DataTypes.STRING(64),
+  isbn: {
+    type: DataTypes.STRING(12),
     allowNull: false
   }
 })

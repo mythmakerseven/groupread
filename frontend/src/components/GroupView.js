@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
 
+import { Header, Image, Icon } from 'semantic-ui-react'
+
 const GroupView = () => {
   const { id } = useParams()
 
@@ -37,15 +39,15 @@ const GroupView = () => {
   const displayMembers = members => {
     switch(members.length) {
     case 0:
-      return <p>No one is reading {group.bookName} :(</p>
+      return <p>No one is reading {group.bookTitle} :(</p>
     case 1:
-      return <p>{members[0].displayName} is reading {group.bookName} alone. Give them some company!</p>
+      return <p>{members[0].displayName} is reading {group.bookTitle} alone. Give them some company!</p>
     case 2:
-      return <p>{members[0].displayName} and {members[1].displayName} are reading {group.bookName}.</p>
+      return <p>{members[0].displayName} and {members[1].displayName} are reading {group.bookTitle}.</p>
     default:
       return members.map(member => {
         if (members.indexOf(member) === (members.length - 1)) {
-          return <span key={member.id}>and {member.displayName} are reading {group.bookName}.</span>
+          return <span key={member.id}>and {member.displayName} are reading {group.bookTitle}.</span>
         } else {
           return <span key={member.id}>{member.displayName}, </span>
         }
@@ -74,7 +76,10 @@ const GroupView = () => {
 
   return (
     <div>
-      <h1>{group.groupName}</h1>
+      <Header as="h1" icon textAlign="center">
+        <Header.Content>{group.bookTitle}</Header.Content>
+        <Image src={`http://covers.openlibrary.org/b/isbn/${group.isbn}-M.jpg`} />
+      </Header>
       <h4>Members:</h4>
       {displayMembers(members)}
       <h4>Posts:</h4>
