@@ -29,21 +29,23 @@ const GroupView = () => {
 
   const members = group.members
   const posts = group.posts
-  console.log(posts)
 
   if (group.id !== id || !members || !posts) {
     return <p>loading...</p>
   }
 
   const displayMembers = members => {
-    if (members.length === 0) {
+    switch(members.length) {
+    case 0:
       return <p>No one is reading {group.bookName} :(</p>
-    } if (members.length === 1) {
+    case 1:
       return <p>{members[0].displayName} is reading {group.bookName} alone. Give them some company!</p>
-    } else {
+    case 2:
+      return <p>{members[0].displayName} and {members[1].displayName} are reading {group.bookName}.</p>
+    default:
       return members.map(member => {
         if (members.indexOf(member) === (members.length - 1)) {
-          return <span key={member.id}>and {member.displayName} are reading {group.bookName}</span>
+          return <span key={member.id}>and {member.displayName} are reading {group.bookName}.</span>
         } else {
           return <span key={member.id}>{member.displayName}, </span>
         }
@@ -52,6 +54,7 @@ const GroupView = () => {
   }
 
   // I <3 recursion
+  // This function should still work if support for infinitely nested comments is added
   const displayPosts = posts => {
     return posts.map(post => {
       if (post.replies) {

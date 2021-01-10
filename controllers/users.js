@@ -52,7 +52,7 @@ usersRouter.post('/', async (req, res) => {
     })
   }
 
-  const existingUser = User.findOne({ where: { username: body.username } })
+  const existingUser = await User.findOne({ where: { username: body.username } })
   if (existingUser) return res.status(400).json({ error: 'username already registered' })
 
   const handleDisplayName = (username, displayName) => {
