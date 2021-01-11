@@ -10,12 +10,20 @@ const Group = db.define('Group', {
     primaryKey: true
   },
   bookTitle: {
-    type: DataTypes.STRING(64),
+    type: DataTypes.STRING,
     allowNull: false
   },
-  isbn: {
-    type: DataTypes.STRING(12),
-    allowNull: false
+  bookAuthor: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  bookYear: {
+    type: DataTypes.INTEGER(4),
+    allowNull: true
+  },
+  bookIsbn: {
+    type: DataTypes.STRING(13),
+    allowNull: true
   }
 })
 

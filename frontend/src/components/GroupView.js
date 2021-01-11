@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
 
-import { Header, Image, Icon } from 'semantic-ui-react'
+import { Header, Image } from 'semantic-ui-react'
 
 const GroupView = () => {
   const { id } = useParams()
@@ -14,7 +14,7 @@ const GroupView = () => {
     dispatch(getGroupDetails(id))
   }, [id])
 
-  // not great to do two queries for each load....
+  // not great to do multiple queries for each load....
   // or is it???
   useEffect(() => {
     dispatch(getGroupMembers(id))
@@ -55,6 +55,15 @@ const GroupView = () => {
     }
   }
 
+  const handlePosts = posts => {
+    switch (posts.length) {
+    case 0:
+      return <p>No posts yet.</p>
+    default:
+      return displayPosts(posts)
+    }
+  }
+
   // I <3 recursion
   // This function should still work if support for infinitely nested comments is added
   const displayPosts = posts => {
@@ -84,7 +93,7 @@ const GroupView = () => {
       {displayMembers(members)}
       <h4>Posts:</h4>
       <ol>
-        {displayPosts(posts)}
+        {handlePosts(posts)}
       </ol>
     </div>
   )

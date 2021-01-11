@@ -55,19 +55,44 @@ groupsRouter.post('/', async (req, res) => {
   const body = req.body
   logger.info(`Received POST request:\n ${body}`)
 
-  const group = Group.build({
+  // ISBNs are comprised of numbers, except for the final digit which can be an X.
+  // They are either 10 or 13 digits.
+  if (body.bookIsbn) {
+    const isbn = body.bookIsbn
+    if (isbn.length !== 10 && isbn.length !== 13) {
+      return res
+        .status(400)
+        .send({ error: 'isbn must be 10 or 13 characters' })
+    }
+
+    if (isNaN(Number(isbn.slice(0, -2))) || (isNaN(Number(isbn.slice(-1))) && isbn.charAt(isbn.length - 1) !== 'X' )) {
+      return res
+        .status(400)
+        .send({ error: 'malformed ISBN' })
+    }
+  }
+
+  const year = body.bookYear
+  // years must be 4 digits - maybe an issue for edge cases of ancient books
+  if (year && (year.length !== 4 || isNaN(Number(year)))) {
+    return res
+      .status(400)
+      .send({ error: 'malformed year' })
+  }
+
+  const group = await Group.build({
     id: uuidv4(),
     bookTitle: body.bookTitle,
-    isbn: body.isbn
+    bookAuthor: body.bookAuthor ? body.bookAuthor : null,
+    bookYear: body.bookYear ? Number(body.bookYear) : null,
+    bookIsbn: body.bookIsbn
   })
-
-  // TODO: strip all non-number chars from isbn
 
   await group.save()
 
   res
     .status(200)
-    .send({ id: group.id, bookTitle: group.bookTitle, isbn: group.isbn })
+    .send({ id: group.id, bookTitle: group.bookTitle, bookAuthor: group.bookAuthor, bookYear: group.bookYear, bookIsbn: group.bookIsbn })
 })
 
 groupsRouter.post('/join/:group', async (req, res) => {
