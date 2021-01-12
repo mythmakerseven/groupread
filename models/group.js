@@ -18,7 +18,7 @@ const Group = db.define('Group', {
     allowNull: true
   },
   bookYear: {
-    type: DataTypes.INTEGER(4),
+    type: DataTypes.INTEGER,
     allowNull: true
   },
   bookIsbn: {

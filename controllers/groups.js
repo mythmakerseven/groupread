@@ -80,6 +80,12 @@ groupsRouter.post('/', async (req, res) => {
       .send({ error: 'malformed year' })
   }
 
+  if (!body.bookTitle) {
+    return res
+      .status(400)
+      .send({ error: 'must include title' })
+  }
+
   const group = await Group.build({
     id: uuidv4(),
     bookTitle: body.bookTitle,

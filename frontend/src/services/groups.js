@@ -31,4 +31,9 @@ const getGroupMembers = async id => {
     .then(res => res.data)
 }
 
-export default { getAllGroups, getGroupDetails, getGroupPosts, getGroupMembers }
+const createGroup = async group => {
+  const res = await axios.post(baseUrl, group)
+  return res.data
+}
+
+export default { getAllGroups, getGroupDetails, getGroupPosts, getGroupMembers, createGroup }

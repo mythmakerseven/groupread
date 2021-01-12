@@ -36,6 +36,21 @@ export const getGroupMembers = id => {
   }
 }
 
+export const createGroup = groupObject => {
+  return async dispatch => {
+    try{
+      const response = await groupService.createGroup(groupObject)
+      dispatch({
+        type: 'CREATE_GROUP',
+        data: response
+      })
+      return response
+    } catch (error) {
+      return error
+    }
+  }
+}
+
 const groupReducer = (state = [], action) => {
   switch(action.type) {
   case 'VIEW_GROUP':
@@ -55,6 +70,11 @@ const groupReducer = (state = [], action) => {
     const members = action.data.members
     const id = action.data.id
     return state.map(g => g.id === id ? g = { ...g, members: members } : g)
+  }
+  case 'CREATE_GROUP':
+  {
+    const group = action.data
+    return [...state, group]
   }
   default:
     return state

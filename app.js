@@ -23,7 +23,7 @@ app.use('/api/posts', postsRouter)
 
 const db = getPool()
 
-db.sync({ force: true })
+db.sync()
   .then(() => {
     logger.info(`Connected to ${config.DB_URL}`)
   })
