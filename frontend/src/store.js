@@ -4,10 +4,12 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import groupListReducer from './reducers/groupListReducer'
 import groupReducer from './reducers/groupReducer'
+import groupCreationReducer from './reducers/groupCreationReducer'
 
 const reducer = combineReducers({
   group: groupReducer,
-  groupList: groupListReducer
+  groupList: groupListReducer,
+  groupFormData: groupCreationReducer
 })
 
 const store = createStore(
