@@ -1,49 +1,52 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Button, Header, Modal, List, Image } from 'semantic-ui-react'
 import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn } from '../reducers/groupCreationReducer'
 
 
-const OpenLibraryResults = ({ modalOpen, closeModal }) => {
+const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, modalOpen, closeModal }) => {
   const [results, setResults] = useState([])
+  // const [titleQuery, setTitleQuery] = useState('')
+  // const [authorQuery, setAuthorQuery] = useState('')
 
   const dispatch = useDispatch()
 
-  // const bookFormData = useSelector(({ groupFormData }) => groupFormData) // infinite loop 1
+  // const groupFormData = useSelector(({ groupFormData }) => groupFormData)
 
-  const getBookFormData = () => {
-    const bookFormData = useSelector(({ groupFormData }) => groupFormData)
-    return bookFormData
-  }
+  // useEffect(() => {
+  //   console.log(groupFormData)
+  //   setTitleQuery(groupFormData.bookTitle)
+  //   setAuthorQuery(groupFormData.bookAuthor)
+  // }, [modalOpen])
 
-  const queryOL = data => {
-    const titleString = data.bookTitle ? `title=${data.bookTitle}` : null
-    const authorString = data.bookAuthor ? `author=${data.bookAuthor}` : null
-    let searchUrl
-    if (titleString && authorString) {
-      searchUrl = `https://openlibrary.org/search.json?${titleString}&${authorString}`
-    } else if (titleString && !authorString) {
-      searchUrl = `https://openlibrary.org/search.json?${titleString}`
-    } else {
-      searchUrl = `https://openlibrary.org/search.json?${authorString}`
-    }
-    return searchUrl
+  const queryOL = (title, author, isbn) => {
+    const titleString = title ? `title=${title}` : null
+    const authorString = author ? `author=${author}` : null
+    const isbnString = isbn ? `isbn=${isbn}` : null
+
+    const queryArray = [titleString, authorString, isbnString].filter(q => q)
+    const queryString = `https://openlibrary.org/search.json?${queryArray.join('&')}`
+    console.log(queryString)
+    return queryString
   }
 
   useEffect(async () => {
     if (modalOpen) {
-      const searchUrl = queryOL(getBookFormData())  // infinite loop 2
+      // console.log(queryDetails)
+      const searchUrl = queryOL(queryTitle, queryAuthor, queryIsbn)
       console.log(`querying ${searchUrl}`)
       const resultsObject = await axios.get(searchUrl)
       setResults(resultsObject.data.docs)
     }
   }, [modalOpen])
 
-  const updateForm = (title, author) => {
-    dispatch(formUpdateTitle(title))  // infinite loop 3
+  const updateForm = (title, author, year, isbn) => {
+    dispatch(formUpdateTitle(title))
     dispatch(formUpdateAuthor(author))
+    dispatch(formUpdateYear(year))
+    dispatch(formUpdateIsbn(isbn))
     closeModal()
   }
 
@@ -61,7 +64,12 @@ const OpenLibraryResults = ({ modalOpen, closeModal }) => {
             by <b>{r.author_name}</b>
           </List.Description>
         </List.Content>
-        <Button floated='right' onClick={updateForm(r.title, r.author_name)}>Add info</Button>
+        <Button floated='right' onClick={() => updateForm(
+          r.title,
+          r.author_name ? r.author_name[0] : null,
+          r.publish_year ? r.publish_year[0] : null,
+          r.isbn ? r.isbn[0] : null
+        )}>Add info</Button>
       </List.Item>
     )
   }

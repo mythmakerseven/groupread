@@ -55,6 +55,8 @@ const GroupView = () => {
     }
   }
 
+  console.log(group.bookIsbn)
+
   const handlePosts = posts => {
     switch (posts.length) {
     case 0:
@@ -87,7 +89,7 @@ const GroupView = () => {
     <div>
       <Header as="h1" icon textAlign="center">
         <Header.Content>{group.bookTitle}</Header.Content>
-        <Image src={`http://covers.openlibrary.org/b/isbn/${group.isbn}-M.jpg`} />
+        <Image src={`https://covers.openlibrary.org/b/isbn/${group.bookIsbn}-M.jpg`} />
       </Header>
       <h4>Members:</h4>
       {displayMembers(members)}

@@ -24,6 +24,10 @@ const Group = db.define('Group', {
   bookIsbn: {
     type: DataTypes.STRING(13),
     allowNull: true
+  },
+  bookOLID: {
+    type: DataTypes.STRING,
+    allowNull: true // TODO: add handling for works that lack OLIDs
   }
 })
 
