@@ -24,7 +24,8 @@ const CreateGroup = () => {
       bookTitle: data.bookTitle,
       bookAuthor: data.bookAuthor,
       bookYear: data.bookYear,
-      bookIsbn: data.bookIsbn
+      bookIsbn: data.bookIsbn,
+      bookOLID: data.bookOLID // TODO: add to group object without being included in form
     }
 
     const res = dispatch(createGroup(groupObject)) // TODO: redirect to new group page

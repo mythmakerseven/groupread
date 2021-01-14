@@ -91,7 +91,8 @@ groupsRouter.post('/', async (req, res) => {
     bookTitle: body.bookTitle,
     bookAuthor: body.bookAuthor ? body.bookAuthor : null,
     bookYear: body.bookYear ? Number(body.bookYear) : null,
-    bookIsbn: body.bookIsbn
+    bookIsbn: body.bookIsbn,
+    bookOLID: body.openlibraryId ? body.openlibraryId : null
   })
 
   await group.save()
