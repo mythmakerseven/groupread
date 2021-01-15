@@ -89,7 +89,7 @@ const GroupView = () => {
     <div>
       <Header as="h1" icon textAlign="center">
         <Header.Content>{group.bookTitle}</Header.Content>
-        <Image src={`https://covers.openlibrary.org/b/isbn/${group.bookIsbn}-M.jpg`} />
+        <Image src={`https://covers.openlibrary.org/b/olid/${group.bookOLID}-M.jpg`} />
       </Header>
       <h4>Members:</h4>
       {displayMembers(members)}

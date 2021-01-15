@@ -41,6 +41,15 @@ export const formUpdateIsbn = isbn => {
   }
 }
 
+export const formUpdateOLID = olid => {
+  return dispatch => {
+    dispatch({
+      type: 'FORM_UPDATE_OLID',
+      data: olid
+    })
+  }
+}
+
 const groupCreationReducer = (state = initialState, action) => {
   switch(action.type) {
   case 'FORM_UPDATE_TITLE':
@@ -51,6 +60,8 @@ const groupCreationReducer = (state = initialState, action) => {
     return { ...state, bookYear: action.data }
   case 'FORM_UPDATE_ISBN':
     return { ...state, bookIsbn: action.data }
+  case 'FORM_UPDATE_OLID':
+    return { ...state, bookOLID: action.data }
   default:
     return state
   }

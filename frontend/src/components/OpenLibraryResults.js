@@ -3,7 +3,7 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Button, Header, Modal, List, Image } from 'semantic-ui-react'
-import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn } from '../reducers/groupCreationReducer'
+import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../reducers/groupCreationReducer'
 
 
 const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, modalOpen, closeModal }) => {
@@ -28,13 +28,11 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, modalOpen, clo
 
     const queryArray = [titleString, authorString, isbnString].filter(q => q)
     const queryString = `https://openlibrary.org/search.json?${queryArray.join('&')}`
-    console.log(queryString)
     return queryString
   }
 
   useEffect(async () => {
     if (modalOpen) {
-      // console.log(queryDetails)
       const searchUrl = queryOL(queryTitle, queryAuthor, queryIsbn)
       console.log(`querying ${searchUrl}`)
       const resultsObject = await axios.get(searchUrl)
@@ -42,11 +40,13 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, modalOpen, clo
     }
   }, [modalOpen])
 
-  const updateForm = (title, author, year, isbn) => {
+  const updateForm = (title, author, year, isbn, olid) => {
+    console.log(olid)
     dispatch(formUpdateTitle(title))
     dispatch(formUpdateAuthor(author))
     dispatch(formUpdateYear(year))
     dispatch(formUpdateIsbn(isbn))
+    dispatch(formUpdateOLID(olid))
     closeModal()
   }
 
@@ -68,7 +68,8 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, modalOpen, clo
           r.title,
           r.author_name ? r.author_name[0] : null,
           r.publish_year ? r.publish_year[0] : null,
-          r.isbn ? r.isbn[0] : null
+          r.isbn ? r.isbn[0] : null,
+          r.cover_edition_key
         )}>Add info</Button>
       </List.Item>
     )

@@ -19,16 +19,18 @@ const CreateGroup = () => {
   const openModal = () => setModalOpen(true)
   const closeModal = () => setModalOpen(false)
 
+  console.log(groupFormData)
+
   const handleGroup = async (data) => {
     const groupObject = {
       bookTitle: data.bookTitle,
       bookAuthor: data.bookAuthor,
       bookYear: data.bookYear,
       bookIsbn: data.bookIsbn,
-      bookOLID: data.bookOLID // TODO: add to group object without being included in form
+      bookOLID: groupFormData.bookOLID
     }
 
-    const res = dispatch(createGroup(groupObject)) // TODO: redirect to new group page
+    const res = await dispatch(createGroup(groupObject)) // TODO: redirect to new group page
     return console.log(res)
   }
 

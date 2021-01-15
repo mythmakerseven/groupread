@@ -92,14 +92,14 @@ groupsRouter.post('/', async (req, res) => {
     bookAuthor: body.bookAuthor ? body.bookAuthor : null,
     bookYear: body.bookYear ? Number(body.bookYear) : null,
     bookIsbn: body.bookIsbn,
-    bookOLID: body.openlibraryId ? body.openlibraryId : null
+    bookOLID: body.bookOLID ? body.bookOLID : null
   })
 
   await group.save()
 
   res
     .status(200)
-    .send({ id: group.id, bookTitle: group.bookTitle, bookAuthor: group.bookAuthor, bookYear: group.bookYear, bookIsbn: group.bookIsbn })
+    .send(group)
 })
 
 groupsRouter.post('/join/:group', async (req, res) => {
