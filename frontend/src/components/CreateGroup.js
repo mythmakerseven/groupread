@@ -5,21 +5,19 @@ import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import { Header, Button, Form } from 'semantic-ui-react'
 import OpenLibraryResults from './OpenLibraryResults'
-
-// import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn } from '../reducers/groupCreationReducer'
+import { useHistory } from 'react-router-dom'
 
 const CreateGroup = () => {
   const [modalOpen, setModalOpen] = useState(false)
 
   const dispatch = useDispatch()
+  const history = useHistory()
   const { register, handleSubmit, setValue, watch, errors } = useForm()
 
   const groupFormData = useSelector(({ groupFormData }) => groupFormData)
 
   const openModal = () => setModalOpen(true)
   const closeModal = () => setModalOpen(false)
-
-  console.log(groupFormData)
 
   const handleGroup = async (data) => {
     const groupObject = {
@@ -30,8 +28,8 @@ const CreateGroup = () => {
       bookOLID: groupFormData.bookOLID
     }
 
-    const res = await dispatch(createGroup(groupObject)) // TODO: redirect to new group page
-    return console.log(res)
+    const groupFromServer = await dispatch(createGroup(groupObject))
+    history.push(`/group/${groupFromServer.id}`)
   }
 
   const queryTitle = watch('bookTitle')

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
 
-import { Header, Image } from 'semantic-ui-react'
+import { Header, Image, Grid } from 'semantic-ui-react'
 
 const GroupView = () => {
   const { id } = useParams()
@@ -55,8 +55,6 @@ const GroupView = () => {
     }
   }
 
-  console.log(group.bookIsbn)
-
   const handlePosts = posts => {
     switch (posts.length) {
     case 0:
@@ -87,16 +85,29 @@ const GroupView = () => {
 
   return (
     <div>
-      <Header as="h1" icon textAlign="center">
-        <Header.Content>{group.bookTitle}</Header.Content>
-        <Image src={`https://covers.openlibrary.org/b/olid/${group.bookOLID}-M.jpg`} />
-      </Header>
-      <h4>Members:</h4>
-      {displayMembers(members)}
-      <h4>Posts:</h4>
-      <ol>
-        {handlePosts(posts)}
-      </ol>
+      <Grid celled>
+        <Grid.Row>
+          <Header as="h1" icon textAlign="center">{group.bookTitle}</Header>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={3}>
+            <Image src={`https://covers.openlibrary.org/b/olid/${group.bookOLID}-L.jpg`} />
+          </Grid.Column>
+          <Grid.Column width={7}>
+            <Header>Members:</Header>
+            {displayMembers(members)}
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={10}>
+            <Header>Posts</Header>
+            <ol>
+              {handlePosts(posts)}
+            </ol>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+      <p>book metadata provided by the <a href="https://openlibrary.org/" target="_blank" rel="noreferrer">Open Library API</a></p>
     </div>
   )
 }
