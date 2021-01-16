@@ -1,5 +1,5 @@
 import login from '../services/login'
-import { setToken } from '../services/groups'
+// import { setToken } from '../services/groups'
 
 export const initializeUser = () => {
   return async dispatch => {
@@ -20,7 +20,7 @@ export const logInUser = userObject => {
         type: 'LOGIN',
         data: user
       })
-      return 1
+      return 1 // TODO: figure out why this line is here
     } catch(error) {
       return error
     }
@@ -45,7 +45,7 @@ export const registerUser = userObject => {
         type: 'REGISTER',
         data: user
       })
-      return 1
+      return 1 // TODO: figure out why this line is here
     } catch(error) {
       return error
     }
@@ -59,7 +59,7 @@ const userReducer = (state = [], action) => {
       return null
     } else {
       const user = JSON.parse(action.data)
-      setToken(user.token)
+      // setToken(user.token)
       return user
     }
   case 'LOGIN':
@@ -67,8 +67,8 @@ const userReducer = (state = [], action) => {
       return state
     } else {
       const user = action.data
-      setToken(user.token)
-      return action.data
+      // setToken(user.token)
+      return user
     }
   case 'LOGOUT':
     return null
@@ -77,17 +77,9 @@ const userReducer = (state = [], action) => {
       return state
     } else {
       const user = action.data
-      setToken(user.token)
-      return action.data
+      // setToken(user.token)
+      return user
     }
-  case 'LIKE': {
-    const blog = action.data
-    return { ...state, likes: state.likes.concat(blog.id.toString()) }
-  }
-  case 'UNLIKE': {
-    const blog = action.data
-    return { ...state, likes: state.likes.filter(like => like !== blog.id.toString()) }
-  }
   default:
     return state
   }

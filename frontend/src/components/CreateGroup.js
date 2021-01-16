@@ -42,6 +42,7 @@ const CreateGroup = () => {
     }
   }, [openModal])
 
+  // TODO: add validation on the group creation form to match server-side
   return (
     <div>
       <Header as="h4">Tip: Click &quot;Find info&quot; to fill out empty fields based on what you&apos;ve entered.</Header>

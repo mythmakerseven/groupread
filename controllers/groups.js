@@ -52,6 +52,8 @@ groupsRouter.get('/:id/posts', async (req, res) => {
 })
 
 groupsRouter.post('/', async (req, res) => {
+  // TODO: user authentication for group creation
+
   const body = req.body
   logger.info(`Received POST request:\n ${body}`)
 

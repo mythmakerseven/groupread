@@ -41,7 +41,6 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, modalOpen, clo
   }, [modalOpen])
 
   const updateForm = (title, author, year, isbn, olid) => {
-    console.log(olid)
     dispatch(formUpdateTitle(title))
     dispatch(formUpdateAuthor(author))
     dispatch(formUpdateYear(year))

@@ -1,17 +1,40 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Menu } from 'semantic-ui-react'
-import { useSelector, useHistory } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import LoginModal from './LoginModal'
+import { initializeUser, logOutUser } from '../reducers/userReducer'
 
 const Navbar = () => {
   const history = useHistory()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initializeUser())
+  }, [dispatch])
 
   const user = useSelector(({ user }) => user)
+  console.log(user)
 
   const handleLogin = () => {
     if (user) {
-      return <p>logged in!</p>
+      return (
+        <>
+          <Menu.Item
+            position='right'
+            name='createGroup'
+            onClick={() => history.push('/group/create')}
+          />
+          <Menu.Item
+            name='logOut'
+            onClick={() => dispatch(logOutUser())}
+          />
+        </>
+      )
     } else {
-      return <p>not logged in :(</p>
+      return (
+        <LoginModal />
+      )
     }
   }
 
@@ -22,11 +45,7 @@ const Navbar = () => {
         name='home'
         onClick={() => history.push('/')}
       />
-      <Menu.Item
-        position='right'
-        name='createGroup'
-        onClick={() => history.push('/group/create')}
-      />
+      {handleLogin()}
     </Menu>
   )
 }

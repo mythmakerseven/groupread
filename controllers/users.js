@@ -28,6 +28,7 @@ usersRouter.get('/:user/posts', async (req, res) => {
 usersRouter.post('/', async (req, res) => {
   const body = req.body
 
+  // TODO: I think password travels unencrypted to the server, that should be fixed
   if (!body.password || body.password.length < 8) {
     return res.status(400).json({
       error: 'must include password of at least 8 characters'
@@ -55,6 +56,8 @@ usersRouter.post('/', async (req, res) => {
   const existingUser = await User.findOne({ where: { username: body.username } })
   if (existingUser) return res.status(400).json({ error: 'username already registered' })
 
+  // TODO: remove displayName, consider implementing on a per-group level
+  // so the user can pick a group-specific display name when they join
   const handleDisplayName = (username, displayName) => {
     if (!displayName) {
       return username
