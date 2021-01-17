@@ -59,6 +59,7 @@ const CreateGroup = () => {
   return (
     <div>
       <Header as="h4">Tip: Click &quot;Find info&quot; to fill out empty fields based on what you&apos;ve entered.</Header>
+      <Header as='h4'>If something looks wrong after fetching info, you can still make changes in the form.</Header>
       <Form onSubmit={handleSubmit(handleGroup)}>
         <ErrorMessage errors={errors} name="bookTitle" message="Book title is required" />
         <Form.Field>

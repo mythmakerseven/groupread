@@ -86,8 +86,11 @@ const GroupView = () => {
   return (
     <div>
       <Grid celled>
-        <Grid.Row>
-          <Header as="h1" icon textAlign="center">{group.bookTitle}</Header>
+        <Grid.Row centered>
+          <Grid.Column width={10}>
+            <Header as='h1' textAlign='center'>{group.bookTitle}</Header>
+            <Header as='h3' textAlign='center'>by {group.bookAuthor}</Header>
+          </Grid.Column>
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={3}>
