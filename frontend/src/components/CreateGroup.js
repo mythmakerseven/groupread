@@ -6,6 +6,8 @@ import { ErrorMessage } from '@hookform/error-message'
 import { Header, Button, Form } from 'semantic-ui-react'
 import OpenLibraryResults from './OpenLibraryResults'
 import { useHistory } from 'react-router-dom'
+import { initialState as initialFormState } from '../reducers/groupCreationReducer'
+import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../reducers/groupCreationReducer'
 
 const CreateGroup = () => {
   const [modalOpen, setModalOpen] = useState(false)
@@ -29,6 +31,14 @@ const CreateGroup = () => {
     }
 
     const groupFromServer = await dispatch(createGroup(groupObject))
+
+    // TODO: refactor the form reducer to take just one dispatch
+    dispatch(formUpdateTitle(''))
+    dispatch(formUpdateAuthor(''))
+    dispatch(formUpdateYear(''))
+    dispatch(formUpdateIsbn(''))
+    dispatch(formUpdateOLID(''))
+
     history.push(`/group/${groupFromServer.id}`)
   }
 
@@ -37,10 +47,13 @@ const CreateGroup = () => {
   const queryIsbn = watch('bookIsbn')
 
   useEffect(() => {
-    if (!openModal) {
-      setValue('bookTitle', groupFormData.bookTitle, { shouldValidate: true })
+    if (!modalOpen && groupFormData !== initialFormState) {
+      setValue('bookTitle', groupFormData.bookTitle)
+      setValue('bookAuthor', groupFormData.bookAuthor)
+      setValue('bookYear', groupFormData.bookYear)
+      setValue('bookIsbn', groupFormData.bookIsbn)
     }
-  }, [openModal])
+  }, [modalOpen])
 
   // TODO: add validation on the group creation form to match server-side
   return (

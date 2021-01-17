@@ -15,6 +15,7 @@ const HomePage = () => {
 
   return (
     <List>
+      <p>Note: This list is temporary for development purposes. 1.0 will not have a public list of groups.</p>
       {groups.map(group =>
         <List.Item key={group.id}>
           <List.Content>

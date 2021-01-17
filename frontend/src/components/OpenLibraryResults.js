@@ -2,24 +2,15 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Button, Header, Modal, List, Image } from 'semantic-ui-react'
+import { titleCase } from 'title-case' // 27KB library - might implement the functionality myself and drop it
+import { Button, Header, Modal, List, Image, Placeholder } from 'semantic-ui-react'
 import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../reducers/groupCreationReducer'
 
 
 const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, modalOpen, closeModal }) => {
   const [results, setResults] = useState([])
-  // const [titleQuery, setTitleQuery] = useState('')
-  // const [authorQuery, setAuthorQuery] = useState('')
 
   const dispatch = useDispatch()
-
-  // const groupFormData = useSelector(({ groupFormData }) => groupFormData)
-
-  // useEffect(() => {
-  //   console.log(groupFormData)
-  //   setTitleQuery(groupFormData.bookTitle)
-  //   setAuthorQuery(groupFormData.bookAuthor)
-  // }, [modalOpen])
 
   const queryOL = (title, author, isbn) => {
     const titleString = title ? `title=${title}` : null
@@ -37,11 +28,13 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, modalOpen, clo
       console.log(`querying ${searchUrl}`)
       const resultsObject = await axios.get(searchUrl)
       setResults(resultsObject.data.docs)
+    } else {
+      setResults([])
     }
   }, [modalOpen])
 
   const updateForm = (title, author, year, isbn, olid) => {
-    dispatch(formUpdateTitle(title))
+    dispatch(formUpdateTitle(titleCase(title)))
     dispatch(formUpdateAuthor(author))
     dispatch(formUpdateYear(year))
     dispatch(formUpdateIsbn(isbn))
@@ -50,8 +43,17 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, modalOpen, clo
   }
 
   const displayResults = results => {
-    if (!results || results === []) { // TODO: this doesn't function when results are null or empty
-      return <p>loading...</p>        // i.e. it doesn't function at all lmao
+    // TODO: handle loading differently from searches with 0 results
+    if (results.length === 0) {
+      return (
+        <Placeholder>
+          <Placeholder.Line />
+          <Placeholder.Line />
+          <Placeholder.Line />
+          <Placeholder.Line />
+          <Placeholder.Line />
+        </Placeholder>
+      )
     }
 
     return results.map(r =>
