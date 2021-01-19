@@ -21,7 +21,7 @@ export const logInUser = userObject => {
         data: user
       })
     } catch(error) {
-      return error
+      return error.response.data
     }
   }
 }
@@ -45,7 +45,7 @@ export const registerUser = userObject => {
         data: user
       })
     } catch(error) {
-      return error
+      return error.response.data
     }
   }
 }

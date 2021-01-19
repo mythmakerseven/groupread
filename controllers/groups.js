@@ -12,8 +12,6 @@ groupsRouter.get('/all', async (req, res) => {
 })
 
 groupsRouter.get('/:id', async (req, res) => {
-  if (!req.params.id || req.params.id === undefined) return res.status(400).json({ error: 'invalid group id' })
-
   const group = await Group.findOne({ where: { id: req.params.id } })
 
   if (!group) return res.status(400).json({ error: 'invalid group id' })
@@ -22,8 +20,6 @@ groupsRouter.get('/:id', async (req, res) => {
 })
 
 groupsRouter.get('/:id/members', async (req, res) => {
-  if (!req.params.id || req.params.id === undefined) return res.status(400).json({ error: 'invalid group id' })
-
   const group = await Group.findOne({ where: { id: req.params.id } })
 
   if (!group) return res.status(400).json({ error: 'invalid group id' })
@@ -34,7 +30,6 @@ groupsRouter.get('/:id/members', async (req, res) => {
 })
 
 groupsRouter.get('/:id/posts', async (req, res) => {
-  if (!req.params.id || req.params.id === undefined) return res.status(400).json({ error: 'invalid group id' })
   const group = await Group.findOne({ where: { id: req.params.id } })
 
   if (!group) return res.status(400).json({ error: 'invalid group id' })
@@ -69,13 +64,13 @@ groupsRouter.post('/', async (req, res) => {
     if (isbn.length !== 10 && isbn.length !== 13) {
       return res
         .status(400)
-        .json({ error: 'isbn must be 10 or 13 characters' })
+        .json({ error: 'ISBN must be 10 or 13 characters' })
     }
 
     if (isNaN(Number(isbn.slice(0, -2))) || (isNaN(Number(isbn.slice(-1))) && isbn.charAt(isbn.length - 1) !== 'X' )) {
       return res
         .status(400)
-        .json({ error: 'malformed ISBN' })
+        .json({ error: 'Invalid ISBN' })
     }
   }
 
@@ -84,13 +79,13 @@ groupsRouter.post('/', async (req, res) => {
   if (year && (year.length !== 4 || isNaN(Number(year)))) {
     return res
       .status(400)
-      .json({ error: 'malformed year' })
+      .json({ error: 'Invalid year' })
   }
 
   if (!body.bookTitle) {
     return res
       .status(400)
-      .json({ error: 'must include title' })
+      .json({ error: 'Title is required' })
   }
 
   const group = await Group.build({

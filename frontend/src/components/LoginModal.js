@@ -3,30 +3,32 @@ import { useForm } from 'react-hook-form'
 import { logInUser, registerUser } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
 import { Button, Modal, Form, Menu, Segment } from 'semantic-ui-react'
+import { ErrorMessage } from '@hookform/error-message'
 
 const LoginModal = () => {
   const [open, setOpen] = useState(false)
   const [showRegisterForm, setShowRegisterForm] = useState(false)
 
   const dispatch = useDispatch()
-  const { register, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, setError, errors } = useForm()
 
-  // TODO: error handling and validation on both forms
+  // TODO: more client-side validation on both forms,
+  // especially password length
   const handleForm = () => {
     if (!showRegisterForm) {
       return (
         <Form
           onSubmit={handleSubmit(handleLogin)}
         >
+          <ErrorMessage errors={errors} name='loginUsername' message='Username is required' />
           <Form.Field>
             <label>Username</label>
-            <input name="username" ref={register({ required: true })} />
-            {errors.username && 'Username is required'}
+            <input name="loginUsername" ref={register({ required: true })} />
           </Form.Field>
+          <ErrorMessage errors={errors} name='password' message='Password is required' />
           <Form.Field>
             <label>Password</label>
-            <input name="password" type="password" ref={register({ required: true })} />
-            {errors.password && 'Password is required'}
+            <input name="loginPassword" type="password" ref={register({ required: true })} />
           </Form.Field>
           <Button type="submit">Log In</Button>
         </Form>
@@ -36,19 +38,22 @@ const LoginModal = () => {
         <Form
           onSubmit={handleSubmit(handleRegister)}
         >
+          <ErrorMessage errors={errors} name='registerUsername' message='Username is required' />
           <Form.Field>
             <label>Username</label>
-            <input name="username" ref={register({ required: true })} />
+            <input name="registerUsername" ref={register({ required: true })} />
             {errors.username && 'Username is required'}
           </Form.Field>
+          <ErrorMessage errors={errors} name='password' message='Password is required' />
           <Form.Field>
             <label>Password</label>
-            <input name="password" type="password" ref={register({ required: true })} />
+            <input name="registerPassword" type="password" ref={register({ required: true })} />
             {errors.password && 'Password is required'}
           </Form.Field>
+          <ErrorMessage errors={errors} name='email' message='Email is required' />
           <Form.Field>
             <label>Email</label>
-            <input name='email' type="email" ref={register({ required: true })} />
+            <input name='registerEmail' type="email" ref={register({ required: true })} />
             {errors.email && 'Email is required'}
           </Form.Field>
           <Button type="submit">Register</Button>
@@ -59,21 +64,26 @@ const LoginModal = () => {
 
   const handleLogin = async (data) => {
     const userCredentials = {
-      username: data.username,
-      password: data.password
+      username: data.loginUsername,
+      password: data.loginPassword
     }
-
-    dispatch(logInUser(userCredentials))
+    const res = await dispatch(logInUser(userCredentials))
+    if (res.error) {
+      return setError('loginUsername', { message: `${res.error}` })
+    }
   }
 
   const handleRegister = async (data) => {
     const userCredentials = {
-      username: data.username,
-      password: data.password,
-      email: data.email
+      username: data.registerUsername,
+      password: data.registerPassword,
+      email: data.registerEmail
     }
 
-    dispatch(registerUser(userCredentials))
+    const res = await dispatch(registerUser(userCredentials))
+    if (res.error) {
+      return setError('registerUsername', { message: `${res.error}` })
+    }
   }
 
   return (

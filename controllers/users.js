@@ -31,30 +31,30 @@ usersRouter.post('/', async (req, res) => {
   // TODO: I think password travels unencrypted to the server, that should be fixed
   if (!body.password || body.password.length < 8) {
     return res.status(400).json({
-      error: 'must include password of at least 8 characters'
+      error: 'Passwords must be at least 8 characters'
     })
   }
 
   if (body.username.length > 32) {
     return res.status(400).json({
-      error: 'username must be fewer than 32 characters'
+      error: 'Usernames must be fewer than 32 characters'
     })
   }
 
   if (body.displayName && body.displayName.length > 32) {
     return res.status(400).json({
-      error: 'display name must be fewer than 32 characters'
+      error: 'Display names must be fewer than 32 characters'
     })
   }
 
   if (body.email > 64) {
     return res.status(400).json({
-      error: 'email must be fewer than 64 characters'
+      error: 'Emails must be fewer than 64 characters'
     })
   }
 
   const existingUser = await User.findOne({ where: { username: body.username } })
-  if (existingUser) return res.status(400).json({ error: 'username already registered' })
+  if (existingUser) return res.status(400).json({ error: 'Username already taken' })
 
   // TODO: remove displayName, consider implementing on a per-group level
   // so the user can pick a group-specific display name when they join

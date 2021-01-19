@@ -43,17 +43,12 @@ const CreateGroup = () => {
       bookOLID: groupFormData.bookOLID
     }
 
-    console.log('sending')
     const res = await dispatch(createGroup(groupObject))
-    console.log('sent')
 
-    console.log(res)
-
-    if (checkForError(res)) {
-      return displayError(res)
+    if (res.error) {
+      return setError('bookTitle', { message: `${res.error}` })
     }
 
-    // TODO: refactor the form reducer to take just one dispatch
     dispatch(formUpdateTitle(''))
     dispatch(formUpdateAuthor(''))
     dispatch(formUpdateYear(''))
@@ -63,23 +58,8 @@ const CreateGroup = () => {
     history.push(`/group/${res.id}`)
   }
 
-  const displayError = error => {
-    console.log('displayError called')
-    if (error) {
-      console.log(error)
-      setError('bookTitle', { message: `${error.error}` })
-    }
-  }
-
-  const checkForError = object => {
-    if (object.error) {
-      return true
-    }
-
-    return false
-  }
-
-  // TODO: add validation on the group creation form to match server-side
+  // TODO: more client-side validation to match serverside
+  // can likely be done easily with react-hook-form params
   return (
     <div>
       <Header as="h4">Tip: Click &quot;Find info&quot; to fill out empty fields based on what you&apos;ve entered.</Header>
