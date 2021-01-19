@@ -8,31 +8,36 @@ const jwt = require('jsonwebtoken')
 groupsRouter.get('/all', async (req, res) => {
   const groups = await Group.findAll()
 
-  res.status(200).send(groups)
+  res.status(200).json(groups)
 })
 
 groupsRouter.get('/:id', async (req, res) => {
+  if (!req.params.id || req.params.id === undefined) return res.status(400).json({ error: 'invalid group id' })
+
   const group = await Group.findOne({ where: { id: req.params.id } })
 
-  if (!group) res.status(400).send({ error: 'invalid group id' })
+  if (!group) return res.status(400).json({ error: 'invalid group id' })
 
-  res.status(200).send(group)
+  return res.status(200).json(group)
 })
 
 groupsRouter.get('/:id/members', async (req, res) => {
+  if (!req.params.id || req.params.id === undefined) return res.status(400).json({ error: 'invalid group id' })
+
   const group = await Group.findOne({ where: { id: req.params.id } })
 
-  if (!group) res.status(400).send({ error: 'invalid group id' })
+  if (!group) return res.status(400).json({ error: 'invalid group id' })
 
   const users = await group.getUsers()
 
-  res.status(200).send(users)
+  return res.status(200).json(users)
 })
 
 groupsRouter.get('/:id/posts', async (req, res) => {
+  if (!req.params.id || req.params.id === undefined) return res.status(400).json({ error: 'invalid group id' })
   const group = await Group.findOne({ where: { id: req.params.id } })
 
-  if (!group) res.status(400).send({ error: 'invalid group id' })
+  if (!group) return res.status(400).json({ error: 'invalid group id' })
 
   const posts = await group.getPosts()
 
@@ -48,7 +53,7 @@ groupsRouter.get('/:id/posts', async (req, res) => {
   }
 
   const sortedPosts = await sortPosts(posts)
-  res.status(200).send(sortedPosts)
+  return res.status(200).json(sortedPosts)
 })
 
 groupsRouter.post('/', async (req, res) => {
@@ -64,13 +69,13 @@ groupsRouter.post('/', async (req, res) => {
     if (isbn.length !== 10 && isbn.length !== 13) {
       return res
         .status(400)
-        .send({ error: 'isbn must be 10 or 13 characters' })
+        .json({ error: 'isbn must be 10 or 13 characters' })
     }
 
     if (isNaN(Number(isbn.slice(0, -2))) || (isNaN(Number(isbn.slice(-1))) && isbn.charAt(isbn.length - 1) !== 'X' )) {
       return res
         .status(400)
-        .send({ error: 'malformed ISBN' })
+        .json({ error: 'malformed ISBN' })
     }
   }
 
@@ -79,13 +84,13 @@ groupsRouter.post('/', async (req, res) => {
   if (year && (year.length !== 4 || isNaN(Number(year)))) {
     return res
       .status(400)
-      .send({ error: 'malformed year' })
+      .json({ error: 'malformed year' })
   }
 
   if (!body.bookTitle) {
     return res
       .status(400)
-      .send({ error: 'must include title' })
+      .json({ error: 'must include title' })
   }
 
   const group = await Group.build({
@@ -101,7 +106,7 @@ groupsRouter.post('/', async (req, res) => {
 
   res
     .status(200)
-    .send(group)
+    .json(group)
 })
 
 groupsRouter.post('/join/:group', async (req, res) => {
@@ -126,12 +131,12 @@ groupsRouter.post('/join/:group', async (req, res) => {
   const user = await User.findOne({ where: { id: decodedToken.id } })
   const group = await Group.findOne({ where: { id: req.params.group } })
 
-  if (!user) return res.status(400).send({ error: 'user not found' })
-  if (!group) return res.status(400).send({ error: 'group not found' })
+  if (!user) return res.status(400).json({ error: 'user not found' })
+  if (!group) return res.status(400).json({ error: 'group not found' })
 
   user.addGroup(group)
 
-  res.status(200).send({ success: `Added ${user.username} to group ${group.id}` })
+  res.status(200).json({ success: `Added ${user.username} to group ${group.id}` })
 })
 
 module.exports = groupsRouter

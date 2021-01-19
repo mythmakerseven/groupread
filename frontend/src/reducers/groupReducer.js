@@ -44,9 +44,9 @@ export const createGroup = groupObject => {
         type: 'CREATE_GROUP',
         data: response
       })
-      return response
-    } catch (error) {
-      return error
+      return response.data
+    } catch(error) {
+      return error.response.data
     }
   }
 }

@@ -14,33 +14,12 @@ const CreateGroup = () => {
 
   const dispatch = useDispatch()
   const history = useHistory()
-  const { register, handleSubmit, setValue, watch, errors } = useForm()
+  const { register, handleSubmit, setValue, watch, setError, errors } = useForm()
 
   const groupFormData = useSelector(({ groupFormData }) => groupFormData)
 
   const openModal = () => setModalOpen(true)
   const closeModal = () => setModalOpen(false)
-
-  const handleGroup = async (data) => {
-    const groupObject = {
-      bookTitle: data.bookTitle,
-      bookAuthor: data.bookAuthor,
-      bookYear: data.bookYear,
-      bookIsbn: data.bookIsbn,
-      bookOLID: groupFormData.bookOLID
-    }
-
-    const groupFromServer = await dispatch(createGroup(groupObject))
-
-    // TODO: refactor the form reducer to take just one dispatch
-    dispatch(formUpdateTitle(''))
-    dispatch(formUpdateAuthor(''))
-    dispatch(formUpdateYear(''))
-    dispatch(formUpdateIsbn(''))
-    dispatch(formUpdateOLID(''))
-
-    history.push(`/group/${groupFromServer.id}`)
-  }
 
   const queryTitle = watch('bookTitle')
   const queryAuthor = watch('bookAuthor')
@@ -54,6 +33,51 @@ const CreateGroup = () => {
       setValue('bookIsbn', groupFormData.bookIsbn)
     }
   }, [modalOpen])
+
+  const handleGroup = async (data) => {
+    const groupObject = {
+      bookTitle: data.bookTitle,
+      bookAuthor: data.bookAuthor,
+      bookYear: data.bookYear,
+      bookIsbn: data.bookIsbn,
+      bookOLID: groupFormData.bookOLID
+    }
+
+    console.log('sending')
+    const res = await dispatch(createGroup(groupObject))
+    console.log('sent')
+
+    console.log(res)
+
+    if (checkForError(res)) {
+      return displayError(res)
+    }
+
+    // TODO: refactor the form reducer to take just one dispatch
+    dispatch(formUpdateTitle(''))
+    dispatch(formUpdateAuthor(''))
+    dispatch(formUpdateYear(''))
+    dispatch(formUpdateIsbn(''))
+    dispatch(formUpdateOLID(''))
+
+    history.push(`/group/${res.id}`)
+  }
+
+  const displayError = error => {
+    console.log('displayError called')
+    if (error) {
+      console.log(error)
+      setError('bookTitle', { message: `${error.error}` })
+    }
+  }
+
+  const checkForError = object => {
+    if (object.error) {
+      return true
+    }
+
+    return false
+  }
 
   // TODO: add validation on the group creation form to match server-side
   return (
