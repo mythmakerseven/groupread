@@ -16,6 +16,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '15.x'
+      - name: npm install
+        run: npm install
       - name: lint
         run: npm run lint
       - name: heroku deployment
