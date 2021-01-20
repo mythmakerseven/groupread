@@ -14,7 +14,6 @@ const Navbar = () => {
   }, [dispatch])
 
   const user = useSelector(({ user }) => user)
-  console.log(user)
 
   const handleLogin = () => {
     if (user) {

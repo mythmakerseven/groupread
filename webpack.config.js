@@ -1,10 +1,11 @@
 const path = require('path')
 
 const config = {
-  entry: './src/index.js',
+  entry: './frontend/src/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'main.js'
+    filename: 'main.js',
+    // publicPath: '/'
   },
   module: {
     rules: [
@@ -26,7 +27,7 @@ const config = {
         options: {
           limit: 10000,
         },
-      },
+      }
     ],
   },
   devServer: {

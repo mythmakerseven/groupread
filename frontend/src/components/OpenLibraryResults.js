@@ -25,7 +25,6 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, modalOpen, clo
   useEffect(async () => {
     if (modalOpen) {
       const searchUrl = queryOL(queryTitle, queryAuthor, queryIsbn)
-      console.log(`querying ${searchUrl}`)
       const resultsObject = await axios.get(searchUrl)
       setResults(resultsObject.data.docs)
     } else {
