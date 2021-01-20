@@ -20,6 +20,7 @@ export const logInUser = userObject => {
         type: 'LOGIN',
         data: user
       })
+      return user
     } catch(error) {
       return error.response.data
     }
@@ -44,6 +45,7 @@ export const registerUser = userObject => {
         type: 'REGISTER',
         data: user
       })
+      return user
     } catch(error) {
       return error.response.data
     }

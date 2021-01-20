@@ -44,7 +44,7 @@ export const createGroup = groupObject => {
         type: 'CREATE_GROUP',
         data: response
       })
-      return response.data
+      return response
     } catch(error) {
       return error.response.data
     }
