@@ -8,7 +8,7 @@
     "dev": "nodemon index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand",
     "lint": "eslint .",
-    "build:ui": "webpack --mode=production",
+    "build": "webpack --mode=production",
     "dev:ui": "webpack serve --mode=development",
     "start:full": "npm run build:ui && node index.js"
   },

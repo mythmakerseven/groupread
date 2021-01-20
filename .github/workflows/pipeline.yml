@@ -1,0 +1,31 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+    pull-request:
+      branches: [main]
+      types: [opened, synchronize]
+
+jobs:
+  simple_deploymnt_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '15.x'
+      - name: npm install
+        run: npm install
+      - name: lint
+        run: npm run lint
+      - name: heroku deployment
+        uses: akhileshns/heroku-deploy@v3.8.9
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ancient-citadel-48192
+          heroku_email: c@camdenmecklem.com
+          healthcheck: https://ancient-citadel-48192.herokuapp.com/health
+          checkstring: ok
+          rollbackonhealthcheckfailed: true
