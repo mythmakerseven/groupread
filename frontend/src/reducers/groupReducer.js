@@ -1,4 +1,5 @@
 import groupService from '../services/groups'
+import postService from '../services/posts'
 
 export const getGroupDetails = id => {
   return async dispatch => {
@@ -51,6 +52,21 @@ export const createGroup = groupObject => {
   }
 }
 
+export const newPost = (id, postObject) => {
+  return async dispatch => {
+    try {
+      const res = await postService.sendNewPost(id, postObject)
+      dispatch({
+        type: 'NEW_POST',
+        data: res
+      })
+      return res
+    } catch(error) {
+      return error.response.data
+    }
+  }
+}
+
 const groupReducer = (state = [], action) => {
   switch(action.type) {
   case 'VIEW_GROUP':
@@ -75,6 +91,11 @@ const groupReducer = (state = [], action) => {
   {
     const group = action.data
     return [...state, group]
+  }
+  case 'NEW_POST':
+  {
+    const groupID = action.data.groupID
+    return state.map(g => g.id === groupID ? g = { ...g, posts: [ ...action.data ] } : g)
   }
   default:
     return state

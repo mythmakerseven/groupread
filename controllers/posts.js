@@ -15,6 +15,10 @@ postsRouter.post('/:group', async (req, res) => {
     return res.status(401).json({ error: 'missing token' })
   }
 
+  if (!body.text) {
+    return res.status(400).json({ error: 'Posts cannot be empty' })
+  }
+
   let decodedToken
   try {
     decodedToken = jwt.verify(token, process.env.SECRET)

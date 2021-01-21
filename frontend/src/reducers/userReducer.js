@@ -1,5 +1,5 @@
 import login from '../services/login'
-// import { setToken } from '../services/groups'
+import postService from '../services/posts'
 
 export const initializeUser = () => {
   return async dispatch => {
@@ -59,7 +59,7 @@ const userReducer = (state = [], action) => {
       return null
     } else {
       const user = JSON.parse(action.data)
-      // setToken(user.token)
+      postService.setToken(user.token)
       return user
     }
   case 'LOGIN':
@@ -67,7 +67,7 @@ const userReducer = (state = [], action) => {
       return state
     } else {
       const user = action.data
-      // setToken(user.token)
+      postService.setToken(user.token)
       return user
     }
   case 'LOGOUT':
@@ -77,7 +77,7 @@ const userReducer = (state = [], action) => {
       return state
     } else {
       const user = action.data
-      // setToken(user.token)
+      postService.setToken(user.token)
       return user
     }
   default:

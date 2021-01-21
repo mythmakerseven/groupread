@@ -1,12 +1,6 @@
 import axios from 'axios'
 const baseUrl = '/api/groups'
 
-// let token = null
-
-// const setToken = newToken => {
-//   token = `bearer ${newToken}`
-// }
-
 const getAllGroups = async () => {
   const req = axios.get(`${baseUrl}/all`)
   return req

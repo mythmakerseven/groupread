@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
 
-import { Header, Image, Grid } from 'semantic-ui-react'
+import { Header, Image, Grid, List } from 'semantic-ui-react'
 
 const GroupView = () => {
   const { id } = useParams()
@@ -32,9 +32,15 @@ const GroupView = () => {
   const members = group.members
   const posts = group.posts
 
+  const getParentPosts = posts => {
+    return posts.filter(p => !p.parent)
+  }
+
   if (group.id !== id || !members || !posts) {
     return <p>loading...</p>
   }
+
+  const parentPosts = getParentPosts(posts)
 
   const displayMembers = members => {
     switch(members.length) {
@@ -64,22 +70,34 @@ const GroupView = () => {
     }
   }
 
+  // TODO: move below function to the post view component when it's made
+
   // I <3 recursion
   // This function should still work if support for infinitely nested comments is added
+  // const displayPosts = posts => {
+  //   return posts.map(post => {
+  //     if (post.replies) {
+  //       return (
+  //         <div key={post.id}>
+  //           <li>{post.text}</li>
+  //           <ol>
+  //             {displayPosts(post.replies)}
+  //           </ol>
+  //         </div>
+  //       )
+  //     } else {
+  //       return <li key={post.id}>{post.text}</li>
+  //     }
+  //   })
+  // }
+
   const displayPosts = posts => {
     return posts.map(post => {
-      if (post.replies) {
-        return (
-          <div key={post.id}>
-            <li>{post.text}</li>
-            <ol>
-              {displayPosts(post.replies)}
-            </ol>
-          </div>
-        )
-      } else {
-        return <li key={post.id}>{post.text}</li>
-      }
+      return (
+        <List.Item key={post.id}>
+          {post.title}
+        </List.Item>
+      )
     })
   }
 
@@ -104,9 +122,10 @@ const GroupView = () => {
         <Grid.Row>
           <Grid.Column width={10}>
             <Header>Posts</Header>
-            <ol>
-              {handlePosts(posts)}
-            </ol>
+            <Link to={`/group/${group.id}/post`}>New post</Link>
+            <List celled ordered>
+              {handlePosts(parentPosts)}
+            </List>
           </Grid.Column>
         </Grid.Row>
       </Grid>

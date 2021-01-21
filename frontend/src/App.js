@@ -7,6 +7,7 @@ import HomePage from './components/HomePage'
 import CreateGroup from './components/CreateGroup'
 import { Container } from 'semantic-ui-react'
 import { Switch, Route } from 'react-router-dom'
+import GroupNewPost from './components/GroupNewPost'
 
 // webpack-dev-server does not refresh the browser when code is updated
 // due to this bug: https://github.com/webpack/webpack-dev-server/issues/2758
@@ -20,6 +21,9 @@ const App = () => {
         <Switch>
           <Route path="/group/create">
             <CreateGroup />
+          </Route>
+          <Route path="/group/:id/post">
+            <GroupNewPost />
           </Route>
           <Route path="/group/:id">
             <GroupView />
