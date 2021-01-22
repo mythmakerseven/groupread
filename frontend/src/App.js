@@ -6,6 +6,7 @@ import HomePage from './components/HomePage'
 import CreateGroup from './components/CreateGroup'
 import { Switch, Route } from 'react-router-dom'
 import GroupNewPost from './components/GroupNewPost'
+import GroupList from './components/GroupList'
 
 // webpack-dev-server does not refresh the browser when code is updated
 // due to this bug: https://github.com/webpack/webpack-dev-server/issues/2758
@@ -17,6 +18,9 @@ const App = () => {
       <Navbar />
       <div className='container' style={{ position: 'relative', top: '40px' }}>
         <Switch>
+          <Route path="/list">
+            <GroupList />
+          </Route>
           <Route path="/group/create">
             <CreateGroup />
           </Route>
