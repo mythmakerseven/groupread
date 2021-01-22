@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory, Link } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
 
 const GroupView = () => {
@@ -94,12 +94,18 @@ const GroupView = () => {
   //   })
   // }
 
+  const truncate = text => {
+    return (text.length > 32)
+      ? `${text.substring(0, 32)}...`
+      : text
+  }
+
   const displayPosts = posts => {
     return posts.map(post => {
       return (
         <tr key={post.id}>
-          <th>{post.title}</th>
-          <th>{post.text}</th>
+          <th><Link to={`/groups/${group.id}/${post.id}`}>{post.title}</Link></th>
+          <th>{truncate(post.text)}</th>
         </tr>
       )
     })
@@ -118,7 +124,7 @@ const GroupView = () => {
       <div>
       </div>
       <h1 className='title'>Posts</h1>
-      <button className='button is-primary' onClick={() => history.push(`/group/${group.id}/post`)}>
+      <button className='button is-primary' onClick={() => history.push(`/groups/${group.id}/submit`)}>
           New Post
       </button>
       <table className='table'>

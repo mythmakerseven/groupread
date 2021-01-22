@@ -5,7 +5,7 @@ const HomePage = () => {
   return (
     <div>
       <p>Welcome to Group Read&apos;s temporary development homepage</p>
-      <Link to='/list'>Click here to see a list of groups.</Link>
+      <Link to='/groups'>Click here to see a list of groups.</Link>
     </div>
   )
 }

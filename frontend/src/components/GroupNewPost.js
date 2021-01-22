@@ -32,7 +32,7 @@ const GroupNewPost = () => {
       return setError('title', { message: `${res.error}` })
     }
 
-    history.push(`/group/${id}`)
+    history.push(`/groups/${id}`)
   }
 
   return (

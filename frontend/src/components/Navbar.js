@@ -30,7 +30,7 @@ const Navbar = () => {
       return (
         <>
           <div className='navbar-end'>
-            <Link className='navbar-item' to='/group/create'>
+            <Link className='navbar-item' to='/groups/create'>
               Create Group
             </Link>
             <a className='navbar-item' onClick={() => dispatch(logOutUser())}>

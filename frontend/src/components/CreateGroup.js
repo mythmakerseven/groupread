@@ -51,7 +51,7 @@ const CreateGroup = () => {
     dispatch(formUpdateIsbn(''))
     dispatch(formUpdateOLID(''))
 
-    history.push(`/group/${res.id}`)
+    history.push(`/groups/${res.id}`)
   }
 
   // TODO: more client-side validation to match serverside
@@ -69,7 +69,7 @@ const CreateGroup = () => {
             <input
               className='input'
               type='text'
-              placeholder='The Brothers Karamazov'
+              placeholder='e.g. The Brothers Karamazov'
               name='bookTitle'
               defaultValue={groupFormData.bookTitle}
               ref={register( { required: true })}
@@ -82,7 +82,7 @@ const CreateGroup = () => {
             <input
               className='input'
               type='text'
-              placeholder='Fyodor Dostoyevsky'
+              placeholder='e.g. Fyodor Dostoyevsky'
               name='bookAuthor'
               defaultValue={groupFormData.bookAuthor}
               ref={register}
@@ -95,7 +95,7 @@ const CreateGroup = () => {
             <input
               className='input'
               type='text'
-              placeholder='1880'
+              placeholder='e.g. 1880'
               name='bookYear'
               defaultValue={groupFormData.bookYear}
               ref={register}
@@ -108,7 +108,7 @@ const CreateGroup = () => {
             <input
               className='input'
               type='text'
-              placeholder='9780374528379'
+              placeholder='e.g. 9780374528379'
               name='bookIsbn'
               defaultValue={groupFormData.bookIsbn}
               ref={register}

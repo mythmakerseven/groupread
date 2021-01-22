@@ -14,14 +14,14 @@ const GroupList = () => {
 
   return (
     <div>
-      <h1 className='title' textAlign='center'>
+      <h1 className='title' textalign='center'>
         Group Read
       </h1>
       <p>Note: This list is temporary for development purposes. 1.0 will not have a public list of groups.</p>
       <ul>
         {groups.map(group =>
           <li key={group.id}>
-            <Link to={`/group/${group.id}`}>
+            <Link to={`/groups/${group.id}`}>
               {group.id} - {group.bookTitle}
             </Link>
           </li>
