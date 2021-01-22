@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllGroups } from '../reducers/groupListReducer'
-import { List, Header } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 const HomePage = () => {
@@ -15,24 +14,19 @@ const HomePage = () => {
 
   return (
     <div>
-      <Header size="huge" textAlign='center'>
+      <h1 className='title' textAlign='center'>
         Group Read
-      </Header>
+      </h1>
       <p>Note: This list is temporary for development purposes. 1.0 will not have a public list of groups.</p>
-      <List>
+      <ul>
         {groups.map(group =>
-          <List.Item key={group.id}>
-            <List.Content>
-              <List.Header as='p'>
-                <Link to={`/group/${group.id}`}>
-                  {group.bookTitle}
-                </Link>
-              </List.Header>
-              <List.Description as='p'>{group.bookName}</List.Description>
-            </List.Content>
-          </List.Item>
+          <li key={group.id}>
+            <Link to={`/group/${group.id}`}>
+              {group.bookTitle}
+            </Link>
+          </li>
         )}
-      </List>
+      </ul>
     </div>
   )
 }

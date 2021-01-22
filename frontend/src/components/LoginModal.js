@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { logInUser, registerUser } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
-import { Button, Modal, Form, Menu, Segment } from 'semantic-ui-react'
 import { ErrorMessage } from '@hookform/error-message'
+import PropTypes from 'prop-types'
 
-const LoginModal = () => {
-  const [open, setOpen] = useState(false)
+const LoginModal = ({ open, setOpen }) => {
   const [showRegisterForm, setShowRegisterForm] = useState(false)
 
   const dispatch = useDispatch()
@@ -17,47 +16,83 @@ const LoginModal = () => {
   const handleForm = () => {
     if (!showRegisterForm) {
       return (
-        <Form
-          onSubmit={handleSubmit(handleLogin)}
-        >
+        <form onSubmit={handleSubmit(handleLogin)}>
           <ErrorMessage errors={errors} name='loginUsername' message='Username is required' />
-          <Form.Field>
-            <label>Username</label>
-            <input name="loginUsername" ref={register({ required: true })} />
-          </Form.Field>
-          <ErrorMessage errors={errors} name='password' message='Password is required' />
-          <Form.Field>
-            <label>Password</label>
-            <input name="loginPassword" type="password" ref={register({ required: true })} />
-          </Form.Field>
-          <Button type="submit">Log In</Button>
-        </Form>
+          <div className='field'>
+            <label className='label'>Username</label>
+            <div className='control'>
+              <input
+                className='input'
+                type='text'
+                placeholder='username'
+                name='loginUsername'
+                ref={register({ required: true })}
+              />
+            </div>
+          </div>
+          <ErrorMessage errors={errors} name='loginPassword' message='Password is required' />
+          <div className='field'>
+            <label className='label'>Password</label>
+            <div className='control'>
+              <input
+                className='input'
+                type='password'
+                placeholder='**********'
+                name='loginPassword'
+                ref={register({ required: true })}
+              />
+            </div>
+          </div>
+          <button className='button is-success' type="submit">Log In</button>
+        </form>
       )
     } else {
       return (
-        <Form
-          onSubmit={handleSubmit(handleRegister)}
-        >
+        <form onSubmit={handleSubmit(handleRegister)}>
           <ErrorMessage errors={errors} name='registerUsername' message='Username is required' />
-          <Form.Field>
-            <label>Username</label>
-            <input name="registerUsername" ref={register({ required: true })} />
-            {errors.username && 'Username is required'}
-          </Form.Field>
+          <div className='field'>
+            <label className='label'>Username</label>
+            <div className='control'>
+              <input
+                className='input'
+                type='text'
+                placeholder='username'
+                name='registerUsername'
+                ref={register({ required: true })}
+              />
+              {errors.username && 'Username is required'}
+            </div>
+          </div>
           <ErrorMessage errors={errors} name='password' message='Password is required' />
-          <Form.Field>
-            <label>Password</label>
-            <input name="registerPassword" type="password" ref={register({ required: true })} />
-            {errors.password && 'Password is required'}
-          </Form.Field>
+          <div className='field'>
+            <label className='label'>Password</label>
+            <div className='control'>
+              <input
+                className='input'
+                type='password'
+                placeholder='**********'
+                name='registerPassword'
+                ref={register({ required: true })}
+              />
+              {errors.password && 'Password is required'}
+            </div>
+          </div>
           <ErrorMessage errors={errors} name='email' message='Email is required' />
-          <Form.Field>
-            <label>Email</label>
-            <input name='registerEmail' type="email" ref={register({ required: true })} />
+          <div className='field'>
+            <label className='label'>Email</label>
+            <div className='control'>
+              <input
+                className='input'
+                type='email'
+                placeholder='you@example.com'
+                name='registerEmail'
+                ref={register({ required: true })}
+              />
+            </div>
             {errors.email && 'Email is required'}
-          </Form.Field>
-          <Button type="submit">Register</Button>
-        </Form>
+          </div>
+          <button className='button is-success' type="submit">Register</button>
+        </form>
       )
     }
   }
@@ -71,6 +106,7 @@ const LoginModal = () => {
     if (res.error) {
       return setError('loginUsername', { message: `${res.error}` })
     }
+    setOpen(false)
   }
 
   const handleRegister = async (data) => {
@@ -84,35 +120,31 @@ const LoginModal = () => {
     if (res.error) {
       return setError('registerUsername', { message: `${res.error}` })
     }
+    setOpen(false)
   }
 
   return (
-    <Modal
-      size='tiny'
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      open={open}
-      trigger={<Menu.Item position='right'>Log In/Register</Menu.Item>}
-    >
-      <Modal.Content>
-        <Menu attached='top' tabular>
-          <Menu.Item
-            name='login'
-            onClick={() => setShowRegisterForm(false)}
-            active={!showRegisterForm}
-          />
-          <Menu.Item
-            name='register'
-            onClick={() => setShowRegisterForm(true)}
-            active={showRegisterForm}
-          />
-        </Menu>
-        <Segment attached>
+    <div className={open ? 'modal is-active has-background-light' : 'modal has-background-light'}>
+      <div className='modal-background' onClick={() => setOpen(false)} />
+      <div className='modal-content'>
+        <div className='box'>
+          <div className='tabs'>
+            <ul>
+              <li className={showRegisterForm ? null : 'is-active'} onClick={() => setShowRegisterForm(false)}><a>Log in</a></li>
+              <li className={showRegisterForm ? 'is-active' : null} onClick={() => setShowRegisterForm(true)}><a>Register</a></li>
+            </ul>
+          </div>
           {handleForm()}
-        </Segment>
-      </Modal.Content>
-    </Modal>
+        </div>
+      </div>
+      <button className='modal-close is-large' aria-label='close' onClick={() => setOpen(false)} />
+    </div>
   )
+}
+
+LoginModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired
 }
 
 export default LoginModal

@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
-
-import { Header, Image, Grid, List } from 'semantic-ui-react'
 
 const GroupView = () => {
   const { id } = useParams()
 
   const dispatch = useDispatch()
+  const history = useHistory()
 
   useEffect(() => {
     dispatch(getGroupDetails(id))
@@ -64,7 +63,11 @@ const GroupView = () => {
   const handlePosts = posts => {
     switch (posts.length) {
     case 0:
-      return <p>No posts yet.</p>
+      return (
+        <tr>
+          <th>No posts yet.</th>
+        </tr>
+      )
     default:
       return displayPosts(posts)
     }
@@ -94,41 +97,41 @@ const GroupView = () => {
   const displayPosts = posts => {
     return posts.map(post => {
       return (
-        <List.Item key={post.id}>
-          {post.title}
-        </List.Item>
+        <tr key={post.id}>
+          <th>{post.title}</th>
+          <th>{post.text}</th>
+        </tr>
       )
     })
   }
 
   return (
     <div>
-      <Grid celled>
-        <Grid.Row centered>
-          <Grid.Column width={10}>
-            <Header as='h1' textAlign='center'>{group.bookTitle}</Header>
-            <Header as='h3' textAlign='center'>by {group.bookAuthor}</Header>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={3}>
-            <Image src={`https://covers.openlibrary.org/b/olid/${group.bookOLID}-L.jpg`} />
-          </Grid.Column>
-          <Grid.Column width={7}>
-            <Header>Members:</Header>
-            {displayMembers(members)}
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={10}>
-            <Header>Posts</Header>
-            <Link to={`/group/${group.id}/post`}>New post</Link>
-            <List celled ordered>
-              {handlePosts(parentPosts)}
-            </List>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <h1 className='title'>{displayMembers(members)}</h1>
+      <h1 className='title'>{group.bookTitle}</h1>
+      <h1 className='subtitle' as='h3'>by {group.bookAuthor}</h1>
+      <div className='columns is-multiline -is-mobile'>
+        <div className='column is-one-quarter'>
+          <img className='image is-square' src={`https://covers.openlibrary.org/b/olid/${group.bookOLID}-M.jpg`} />
+        </div>
+      </div>
+      <div>
+      </div>
+      <h1 className='title'>Posts</h1>
+      <button className='button is-primary' onClick={() => history.push(`/group/${group.id}/post`)}>
+          New Post
+      </button>
+      <table className='table'>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Text</th>
+          </tr>
+        </thead>
+        <tbody>
+          {handlePosts(parentPosts)}
+        </tbody>
+      </table>
       <p>book metadata provided by the <a href="https://openlibrary.org/" target="_blank" rel="noreferrer">Open Library API</a></p>
     </div>
   )

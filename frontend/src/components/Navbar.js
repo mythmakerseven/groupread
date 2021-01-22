@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react'
-import { Menu } from 'semantic-ui-react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import LoginModal from './LoginModal'
 import { initializeUser, logOutUser } from '../reducers/userReducer'
 
 const Navbar = () => {
-  const history = useHistory()
+  const [openModal, setOpenModal] = useState(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -15,37 +14,55 @@ const Navbar = () => {
 
   const user = useSelector(({ user }) => user)
 
-  const handleLogin = () => {
+  const handleLoginModal = () => {
+    if (!openModal) {
+      return null
+    }
+
+    return <LoginModal
+      open={openModal}
+      setOpen={setOpenModal}
+    />
+  }
+
+  const checkLogin = () => {
     if (user) {
       return (
         <>
-          <Menu.Item
-            position='right'
-            name='createGroup'
-            onClick={() => history.push('/group/create')}
-          />
-          <Menu.Item
-            name='logOut'
-            onClick={() => dispatch(logOutUser())}
-          />
+          <div className='navbar-end'>
+            <Link className='navbar-item' to='/group/create'>
+              Create Group
+            </Link>
+            <a className='navbar-item' onClick={() => dispatch(logOutUser())}>
+              Log out
+            </a>
+          </div>
         </>
       )
     } else {
       return (
-        <LoginModal />
+        <>
+          <div className='navbar-end'>
+            <a className='navbar-item' onClick={() => setOpenModal(true)}>
+            Log in
+            </a>
+          </div>
+        </>
       )
     }
   }
 
   // use Button component for login link
   return (
-    <Menu size='large' fixed='top'>
-      <Menu.Item
-        name='home'
-        onClick={() => history.push('/')}
-      />
-      {handleLogin()}
-    </Menu>
+    <nav className='navbar' aria-label='main navigation'>
+      {handleLoginModal()}
+      <div className='navbar-brand'>
+        <Link className='navbar-item' to='/'>Home</Link>
+      </div>
+      <div className='navbar-menu'>
+        {checkLogin()}
+      </div>
+    </nav>
   )
 }
 

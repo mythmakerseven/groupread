@@ -1,7 +1,6 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { Header, Form, Button } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { newPost } from '../reducers/groupReducer'
 import { ErrorMessage } from '@hookform/error-message'
@@ -38,20 +37,36 @@ const GroupNewPost = () => {
 
   return (
     <div>
-      <Header as='h1'>New post</Header>
-      <Form onSubmit={handleSubmit(handlePost)}>
+      <h1 className='title'>New post</h1>
+      <form onSubmit={handleSubmit(handlePost)}>
         <ErrorMessage errors={errors} name='title' message='Title is required' />
-        <Form.Field>
-          <label>Title</label>
-          <input name='title' placeholder='Title' ref={register( { required: true })} />
-        </Form.Field>
+        <div className='field'>
+          <label className='label'>Title</label>
+          <div className='control'>
+            <input
+              className='input'
+              type='text'
+              name='title'
+              placeholder='Title goes here'
+              ref={register( { required: true })}
+            />
+          </div>
+        </div>
         <ErrorMessage errors={errors} name='text' message='We need some text here' />
-        <Form.Field>
-          <label>Text</label>
-          <textarea name='text' placeholder='Type something here' rows={10} ref={register( { required: true })} />
-        </Form.Field>
-        <Button type='submit'>Submit post</Button>
-      </Form>
+        <div className='field'>
+          <label className='label'>Text</label>
+          <div className='control'>
+            <textarea
+              className='textarea'
+              name='text'
+              placeholder='Type something here'
+              rows={10}
+              ref={register( { required: true })}
+            />
+          </div>
+        </div>
+        <button className='button is-primary' type='submit'>Submit post</button>
+      </form>
     </div>
   )
 }

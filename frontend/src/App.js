@@ -1,11 +1,9 @@
 import React from 'react'
-import 'semantic-ui-css/semantic.min.css'
-
+import './App.scss'
 import Navbar from './components/Navbar'
 import GroupView from './components/GroupView'
 import HomePage from './components/HomePage'
 import CreateGroup from './components/CreateGroup'
-import { Container } from 'semantic-ui-react'
 import { Switch, Route } from 'react-router-dom'
 import GroupNewPost from './components/GroupNewPost'
 
@@ -17,7 +15,7 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      <Container style={{ position: 'relative', top: '60px' }}>
+      <div className='container' style={{ position: 'relative', top: '40px' }}>
         <Switch>
           <Route path="/group/create">
             <CreateGroup />
@@ -32,7 +30,7 @@ const App = () => {
             <HomePage />
           </Route>
         </Switch>
-      </Container>
+      </div>
     </div>
   )
 }
