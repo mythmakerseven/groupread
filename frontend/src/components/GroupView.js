@@ -95,8 +95,8 @@ const GroupView = () => {
   // }
 
   const truncate = text => {
-    return (text.length > 32)
-      ? `${text.substring(0, 32)}...`
+    return (text.length > 64)
+      ? `${text.substring(0, 64)}...`
       : text
   }
 
@@ -106,6 +106,7 @@ const GroupView = () => {
         <tr key={post.id}>
           <th><Link to={`/groups/${group.id}/${post.id}`}>{post.title}</Link></th>
           <th>{truncate(post.text)}</th>
+          <th>{post.createdAt.substring(5,10)}</th>
         </tr>
       )
     })
@@ -132,6 +133,7 @@ const GroupView = () => {
           <tr>
             <th>Title</th>
             <th>Text</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>

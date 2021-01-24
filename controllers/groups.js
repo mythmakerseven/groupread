@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 groupsRouter.get('/all', async (req, res) => {
   const groups = await Group.findAll()
 
-  res.status(200).json(groups)
+  return res.status(200).json(groups)
 })
 
 groupsRouter.get('/:id', async (req, res) => {
