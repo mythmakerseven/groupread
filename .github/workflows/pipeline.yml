@@ -24,7 +24,7 @@ jobs:
         run: npm run build
       - name: test
         env:
-          TEST_DB_URI: ${{ secrets.TEST_DB_URL }}
+          TEST_DB_URL: ${{ secrets.TEST_DB_URL }}
           PORT: ${{ secrets.PORT }}
           SECRET: ${{ secrets.SECRET }}
         run: npm run test
