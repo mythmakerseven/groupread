@@ -117,11 +117,7 @@ const GroupView = () => {
       <h1 className='title'>{displayMembers(members)}</h1>
       <h1 className='title'>{group.bookTitle}</h1>
       <h1 className='subtitle' as='h3'>by {group.bookAuthor}</h1>
-      <div className='columns is-multiline -is-mobile'>
-        <div className='column is-one-quarter'>
-          <img className='image is-square' src={`https://covers.openlibrary.org/b/olid/${group.bookOLID}-M.jpg`} />
-        </div>
-      </div>
+      <img className='image' src={`https://covers.openlibrary.org/b/olid/${group.bookOLID}-M.jpg`} />
       <div>
       </div>
       <h1 className='title'>Posts</h1>

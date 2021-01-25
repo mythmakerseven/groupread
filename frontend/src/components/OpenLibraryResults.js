@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 
 
 const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen }) => {
-  const [results, setResults] = useState([])
+  const [results, setResults] = useState(null)
 
   const dispatch = useDispatch()
 
@@ -24,10 +24,16 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
   useEffect(async () => {
     if (open) {
       const searchUrl = queryOL(queryTitle, queryAuthor, queryIsbn)
+      console.log(searchUrl)
+      // avoid querying OL's servers with empty searches
+      if (searchUrl === 'https://openlibrary.org/search.json?') {
+        return setResults([])
+      }
+
       const resultsObject = await axios.get(searchUrl)
-      setResults(resultsObject.data.docs)
+      return setResults(resultsObject.data.docs)
     } else {
-      setResults([])
+      return setResults(null)
     }
   }, [open])
 
@@ -41,10 +47,12 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
   }
 
   const displayResults = results => {
-    // TODO: the switch to Bulma broke this loading placeholder, find suitable reimplementation
-    // TODO: handle loading differently for searches with 0 results
+    if (!results) {
+      return <p className='subtitle'>loading...</p>
+    }
+
     if (results.length === 0) {
-      return null
+      return <p className='subtitle'>No results found</p>
     }
 
     return results.map(r =>
@@ -56,8 +64,8 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
         </figure>
         <div className='media-content'>
           <div className='content'>
-            <h1 className='title'>{r.title}</h1>
-            <h1 className='subtitle'>{r.author_name}</h1>
+            <p className='title'>{r.title}</p>
+            <p className='subtitle'>{r.author_name}</p>
           </div>
         </div>
         <div className='media-right'>
@@ -73,14 +81,20 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
     )
   }
 
+  // const closeButton =
+  //   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="icon bi bi-x-circle " aria-label='close' viewBox="0 0 16 16" onClick={() => setOpen(false)}>
+  //     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+  //     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+  //   </svg>
+
   return (
-    <div className={open ? 'modal is-active has-background-light' : 'modal has-background-light'}>
+    <div className={open ? 'modal is-active' : 'modal'}>
       <div className='modal-background' onClick={() => setOpen(false)} />
       <div className='modal-card'>
         <header className='modal-card-head'>
           <p className='modal-card-title'>Find a Book</p>
           {/* TODO: add an icon for the close button*/}
-          <button className='delete' type='button' aria-label='close' onClick={() => setOpen(false)}>X</button>
+          <button className="delete" aria-label="close"></button>
         </header>
         <section className='modal-card-body'>
           {displayResults(results)}
