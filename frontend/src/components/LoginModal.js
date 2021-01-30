@@ -124,7 +124,7 @@ const LoginModal = ({ open, setOpen }) => {
   }
 
   return (
-    <div className={open ? 'modal is-active has-background-light' : 'modal has-background-light'}>
+    <div className={open ? 'modal is-active' : 'modal'}>
       <div className='modal-background' onClick={() => setOpen(false)} />
       <div className='modal-content'>
         <div className='box'>

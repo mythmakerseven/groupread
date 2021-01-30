@@ -61,7 +61,7 @@ const GroupNewPost = () => {
               name='text'
               placeholder='Type something here'
               rows={10}
-              ref={register( { required: true })}
+              ref={register({ required: true })}
             />
           </div>
         </div>

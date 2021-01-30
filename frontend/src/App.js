@@ -8,6 +8,7 @@ import { Switch, Route } from 'react-router-dom'
 import GroupNewPost from './components/GroupNewPost'
 import GroupList from './components/GroupList'
 import PostView from './components/PostView'
+import Footer from './components/Footer'
 
 // webpack-dev-server does not refresh the browser when code is updated
 // due to this bug: https://github.com/webpack/webpack-dev-server/issues/2758
@@ -17,7 +18,7 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      <div className='container' style={{ position: 'relative', top: '40px' }}>
+      <div className='container' style={{ paddingTop: '20px', paddingBottom: '20px' }}>
         <Switch>
           <Route path="/groups/create">
             <CreateGroup />
@@ -39,6 +40,7 @@ const App = () => {
           </Route>
         </Switch>
       </div>
+      <Footer />
     </div>
   )
 }

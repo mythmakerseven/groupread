@@ -73,27 +73,6 @@ const GroupView = () => {
     }
   }
 
-  // TODO: move below function to the post view component when it's made
-
-  // I <3 recursion
-  // This function should still work if support for infinitely nested comments is added
-  // const displayPosts = posts => {
-  //   return posts.map(post => {
-  //     if (post.replies) {
-  //       return (
-  //         <div key={post.id}>
-  //           <li>{post.text}</li>
-  //           <ol>
-  //             {displayPosts(post.replies)}
-  //           </ol>
-  //         </div>
-  //       )
-  //     } else {
-  //       return <li key={post.id}>{post.text}</li>
-  //     }
-  //   })
-  // }
-
   const truncate = text => {
     return (text.length > 64)
       ? `${text.substring(0, 64)}...`

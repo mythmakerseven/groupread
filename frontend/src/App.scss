@@ -4,6 +4,14 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
 
 // TODO: configure custom theme
+// $purple: #8a4d76;
+// $pink: #f79ac4;
+// $brown: #757763;
+// $beige-light: #d0d1cd;
+// $beige-lighter: #eff0eb;
+// $green: #8bf0e5;
+// $bg: #edd8b7;
+// $green: #9af7cd;
 $purple: #8a4d76;
 $pink: #fa7c91;
 $brown: #757763;
@@ -12,17 +20,23 @@ $beige-lighter: #eff0eb;
 
 // Global variables
 $family-sans-serif: 'Nunito', sans-serif;
+// $grey-dark: $brown;
+// $grey-light: $beige-light;
+// $primary: $purple;
+// $link: $pink;
+$widescreen-enabled: true;
+$fullhd-enabled: false;
 $grey-dark: $brown;
 $grey-light: $beige-light;
 $primary: $purple;
 $link: $pink;
-// $widescreen-enabled: true;
-// $fullhd-enabled: false;
 
 // Component variables
-$body-background-color: $beige-lighter;
 $control-border-width: 2px;
-// $input-border-color: transparent;
-// $input-shadow: none;
+// $navbar-background-color: $brown;
+// $navbar-item-color: $beige-lighter;
+// $navbar-item-hover-color: $beige-light;
+$body-background-color: $beige-lighter;
+$footer-background-color: $beige-lighter;
 
 @import '../../node_modules/bulma/bulma.sass'
