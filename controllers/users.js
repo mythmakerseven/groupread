@@ -5,6 +5,14 @@ const User = require('../models/user')
 const config = require('../utils/config')
 const { v4: uuidv4 } = require('uuid')
 
+usersRouter.get('/:user/username', async (req, res) => {
+  const user = await User.findOne({ where: { id: req.params.user } })
+
+  if (!user) res.status(400).send({ error: 'invalid user id' })
+
+  res.status(200).send(user.username)
+})
+
 usersRouter.get('/:user/groups', async (req, res) => {
   const user = await User.findOne({ where: { id: req.params.user } })
 

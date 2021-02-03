@@ -2,27 +2,23 @@ import axios from 'axios'
 const baseUrl = '/api/groups'
 
 const getAllGroups = async () => {
-  const req = axios.get(`${baseUrl}/all`)
-  return req
-    .then(res => res.data)
+  const res = await axios.get(`${baseUrl}/all`)
+  return res.data
 }
 
 const getGroupDetails = async id => {
-  const req = axios.get(`${baseUrl}/${id}`)
-  return req
-    .then(res => res.data)
+  const res = await axios.get(`${baseUrl}/${id}`)
+  return res.data
 }
 
 const getGroupPosts = async id => {
-  const req = axios.get(`${baseUrl}/${id}/posts`)
-  return req
-    .then(res => res.data)
+  const res = await axios.get(`${baseUrl}/${id}/posts`)
+  return res.data
 }
 
 const getGroupMembers = async id => {
-  const req = axios.get(`${baseUrl}/${id}/members`)
-  return req
-    .then(res => res.data)
+  const res = await axios.get(`${baseUrl}/${id}/members`)
+  return res.data
 }
 
 const createGroup = async group => {

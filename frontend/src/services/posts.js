@@ -16,6 +16,4 @@ const sendNewPost = async (id, postObject) => {
   return res.data
 }
 
-
-
 export default { setToken, sendNewPost }

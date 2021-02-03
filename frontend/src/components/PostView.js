@@ -2,13 +2,13 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
-import { getGroupDetails, getGroupPosts } from '../reducers/groupReducer'
+import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
 import { ErrorMessage } from '@hookform/error-message'
 import { newPost } from '../reducers/groupReducer'
 
 const PostView = () => {
   const dispatch = useDispatch()
-  const { register, handleSubmit, setError, errors } = useForm()
+  const { register, handleSubmit, setValue, setError, errors } = useForm()
   const { id, pid } = useParams()
 
   useEffect(() => {
@@ -19,10 +19,14 @@ const PostView = () => {
     dispatch(getGroupPosts(id))
   }, [id])
 
+  useEffect(() => {
+    dispatch(getGroupMembers(id))
+  }, [id])
+
   const groups = useSelector(({ group }) => group)
   const group = groups.find(group => group.id === id)
 
-  if (!group || !group.posts) {
+  if (!group || !group.posts || !group.members) {
     return (
       <p>loading...</p>
     )
@@ -48,25 +52,30 @@ const PostView = () => {
     if (res.error) {
       return setError('text', { message: `${res.error}` })
     }
+
+    setValue('text', '')
   }
 
-  // I <3 recursion
-  // This function should still work if support for infinitely nested comments is added
+  const findUser = id => {
+    const members = group.members
+    const userMatch = members.find(m => m.id === id)
+    if (!userMatch) return 'unknown'
+    return userMatch.username
+  }
+
   const displayReplies = posts => {
-    return posts.map(post => {
-      if (post.replies) {
-        return (
-          <div key={post.id}>
-            <li>{post.text}</li>
-            <ol>
-              {displayReplies(post.replies)}
-            </ol>
+    return posts.map(post => (
+      <article className='media has-background-light has-text-black p-4 is-family-secondary' key={post.id}>
+        <div className='media-content'>
+          <div className='content'>
+            <p><strong>{findUser(post.UserId)}</strong> <small>{post.createdAt.substring(5,10)}</small>
+              <br />
+              {post.text}
+            </p>
           </div>
-        )
-      } else {
-        return <li key={post.id}>{post.text}</li>
-      }
-    })
+        </div>
+      </article>
+    ))
   }
 
   return (
