@@ -21,7 +21,8 @@ const exampleGroup = {
   'bookTitle': 'Gravity\'s Rainbow',
   'bookAuthor': 'Thomas Pynchon',
   'bookYear': '1973',
-  'bookIsbn': '0143039946'
+  'bookIsbn': '0143039946',
+  'bookPageCount': 777
 }
 
 describe('creating a group', () => {
@@ -45,7 +46,8 @@ describe('creating a group', () => {
     const malformedGroup = {
       'bookAuthor': 'Thomas Pynchon',
       'bookYear': '1973',
-      'bookIsbn': '0143039946'
+      'bookIsbn': '0143039946',
+      'bookPageCount': 777
     }
 
     await api
@@ -59,7 +61,8 @@ describe('creating a group', () => {
       'bookTitle': 'Gravity\'s Rainbow',
       'bookAuthor': 'Thomas Pynchon',
       'bookYear': '1973',
-      'bookIsbn': '97463657483927865628379'
+      'bookIsbn': '97463657483927865628379',
+      'bookPageCount': 777
     }
 
     await api
@@ -73,7 +76,8 @@ describe('creating a group', () => {
       'bookTitle': 'Gravity\'s Rainbow',
       'bookAuthor': 'Thomas Pynchon',
       'bookYear': '1973',
-      'bookIsbn': '0143ABCD46'
+      'bookIsbn': '0143ABCD46',
+      'bookPageCount': 777
     }
 
     await api
@@ -87,7 +91,37 @@ describe('creating a group', () => {
       'bookTitle': 'Gravity\'s Rainbow',
       'bookAuthor': 'Thomas Pynchon',
       'bookYear': '19733',
+      'bookIsbn': '0143039946',
+      'bookPageCount': 777
+    }
+
+    await api
+      .post('/api/groups')
+      .send(malformedGroup)
+      .expect(400)
+  })
+
+  test('fails with missing page count', async () => {
+    const malformedGroup = {
+      'bookTitle': 'Gravity\'s Rainbow',
+      'bookAuthor': 'Thomas Pynchon',
+      'bookYear': '1973',
       'bookIsbn': '0143039946'
+    }
+
+    await api
+      .post('/api/groups')
+      .send(malformedGroup)
+      .expect(400)
+  })
+
+  test('fails with non-numerical page count', async () => {
+    const malformedGroup = {
+      'bookTitle': 'Gravity\'s Rainbow',
+      'bookAuthor': 'Thomas Pynchon',
+      'bookYear': '1973',
+      'bookIsbn': '0143039946',
+      'bookPageCount': 'over 9000!'
     }
 
     await api

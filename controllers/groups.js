@@ -88,13 +88,26 @@ groupsRouter.post('/', async (req, res) => {
       .json({ error: 'Title is required' })
   }
 
+  if (!body.bookPageCount) {
+    return res
+      .status(400)
+      .json({ error: 'Page count is required' })
+  }
+
+  if (isNaN(Number(body.bookPageCount))) {
+    return res
+      .status(400)
+      .json({ error: 'Page count must be a number' })
+  }
+
   const group = await Group.build({
     id: uuidv4(),
     bookTitle: body.bookTitle,
     bookAuthor: body.bookAuthor ? body.bookAuthor : null,
     bookYear: body.bookYear ? Number(body.bookYear) : null,
     bookIsbn: body.bookIsbn,
-    bookOLID: body.bookOLID ? body.bookOLID : null
+    bookOLID: body.bookOLID ? body.bookOLID : null,
+    bookPageCount: Number(body.bookPageCount)
   })
 
   await group.save()

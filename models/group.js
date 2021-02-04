@@ -28,6 +28,10 @@ const Group = db.define('Group', {
   bookOLID: {
     type: DataTypes.STRING,
     allowNull: true // TODO: add handling for works that lack OLIDs
+  },
+  bookPageCount: {
+    type:DataTypes.INTEGER,
+    allowNull: false
   }
 })
 
