@@ -57,15 +57,14 @@ const PostView = () => {
   }
 
   const findUser = id => {
-    const members = group.members
-    const userMatch = members.find(m => m.id === id)
+    const userMatch = group.members.find(m => m.id === id)
     if (!userMatch) return 'unknown'
     return userMatch.username
   }
 
   const displayReplies = posts => {
     return posts.map(post => (
-      <article className='media has-background-light has-text-black p-4 is-family-secondary' key={post.id}>
+      <article className='media has-background-light has-text-black p-4 is-family-primary' key={post.id}>
         <div className='media-content'>
           <div className='content'>
             <p><strong>{findUser(post.UserId)}</strong> <small>{post.createdAt.substring(5,10)}</small>

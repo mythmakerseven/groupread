@@ -56,7 +56,6 @@ export const newPost = (id, postObject) => {
   return async dispatch => {
     try {
       const res = await postService.sendNewPost(id, postObject)
-      console.log(res)
       if (postObject.parent) {
         dispatch({
           type: 'NEW_REPLY',
@@ -70,6 +69,23 @@ export const newPost = (id, postObject) => {
       }
       return res
     } catch(error) {
+      return error.response.data
+    }
+  }
+}
+
+export const joinGroup = (id, token) => {
+  return async dispatch => {
+    try {
+      const res = await groupService.joinGroup(id, token)
+      console.log('attempting')
+      dispatch({
+        type: 'JOIN_GROUP',
+        data: res
+      })
+      return res
+    } catch(error) {
+      console.log(error)
       return error.response.data
     }
   }
@@ -130,6 +146,25 @@ const groupReducer = (state = [], action) => {
         return g
       }
     })
+  }
+  case 'JOIN_GROUP':
+  {
+    const group = state.find(g => g.id === action.data.groupID)
+    if (!group) return state
+
+    const memberIDs = group.members.map(m => m.id)
+
+    if (memberIDs.includes(action.data.userID)) {
+      return state
+    }
+
+    const newMember = {
+      id: action.data.userID,
+      username: action.data.username,
+      displayName: action.data.displayName
+    }
+
+    return state.map(g => g.id === action.data.groupID ? g = { ...g, members: g.members.concat(newMember) } : g)
   }
   default:
     return state

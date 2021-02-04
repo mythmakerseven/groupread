@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
+import { joinGroup } from '../reducers/groupReducer'
 
 const GroupView = () => {
   const { id } = useParams()
@@ -13,8 +14,6 @@ const GroupView = () => {
     dispatch(getGroupDetails(id))
   }, [id])
 
-  // not great to do multiple queries for each load....
-  // or is it???
   useEffect(() => {
     dispatch(getGroupMembers(id))
   }, [id])
@@ -23,6 +22,7 @@ const GroupView = () => {
     dispatch(getGroupPosts(id))
   }, [id])
 
+  const user = useSelector(({ user }) => user)
   const groups = useSelector(({ group }) => group)
   const group = groups.find(group => group.id === id)
 
@@ -79,6 +79,25 @@ const GroupView = () => {
       : text
   }
 
+  const handleGroupMembership = (id, token) => {
+    dispatch(joinGroup(id, token))
+  }
+
+  const handleJoinButton = userID => {
+    if (!user) return null
+
+    const memberIDs = group.members.map(m => m.id)
+    if (!memberIDs.includes(userID)) {
+      return (
+        <button className='button is-primary' type='button' onClick={() => handleGroupMembership(id, user.token)}>
+          Join
+        </button>
+      )
+    } else {
+      return <p>You are a member of this group</p>
+    }
+  }
+
   const displayPosts = posts => {
     return posts.map(post => {
       return (
@@ -96,6 +115,7 @@ const GroupView = () => {
       <h1 className='title'>{displayMembers(members)}</h1>
       <h1 className='title'>{group.bookTitle}</h1>
       <h1 className='subtitle' as='h3'>by {group.bookAuthor}</h1>
+      {handleJoinButton(user ? user.id : null)}
       <img className='image' src={`https://covers.openlibrary.org/b/olid/${group.bookOLID}-M.jpg`} />
       <div>
       </div>

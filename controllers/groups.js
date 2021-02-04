@@ -105,11 +105,10 @@ groupsRouter.post('/', async (req, res) => {
 })
 
 groupsRouter.post('/join/:group', async (req, res) => {
-  console.log(req)
   const token = req.token
 
   if (!token) {
-    return res.status(401).json({ error: 'token missing or invalid' })
+    return res.status(400).json({ error: 'token missing or invalid' })
   }
 
   let decodedToken
@@ -129,9 +128,9 @@ groupsRouter.post('/join/:group', async (req, res) => {
   if (!user) return res.status(400).json({ error: 'user not found' })
   if (!group) return res.status(400).json({ error: 'group not found' })
 
-  user.addGroup(group)
+  await user.addGroup(group)
 
-  res.status(200).json({ success: `Added ${user.username} to group ${group.id}` })
+  res.status(200).json({ userID: user.id, username: user.username, displayName: user.displayName, groupID: group.id })
 })
 
 module.exports = groupsRouter

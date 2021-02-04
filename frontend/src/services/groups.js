@@ -26,4 +26,12 @@ const createGroup = async group => {
   return res.data
 }
 
-export default { getAllGroups, getGroupDetails, getGroupPosts, getGroupMembers, createGroup }
+const joinGroup = async (groupID, token) => {
+  const config = {
+    headers: { Authorization: `bearer ${token}` }
+  }
+  const res = await axios.post(`${baseUrl}/join/${groupID}`, null, config)
+  return res.data
+}
+
+export default { getAllGroups, getGroupDetails, getGroupPosts, getGroupMembers, createGroup, joinGroup }
