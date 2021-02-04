@@ -17,7 +17,7 @@ const LoginModal = ({ open, setOpen }) => {
     if (!showRegisterForm) {
       return (
         <form onSubmit={handleSubmit(handleLogin)}>
-          <ErrorMessage errors={errors} name='loginUsername' message='Username is required' />
+          <ErrorMessage errors={errors} name='loginUsername' />
           <div className='field'>
             <label className='label'>Username</label>
             <div className='control'>
@@ -26,7 +26,17 @@ const LoginModal = ({ open, setOpen }) => {
                 type='text'
                 placeholder='username'
                 name='loginUsername'
-                ref={register({ required: true })}
+                ref={register({
+                  required:
+                  {
+                    value: true,
+                    message: 'Username is required'
+                  },
+                  maxLength: {
+                    value: 32,
+                    message: 'Username must be fewer than 32 characters'
+                  }
+                })}
               />
             </div>
           </div>
@@ -37,9 +47,20 @@ const LoginModal = ({ open, setOpen }) => {
               <input
                 className='input'
                 type='password'
-                placeholder='**********'
+                placeholder='&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;'
                 name='loginPassword'
-                ref={register({ required: true })}
+                ref={register({
+                  required:
+                  {
+                    value: true,
+                    message: 'Password is required'
+                  },
+                  minLength:
+                  {
+                    value: 8,
+                    message: 'Password must be at least 8 characters'
+                  }
+                })}
               />
             </div>
           </div>
@@ -58,21 +79,42 @@ const LoginModal = ({ open, setOpen }) => {
                 type='text'
                 placeholder='username'
                 name='registerUsername'
-                ref={register({ required: true })}
+                ref={register({
+                  required:
+                  {
+                    value: true,
+                    message: 'Username is required'
+                  },
+                  maxLength: {
+                    value: 32,
+                    message: 'Username must be fewer than 32 characters'
+                  }
+                })}
               />
               {errors.username && 'Username is required'}
             </div>
           </div>
-          <ErrorMessage errors={errors} name='password' message='Password is required' />
+          <ErrorMessage errors={errors} name='registerPassword' />
           <div className='field'>
             <label className='label'>Password</label>
             <div className='control'>
               <input
                 className='input'
                 type='password'
-                placeholder='**********'
+                placeholder='&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;'
                 name='registerPassword'
-                ref={register({ required: true })}
+                ref={register({
+                  required:
+                  {
+                    value: true,
+                    message: 'Password is required'
+                  },
+                  minLength:
+                  {
+                    value: 8,
+                    message: 'Password must be at least 8 characters'
+                  }
+                })}
               />
               {errors.password && 'Password is required'}
             </div>
