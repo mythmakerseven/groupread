@@ -11,8 +11,6 @@ const LoginModal = ({ open, setOpen }) => {
   const dispatch = useDispatch()
   const { register, handleSubmit, setError, errors } = useForm()
 
-  // TODO: more client-side validation on both forms,
-  // especially password length
   const handleForm = () => {
     if (!showRegisterForm) {
       return (

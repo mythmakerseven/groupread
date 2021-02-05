@@ -36,6 +36,7 @@ const CreateGroup = () => {
       bookAuthor: data.bookAuthor,
       bookYear: data.bookYear,
       bookIsbn: data.bookIsbn,
+      bookPageCount: data.bookPageCount,
       bookOLID: groupFormData.bookOLID
     }
 
@@ -62,7 +63,7 @@ const CreateGroup = () => {
       <h1 className='subtitle'>Tip: Click &quot;Find info&quot; to fill out empty fields based on what you&apos;ve entered.</h1>
       <h1 className='subtitle'>If something looks wrong after fetching info, you can still make changes in the form.</h1>
       <form onSubmit={handleSubmit(handleGroup)}>
-        <ErrorMessage errors={errors} name="bookTitle" message="Book title is required" />
+        <ErrorMessage errors={errors} name='bookTitle' />
         <div className='field'>
           <label className='label'>Title</label>
           <div className='control'>
@@ -72,7 +73,12 @@ const CreateGroup = () => {
               placeholder='e.g. The Brothers Karamazov'
               name='bookTitle'
               defaultValue={groupFormData.bookTitle}
-              ref={register( { required: true })}
+              ref={register( {
+                required: {
+                  value: true,
+                  message: 'Book title is required'
+                }
+              })}
             />
           </div>
         </div>
@@ -90,6 +96,7 @@ const CreateGroup = () => {
           </div>
         </div>
         <div className='field'>
+          <ErrorMessage errors={errors} name='bookYear' />
           <label className='label'>Year</label>
           <div className='control'>
             <input
@@ -98,11 +105,17 @@ const CreateGroup = () => {
               placeholder='e.g. 1880'
               name='bookYear'
               defaultValue={groupFormData.bookYear}
-              ref={register}
+              ref={register({
+                pattern: {
+                  value: /^\d{4}$/,
+                  message: 'Please enter a valid year'
+                }
+              })}
             />
           </div>
         </div>
         <div className='field'>
+          <ErrorMessage errors={errors} name='bookIsbn' />
           <label className='label'>ISBN</label>
           <div className='control'>
             <input
@@ -111,7 +124,39 @@ const CreateGroup = () => {
               placeholder='e.g. 9780374528379'
               name='bookIsbn'
               defaultValue={groupFormData.bookIsbn}
-              ref={register}
+              ref={register({
+                // TODO: replace with regex pattern
+                minLength: {
+                  value: 10,
+                  message: 'ISBN must be either 10 or 13 characters'
+                },
+                maxLength: {
+                  value: 13,
+                  message: 'ISBN must be either 10 or 13 characters'
+                }
+              })}
+            />
+          </div>
+        </div>
+        <div className='field'>
+          <ErrorMessage errors={errors} name='bookPageCount' />
+          <label className='label'>Page count</label>
+          <div className='control'>
+            <input
+              className='input'
+              type='text'
+              placeholder='e.g. 776'
+              name='bookPageCount'
+              ref={register({
+                required: {
+                  value: true,
+                  message: 'Please enter a page count'
+                },
+                pattern: {
+                  value: /^\d+$/,
+                  message: 'Page count must be a number'
+                }
+              })}
             />
           </div>
         </div>
