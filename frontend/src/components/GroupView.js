@@ -135,6 +135,7 @@ const GroupView = () => {
           {handlePosts(parentPosts)}
         </tbody>
       </table>
+      <p>Schedule link for development purposes: <Link to={`/groups/${group.id}/schedule`}>Schedule</Link></p>
       <p>book metadata provided by the <a href="https://openlibrary.org/" target="_blank" rel="noreferrer">Open Library API</a></p>
     </div>
   )

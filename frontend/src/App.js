@@ -9,6 +9,7 @@ import GroupNewPost from './components/GroupNewPost'
 import GroupList from './components/GroupList'
 import PostView from './components/PostView'
 import Footer from './components/Footer'
+import GroupScheduler from './components/GroupScheduler'
 
 // webpack-dev-server does not refresh the browser when code is updated
 // due to this bug: https://github.com/webpack/webpack-dev-server/issues/2758
@@ -22,6 +23,9 @@ const App = () => {
         <Switch>
           <Route path="/groups/create">
             <CreateGroup />
+          </Route>
+          <Route path="/groups/:id/schedule">
+            <GroupScheduler />
           </Route>
           <Route path="/groups/:id/submit">
             <GroupNewPost />
