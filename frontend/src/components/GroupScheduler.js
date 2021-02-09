@@ -171,6 +171,7 @@ const GroupScheduler = () => {
                 type='number'
                 name='weeks'
                 min='1'
+                max='26'
                 defaultValue={suggestWeeklyAmount(group.bookPageCount).recommendedWeeks}
                 ref={register({
                   required: {
