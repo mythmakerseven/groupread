@@ -49,7 +49,6 @@ const GroupScheduler = () => {
 
     // cycle through each week input
     for (let i = 1; i <= weekCount; i++) {
-      console.log(`week${i}`)
       setValue(`week${i}`, handlePages(i))
     }
   }
@@ -135,6 +134,20 @@ const GroupScheduler = () => {
     )
   }
 
+  const getDate = () => {
+    const currentDate = new Date()
+
+    // days and months must have two digits
+    // e.g. 4th day of the month becomes 04
+    const expandDate = date => {
+      if (date < 10) return `0${date}`
+      else return date
+    }
+
+    const dateForForm = `${currentDate.getFullYear()}-${expandDate(currentDate.getMonth() + 1)}-${expandDate(currentDate.getDate())}`
+    return dateForForm
+  }
+
   return (
     <div>
       <h1 className='title'>Schedule</h1>
@@ -158,6 +171,23 @@ const GroupScheduler = () => {
                 required: {
                   value: true,
                   message: 'Number of weeks is required'
+                }
+              })}
+            />
+          </div>
+        </div>
+        <div className='field'>
+          <label className='label'>Start Date</label>
+          <div className='control'>
+            <input
+              className='input is-medium'
+              type='date'
+              name='startDate'
+              defaultValue={getDate()}
+              ref={register({
+                required: {
+                  value: true,
+                  message: 'Start date is required'
                 }
               })}
             />
