@@ -80,8 +80,12 @@ const PostView = () => {
   return (
     <div>
       <h1 className='title'>{post.title}</h1>
-      <p>{post.text}</p>
-      <h1 className='subtitle'>Replies</h1>
+      <div className='has-background-light has-text-black p-4'>
+        <p><strong>{findUser(post.UserId)}</strong> <small>{post.createdAt.substring(5,10)}</small></p>
+        <p >{post.text}</p>
+      </div>
+      <br />
+      <h1 className='title is-4'>Replies</h1>
       {displayReplies(post.replies)}
       <form onSubmit={handleSubmit(handlePost)}>
         <ErrorMessage errors={errors} name='text' message='This can&apos;t be empty' />

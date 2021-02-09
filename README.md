@@ -8,13 +8,19 @@ Groupread is a website for hosting book discussions. Pick a book via OpenLibrary
 
 - automated scheduling of discussion threads
 
+- editing functionality for posts and comments
+
 - archived mode for groups that have finished their reading schedule
 
-- exports for group contents in a reasonable format (CSV, PDF, ?)
+- export group contents in a reasonable format (CSV, PDF, ?)
 
 - reworked and simplified book selection process
 
 - moderation tools for group owners
+
+- proper display of authors for books with multiple authors (OL's API is tricky about this)
+
+- custom URL support for book covers (OL has spotty coverage)
 
 ## Developer notes
 

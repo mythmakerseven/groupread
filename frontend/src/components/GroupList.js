@@ -17,7 +17,7 @@ const GroupList = () => {
       <h1 className='title' textalign='center'>
         Group Read
       </h1>
-      <p>Note: This list is temporary for development purposes. 1.0 will not have a public list of groups.</p>
+      <p>Note: This list is temporary for development purposes. Version 1.0 will not have a public list of groups.</p>
       <ul>
         {groups.map(group =>
           <li key={group.id}>

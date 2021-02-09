@@ -78,11 +78,11 @@ const GroupScheduler = () => {
 
     if (weeklyAmount.remainder === weeklyAmount.weeklyPages) {
       return (
-        <p className='is-size-4'>We recommend scheduling {weeklyAmount.recommendedWeeks} weeks of discussion covering {weeklyAmount.weeklyPages} pages each week.</p>
+        <p className='content is-size-5'>We recommend scheduling {weeklyAmount.recommendedWeeks} weeks of discussion covering {weeklyAmount.weeklyPages} pages each week.</p>
       )
     } else {
       return (
-        <p className='is-size-4'>We recommend scheduling {weeklyAmount.recommendedWeeks} weeks of discussion covering {weeklyAmount.weeklyPages} pages each week, with {weeklyAmount.remainder} pages on the final week.</p>
+        <p className='content is-size-5'>We recommend scheduling {weeklyAmount.recommendedWeeks} weeks of discussion covering {weeklyAmount.weeklyPages} pages each week, with {weeklyAmount.remainder} pages on the final week.</p>
       )
     }
   }
@@ -151,59 +151,70 @@ const GroupScheduler = () => {
   return (
     <div>
       <h1 className='title'>Schedule</h1>
-      <p className='subtitle'>(Note: This form does not actually submit to the server yet. It is only here for mockup purposes while the scheduling feature is in the planning stages.)</p>
-      <br />
-      <p className='is-size-4'>It looks like {group.bookTitle} has {group.bookPageCount} pages.</p>
-      {displayRecommendation()}
-      <p>You can adjust the number of weeks and the page goal for each week below.</p>
+      <p className='subtitle has-text-danger'>(Note: This form does not actually submit to the server yet. It is only here for mockup purposes while the scheduling feature is in the planning stages.)</p>
+      <div className='card mt-4 mb-4'>
+        <div className='card-content'>
+          <p className='content is-size-5'>It looks like <span className='has-text-primary'>{group.bookTitle}</span> has {group.bookPageCount} pages.</p>
+          {displayRecommendation()}
+          <p className='content is-size-6'>You can adjust the number of weeks and the page goal for each week below.</p>
+        </div>
+      </div>
       <form onSubmit={handleSubmit(submitSchedule)}>
         <ErrorMessage errors={errors} name='weeks' />
-        <div className='field'>
-          <label className='label'>Weeks</label>
-          <div className='control'>
-            <input
-              style={{ width: '80px' }}
-              className='input is-medium'
-              type='number'
-              name='weeks'
-              defaultValue={suggestWeeklyAmount(group.bookPageCount).recommendedWeeks}
-              ref={register({
-                required: {
-                  value: true,
-                  message: 'Number of weeks is required'
-                }
-              })}
-            />
+        <div className='level has-text-centered'>
+          <div className='field level-item is-block'>
+            <label className='field-label'>Weeks</label>
+            <div className='control'>
+              <input
+                style={{ maxWidth: '100px' }}
+                className='input is-medium'
+                type='number'
+                name='weeks'
+                defaultValue={suggestWeeklyAmount(group.bookPageCount).recommendedWeeks}
+                ref={register({
+                  required: {
+                    value: true,
+                    message: 'Number of weeks is required'
+                  }
+                })}
+              />
+            </div>
+          </div>
+          <div className='field level-item is-block'>
+            <label className='field-label'>Start Date</label>
+            <div className='control'>
+              <input
+                style={{ maxWidth: '180px' }}
+                className='input is-medium'
+                type='date'
+                name='startDate'
+                defaultValue={getDate()}
+                ref={register({
+                  required: {
+                    value: true,
+                    message: 'Start date is required'
+                  }
+                })}
+              />
+            </div>
           </div>
         </div>
-        <div className='field'>
-          <label className='label'>Start Date</label>
-          <div className='control'>
-            <input
-              className='input is-medium'
-              type='date'
-              name='startDate'
-              defaultValue={getDate()}
-              ref={register({
-                required: {
-                  value: true,
-                  message: 'Start date is required'
-                }
-              })}
-            />
-          </div>
+        <div className='box' style={{ maxWidth: '300px', marginRight: 'auto', marginLeft: 'auto' }}>
+          <table className='table is-striped is-hoverable has-text-centered'>
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th><abbr title='Read up to this page'>Page</abbr></th>
+              </tr>
+            </thead>
+            <tbody>
+              {handleScheduleForm()}
+            </tbody>
+          </table>
         </div>
-        <table className='table is-striped is-hoverable'>
-          <thead>
-            <tr>
-              <th>Week</th>
-              <th><abbr title='Read up to this page'>Page</abbr></th>
-            </tr>
-          </thead>
-          <tbody>
-            {handleScheduleForm()}
-          </tbody>
-        </table>
+        <div className='has-text-centered'>
+          <button className='button is-primary' type='submit' value='Submit'>Submit</button>
+        </div>
       </form>
     </div>
   )
