@@ -44,7 +44,9 @@ const config = {
     compress: true,
     port: 3001,
     publicPath: '/',
-    historyApiFallback: { index: 'index.html' }
+    historyApiFallback: { index: 'index.html' },
+    hot: true,
+    inline: true
   },
   devtool: 'source-map',
   node: { __dirname: true },

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
-import { useParams } from 'react-router-dom'
-import { getGroupDetails } from '../reducers/groupReducer'
+import { useParams, useHistory } from 'react-router-dom'
+import { getGroupDetails, setSchedule } from '../reducers/groupReducer'
 
 const GroupScheduler = () => {
   const [weeks, setWeeks] = useState(1)
   const dispatch = useDispatch()
-  const { register, handleSubmit, setValue, watch, errors } = useForm()
+  const history = useHistory()
+  const { register, handleSubmit, setValue, setError, watch, errors } = useForm()
 
   const watchWeeks = watch('weeks')
 
@@ -38,6 +39,7 @@ const GroupScheduler = () => {
 
   const groups = useSelector(({ group }) => group)
   const group = groups.find(group => group.id === id)
+  const user = useSelector(({ user }) => user)
 
   const fillOutWeekValues = (weekCount, pagesPerWeek) => {
     const handlePages = i => {
@@ -87,8 +89,16 @@ const GroupScheduler = () => {
     }
   }
 
-  const submitSchedule = () => {
-    console.log('bonk') // not implemented yet on the server
+  const submitSchedule = async data => {
+    const weekData = data
+    await delete weekData.weeks
+    const res = await dispatch(setSchedule(weekData, group.id, user.token))
+
+    if (res.error) {
+      return setError('weeks', { message: `${res.error}` })
+    }
+
+    history.push(`/groups/${group.id}`)
   }
 
   const handleScheduleForm = () => {
@@ -111,7 +121,7 @@ const GroupScheduler = () => {
                 <input
                   className='input'
                   type='number'
-                  name={`week${i}`}
+                  name={`${i}`}
                   defaultValue={calculatePage(i)} // make sure the last item is properly filled in
                   ref={register({
                     required: {
@@ -132,20 +142,6 @@ const GroupScheduler = () => {
         {weekList}
       </>
     )
-  }
-
-  const getDate = () => {
-    const currentDate = new Date()
-
-    // days and months must have two digits
-    // e.g. 4th day of the month becomes 04
-    const expandDate = date => {
-      if (date < 10) return `0${date}`
-      else return date
-    }
-
-    const dateForForm = `${currentDate.getFullYear()}-${expandDate(currentDate.getMonth() + 1)}-${expandDate(currentDate.getDate())}`
-    return dateForForm
   }
 
   return (
@@ -177,24 +173,6 @@ const GroupScheduler = () => {
                   required: {
                     value: true,
                     message: 'Number of weeks is required'
-                  }
-                })}
-              />
-            </div>
-          </div>
-          <div className='field level-item is-block'>
-            <label className='field-label'>Start Date</label>
-            <div className='control'>
-              <input
-                style={{ maxWidth: '180px' }}
-                className='input is-medium'
-                type='date'
-                name='startDate'
-                defaultValue={getDate()}
-                ref={register({
-                  required: {
-                    value: true,
-                    message: 'Start date is required'
                   }
                 })}
               />

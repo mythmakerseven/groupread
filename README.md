@@ -22,6 +22,8 @@ Groupread is a website for hosting book discussions. Pick a book via OpenLibrary
 
 - custom URL support for book covers (OL has spotty coverage)
 
+- enhanced security (token expiration and validation, etc)
+
 ## Developer notes
 
 This has been my largest project by far, not least because I have challenged myself with new tools and techniques compared to previous projects. All my previous database work involved MongoDB, but for Groupread I branched out into Postgres, which led to replacing Mongoose with Sequelize. Sequelize is definitely more complex than Mongoose, and its docs are pretty bad. Particularly in the early stages of development, I had a lot of issues caused by poor documentation of basic functionality. I managed to hack it together with the help of random blog posts and StackOverflow pages, and now it's not too hard to work with.

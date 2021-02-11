@@ -78,7 +78,6 @@ export const joinGroup = (id, token) => {
   return async dispatch => {
     try {
       const res = await groupService.joinGroup(id, token)
-      console.log('attempting')
       dispatch({
         type: 'JOIN_GROUP',
         data: res
@@ -86,6 +85,24 @@ export const joinGroup = (id, token) => {
       return res
     } catch(error) {
       console.log(error)
+      return error.response.data
+    }
+  }
+}
+
+export const setSchedule = (weekObject, groupID, token) => {
+  return async dispatch => {
+    try {
+      const res = await groupService.setSchedule(weekObject, groupID, token)
+      dispatch({
+        type: 'SET_SCHEDULE',
+        data: {
+          groupID: groupID,
+          posts: res
+        }
+      })
+      return res
+    } catch(error) {
       return error.response.data
     }
   }
@@ -115,6 +132,12 @@ const groupReducer = (state = [], action) => {
   {
     const group = action.data
     return [...state, group]
+  }
+  case 'SET_SCHEDULE':
+  {
+    const groupID = action.data.groupID
+    const posts = action.data.posts
+    return state.map(g => g.id === groupID ? g = { ...g, posts: [ ...posts ] } : g)
   }
   case 'NEW_POST':
   {

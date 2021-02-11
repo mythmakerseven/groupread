@@ -1,4 +1,4 @@
-const { DataTypes, Sequelize } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const { getPool } = require('../utils/db')
 const Group = require('./group')
 const User = require('./user')
@@ -23,8 +23,14 @@ const Post = db.define('Post', {
     type: DataTypes.TEXT,
     allowNull: false
   },
-  createdAt: Sequelize.DATE,
-  updatedAt: Sequelize.DATE
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false
+  }
 })
 
 Post.belongsTo(Group)

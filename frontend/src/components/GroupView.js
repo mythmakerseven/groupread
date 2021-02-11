@@ -89,6 +89,8 @@ const GroupView = () => {
     )
 
     const memberIDs = group.members.map(m => m.id)
+    console.log(memberIDs)
+    console.log(user)
     if (!memberIDs.includes(userID)) {
       return (
         <>

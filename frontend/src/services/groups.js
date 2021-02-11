@@ -34,4 +34,12 @@ const joinGroup = async (groupID, token) => {
   return res.data
 }
 
-export default { getAllGroups, getGroupDetails, getGroupPosts, getGroupMembers, createGroup, joinGroup }
+const setSchedule = async (weekObject, groupID, token) => {
+  const config = {
+    headers: { Authorization: `bearer ${token}` }
+  }
+  const res = await axios.post(`${baseUrl}/schedule/${groupID}`, weekObject, config)
+  return res.data
+}
+
+export default { getAllGroups, getGroupDetails, getGroupPosts, getGroupMembers, createGroup, joinGroup, setSchedule }

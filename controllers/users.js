@@ -95,7 +95,7 @@ usersRouter.post('/', async (req, res) => {
 
   res
     .status(200)
-    .send({ token, username: user.username, displayName: user.displayName })
+    .send({ token, username: user.username, displayName: user.displayName, id: user.id })
 })
 
 module.exports = usersRouter

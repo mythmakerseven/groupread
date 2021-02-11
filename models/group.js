@@ -19,7 +19,7 @@ const Group = db.define('Group', {
   },
   bookYear: {
     type: DataTypes.INTEGER,
-    allowNull: true // TODO: no reason for year tag, remove in next DB reset
+    allowNull: true
   },
   bookIsbn: {
     type: DataTypes.STRING(13),

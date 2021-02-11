@@ -46,13 +46,17 @@ postsRouter.post('/:group', async (req, res) => {
     post = await Post.build({
       id: uuidv4(),
       parent: body.parent,
-      text: body.text
+      text: body.text,
+      createdAt: new Date(),
+      updatedAt: new Date()
     })
   } else {
     post = await Post.build({
       id: uuidv4(),
       title: body.title,
-      text: body.text
+      text: body.text,
+      createdAt: new Date(),
+      updatedAt: new Date()
     })
   }
 
