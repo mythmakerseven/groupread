@@ -6,6 +6,7 @@ import { initializeUser, logOutUser } from '../reducers/userReducer'
 
 const Navbar = () => {
   const [openModal, setOpenModal] = useState(false)
+  const [menuVisible, setMenuVisible] = useState(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -29,38 +30,48 @@ const Navbar = () => {
     if (user) {
       return (
         <>
-          <div className='navbar-end'>
-            <Link className='navbar-item' to='/groups/create'>
-              Create Group
-            </Link>
-            <a className='navbar-item' onClick={() => dispatch(logOutUser())}>
-              Log out
-            </a>
-          </div>
+          <Link className='navbar-item' to='/groups/create'>
+            Create Group
+          </Link>
+          <a className='navbar-item' onClick={() => dispatch(logOutUser())}>
+            Log out
+          </a>
         </>
       )
     } else {
       return (
         <>
-          <div className='navbar-end'>
-            <a className='navbar-item' onClick={() => setOpenModal(true)}>
-            Log in
-            </a>
-          </div>
+          <a className='navbar-item' onClick={() => setOpenModal(true)}>
+          Log in or Register
+          </a>
         </>
       )
     }
   }
 
+  const checkIfActive = base => {
+    return menuVisible
+      ? `${base} is-active`
+      : base
+  }
+
+
   // use Button component for login link
   return (
-    <nav className='navbar' aria-label='main navigation'>
+    <nav className='navbar' role='navigation' aria-label='main navigation'>
       {handleLoginModal()}
       <div className='navbar-brand'>
         <Link className='navbar-item' to='/'>Home</Link>
+        <a role='button' className={checkIfActive('navbar-burger')} onClick={() => setMenuVisible(!menuVisible)} aria-label='menu' aria-expanded='false' data-target='navMenu'>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
       </div>
-      <div className='navbar-menu'>
-        {checkLogin()}
+      <div className={checkIfActive('navbar-menu')} id='navMenu'>
+        <div className='navbar-end'>
+          {checkLogin()}
+        </div>
       </div>
     </nav>
   )
