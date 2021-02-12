@@ -146,14 +146,23 @@ const GroupView = () => {
     </Link>
   )
 
-  return (
-    <div>
-      <div className='hero has-text-centered is-primary'>
+  const displayNonMemberHero = () => {
+    const memberIDs = group.members.map(m => m.id)
+    if (user && memberIDs.includes(user.id)) return null
+
+    return (
+      <div className='hero has-text-centered is-primary mb-4'>
         <div className='hero-body'>
           <h1 className='title'>{displayMembers(members)}</h1>
           {handleJoinButton(user ? user.id : null)}
         </div>
       </div>
+    )
+  }
+
+  return (
+    <div>
+      {displayNonMemberHero()}
       <div className='box has-text-centered'>
         <img className='image is-inline-block' src={`https://covers.openlibrary.org/b/olid/${group.bookOLID}-M.jpg`} />
         <h1 className='title'>{group.bookTitle}</h1>
