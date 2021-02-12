@@ -38,7 +38,7 @@ const LoginModal = ({ open, setOpen }) => {
               />
             </div>
           </div>
-          <ErrorMessage errors={errors} name='loginPassword' message='Password is required' />
+          <ErrorMessage errors={errors} name='loginPassword' />
           <div className='field'>
             <label className='label'>Password</label>
             <div className='control'>
@@ -68,7 +68,7 @@ const LoginModal = ({ open, setOpen }) => {
     } else {
       return (
         <form onSubmit={handleSubmit(handleRegister)}>
-          <ErrorMessage errors={errors} name='registerUsername' message='Username is required' />
+          <ErrorMessage errors={errors} name='registerUsername' />
           <div className='field'>
             <label className='label'>Username</label>
             <div className='control'>
@@ -89,7 +89,29 @@ const LoginModal = ({ open, setOpen }) => {
                   }
                 })}
               />
-              {errors.username && 'Username is required'}
+            </div>
+          </div>
+          <ErrorMessage errors={errors} name='registerDisplayName' />
+          <div className='field'>
+            <label className='label'>Display Name</label>
+            <div className='control'>
+              <input
+                className='input'
+                type='text'
+                placeholder='My Name'
+                name='registerDisplayName'
+                ref={register({
+                  required:
+                  {
+                    value: true,
+                    message: 'Display name is required'
+                  },
+                  maxLength: {
+                    value: 32,
+                    message: 'Display name must be fewer than 32 characters'
+                  }
+                })}
+              />
             </div>
           </div>
           <ErrorMessage errors={errors} name='registerPassword' />
@@ -114,10 +136,9 @@ const LoginModal = ({ open, setOpen }) => {
                   }
                 })}
               />
-              {errors.password && 'Password is required'}
             </div>
           </div>
-          <ErrorMessage errors={errors} name='email' message='Email is required' />
+          <ErrorMessage errors={errors} name='registerEmail' />
           <div className='field'>
             <label className='label'>Email</label>
             <div className='control'>
@@ -126,7 +147,13 @@ const LoginModal = ({ open, setOpen }) => {
                 type='email'
                 placeholder='you@example.com'
                 name='registerEmail'
-                ref={register({ required: true })}
+                ref={register({
+                  required:
+                  {
+                    value: true,
+                    message: 'Email is required'
+                  }
+                })}
               />
             </div>
             {errors.email && 'Email is required'}
@@ -152,8 +179,9 @@ const LoginModal = ({ open, setOpen }) => {
   const handleRegister = async (data) => {
     const userCredentials = {
       username: data.registerUsername,
+      displayName: data.registerDisplayName,
       password: data.registerPassword,
-      email: data.registerEmail
+      email: data.registerEmail,
     }
 
     const res = await dispatch(registerUser(userCredentials))

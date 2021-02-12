@@ -51,26 +51,29 @@ const GroupScheduler = () => {
 
     // cycle through each week input
     for (let i = 1; i <= weekCount; i++) {
-      setValue(`week${i}`, handlePages(i))
+      setValue(`${i}`, handlePages(i))
     }
   }
 
   // set initial week counts
   useEffect(() => {
     if (!group) return null
+    console.log('first useEffect called')
     const initialObject = suggestWeeklyAmount(group.bookPageCount)
     const initialWeeks = initialObject.recommendedWeeks
     setWeeks(parseInt(initialWeeks))
-    fillOutWeekValues(initialWeeks, initialObject.weeklyPages)
+    return fillOutWeekValues(initialWeeks, initialObject.weeklyPages)
   }, [group])
 
   // recalculate pages when the user changes the number of weeks
   useEffect(() => {
     if (!group) return null
+    console.log('second useEffect called')
+    console.log(weeks)
     const newWeeks = parseInt(watchWeeks)
     setWeeks(newWeeks)
     const newWeeklyPages = parseInt(group.bookPageCount / newWeeks)
-    fillOutWeekValues(newWeeks, newWeeklyPages)
+    return fillOutWeekValues(newWeeks, newWeeklyPages)
   }, [watchWeeks])
 
   if (!group) return null
@@ -147,7 +150,6 @@ const GroupScheduler = () => {
   return (
     <div>
       <h1 className='title'>Schedule</h1>
-      <p className='subtitle has-text-danger'>(Note: This form does not actually submit to the server yet. It is only here for mockup purposes while the scheduling feature is in the planning stages.)</p>
       <div className='card mt-4 mb-4'>
         <div className='card-content'>
           <p className='content is-size-5'>It looks like <span className='has-text-primary'>{group.bookTitle}</span> has {group.bookPageCount} pages.</p>

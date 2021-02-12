@@ -220,7 +220,7 @@ groupsRouter.post('/schedule/:group', async (req, res) => {
     }
   }
 
-  if (weeks[weekNumbers.length] !== group.bookPageCount) {
+  if (parseInt(weeks[weekNumbers.length]) !== parseInt(group.bookPageCount)) {
     return res.status(400).json({ error: 'Schedule must end on the last page of the book' })
   }
 
