@@ -84,7 +84,6 @@ export const joinGroup = (id, token) => {
       })
       return res
     } catch(error) {
-      console.log(error)
       return error.response.data
     }
   }

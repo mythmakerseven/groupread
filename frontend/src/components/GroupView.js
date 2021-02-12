@@ -10,6 +10,19 @@ const GroupView = () => {
   const dispatch = useDispatch()
   const history = useHistory()
 
+  const user = useSelector(({ user }) => user)
+  const groups = useSelector(({ group }) => group)
+  const group = groups.find(group => group.id === id)
+
+  // TODO: Refactor so it doesn't request the list of members if the user is not a member
+  // This will likely require significant rewrite, as the component relies on the list of
+  // members returned from the server to decide what to show. The best course of action
+  // seems to be adding a group membership list to the user object returned by the backend
+  // and checking against that instead of the group's list.
+  const members = group ? group.members : null
+  const posts = group ? group.posts : null
+  const memberIDs = members ? group.members.map(m => m.id) : []
+
   useEffect(() => {
     dispatch(getGroupDetails(id))
   }, [id])
@@ -19,27 +32,23 @@ const GroupView = () => {
   }, [id])
 
   useEffect(() => {
-    dispatch(getGroupPosts(id))
-  }, [id])
-
-  const user = useSelector(({ user }) => user)
-  const groups = useSelector(({ group }) => group)
-  const group = groups.find(group => group.id === id)
+    if (!user || !memberIDs.includes(user.id)) {
+      return null
+    } else {
+      dispatch(getGroupPosts(id))
+    }
+  }, [id, user, members])
 
   if (!group) return null
 
-  const members = group.members
-  const posts = group.posts
-
+  // filter the list of all posts to return only parent-level posts
   const getParentPosts = posts => {
     return posts.filter(p => !p.parent)
   }
 
-  if (group.id !== id || !members || !posts) {
+  if (group.id !== id || !members) {
     return <p>loading...</p>
   }
-
-  const parentPosts = getParentPosts(posts)
 
   const displayMembers = members => {
     switch(members.length) {
@@ -88,7 +97,6 @@ const GroupView = () => {
       <p className='title is-5'>You&apos;ve been invited to join.</p>
     )
 
-    const memberIDs = group.members.map(m => m.id)
     if (!memberIDs.includes(userID)) {
       return (
         <>
@@ -103,10 +111,11 @@ const GroupView = () => {
     }
   }
 
+  // TODO: Button for leaving the group? Would require significant refactor, not sure if it's needed that badly.
+
   const handlePostButton = () => {
     if (!user) return null
 
-    const memberIDs = group.members.map(m => m.id)
     if (!memberIDs.includes(user.id)) return null
 
     return (
@@ -147,7 +156,6 @@ const GroupView = () => {
   )
 
   const displayNonMemberHero = () => {
-    const memberIDs = group.members.map(m => m.id)
     if (user && memberIDs.includes(user.id)) return null
 
     return (
@@ -160,6 +168,29 @@ const GroupView = () => {
     )
   }
 
+  const handleLoggedInContent = () => {
+    if (!user || !memberIDs.includes(user.id)) {
+      return null
+    }
+
+    return (
+      <>
+        <div className='level is-mobile'>
+          <div className='level-left'>
+            <h1 className='title level-item'>Posts</h1>
+          </div>
+          <div className='level-right'>
+            {handlePostButton()}
+          </div>
+        </div>
+        {posts ? handlePosts(getParentPosts(posts)) : null}
+        <div className='has-text-centered'>
+          <p>[ Schedule link for development purposes: <Link to={`/groups/${group.id}/schedule`}>Schedule</Link> ]</p>
+        </div>
+      </>
+    )
+  }
+
   return (
     <div>
       {displayNonMemberHero()}
@@ -168,18 +199,7 @@ const GroupView = () => {
         <h1 className='title'>{group.bookTitle}</h1>
         <h1 className='subtitle' as='h3'>by {group.bookAuthor}</h1>
       </div>
-      <div className='level is-mobile'>
-        <div className='level-left'>
-          <h1 className='title level-item'>Posts</h1>
-        </div>
-        <div className='level-right'>
-          {handlePostButton()}
-        </div>
-      </div>
-      {handlePosts(parentPosts)}
-      <div className='has-text-centered'>
-        <p>[ Schedule link for development purposes: <Link to={`/groups/${group.id}/schedule`}>Schedule</Link> ]</p>
-      </div>
+      {handleLoggedInContent()}
     </div>
   )
 }

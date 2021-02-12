@@ -24,7 +24,6 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
   useEffect(async () => {
     if (open) {
       const searchUrl = queryOL(queryTitle, queryAuthor, queryIsbn)
-      console.log(searchUrl)
       // avoid querying OL's servers with empty searches
       if (searchUrl === 'https://openlibrary.org/search.json?') {
         return setResults([])
