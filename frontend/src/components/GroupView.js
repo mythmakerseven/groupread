@@ -69,7 +69,7 @@ const GroupView = () => {
         </tr>
       )
     default:
-      return displayPosts(posts)
+      return posts.map(p => displayPost(p))
     }
   }
 
@@ -89,8 +89,6 @@ const GroupView = () => {
     )
 
     const memberIDs = group.members.map(m => m.id)
-    console.log(memberIDs)
-    console.log(user)
     if (!memberIDs.includes(userID)) {
       return (
         <>
@@ -105,18 +103,6 @@ const GroupView = () => {
     }
   }
 
-  const displayPosts = posts => {
-    return posts.map(post => {
-      return (
-        <tr key={post.id}>
-          <th><Link to={`/groups/${group.id}/${post.id}`}>{post.title}</Link></th>
-          <th>{truncate(post.text)}</th>
-          <th>{post.createdAt.substring(5,10)}</th>
-        </tr>
-      )
-    })
-  }
-
   const handlePostButton = () => {
     if (!user) return null
 
@@ -129,6 +115,36 @@ const GroupView = () => {
       </button>
     )
   }
+
+  const resolveUsername = id => {
+    const userToShow = group.members.find(m => m.id === id)
+    if (!userToShow) return 'unknown'
+    return userToShow.displayName
+  }
+
+  const displayPost = post => (
+    <Link key={post.id} to={`/groups/${group.id}/${post.id}`}>
+      <div className='card mt-4 mb-4'>
+        <div className='card-content'>
+          <div className='content'>
+            <article className='media'>
+              <div className='media-content'>
+                <div className='content'>
+                  <p>
+                    <strong className='has-text-primary is-size-5'>{post.title}</strong>
+                    <br />
+                    <strong>{truncate(post.text)}</strong>
+                    <br />
+              posted on {post.createdAt.substring(5,10)} by <strong>{resolveUsername(post.UserId)}</strong> &#183; {post.replies.length} replies
+                  </p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </Link>
+  )
 
   return (
     <div>
@@ -151,18 +167,7 @@ const GroupView = () => {
           {handlePostButton()}
         </div>
       </div>
-      <table className='table container'>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Text</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {handlePosts(parentPosts)}
-        </tbody>
-      </table>
+      {handlePosts(parentPosts)}
       <div className='has-text-centered'>
         <p>[ Schedule link for development purposes: <Link to={`/groups/${group.id}/schedule`}>Schedule</Link> ]</p>
       </div>

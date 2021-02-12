@@ -13,6 +13,10 @@ app.get('/main.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'main.js'))
 })
 
+app.get('/main.css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'main.css'))
+})
+
 app.get('/favicon.ico', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'favicon.ico'))
 })
