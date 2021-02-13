@@ -6,8 +6,26 @@ const helper = require('./test_helper')
 
 const api = supertest(app)
 
+const exampleUser = {
+  'username': 'gruser',
+  'password': 'mypassword',
+  'email': 'me@mywebsite.com'
+}
+
+let token
 beforeAll(async () => {
   await db.sync({ force: true })
+
+  const res = await api
+    .post('/api/users')
+    .send(exampleUser)
+
+  // This works really strangely - instead of the normal request.data
+  // it recieves the user info in a string called request.text
+  // Maybe Jest is sending special headers for some reason that interfere
+  // with normal functionality?
+  const user = JSON.parse(res.text)
+  token = user.token
 })
 
 test('groups are returned as json', async () => {
@@ -29,6 +47,7 @@ describe('creating a group', () => {
   test('is successful with valid parameters', async () => {
     await api
       .post('/api/groups')
+      .auth(token, { type: 'bearer' })
       .send(exampleGroup)
       .expect(200)
 
@@ -52,6 +71,7 @@ describe('creating a group', () => {
 
     await api
       .post('/api/groups')
+      .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
   })
@@ -67,6 +87,7 @@ describe('creating a group', () => {
 
     await api
       .post('/api/groups')
+      .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
   })
@@ -82,6 +103,7 @@ describe('creating a group', () => {
 
     await api
       .post('/api/groups')
+      .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
   })
@@ -97,6 +119,7 @@ describe('creating a group', () => {
 
     await api
       .post('/api/groups')
+      .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
   })
@@ -111,6 +134,7 @@ describe('creating a group', () => {
 
     await api
       .post('/api/groups')
+      .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
   })
@@ -126,6 +150,7 @@ describe('creating a group', () => {
 
     await api
       .post('/api/groups')
+      .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
   })
@@ -133,16 +158,19 @@ describe('creating a group', () => {
   test('adding multiple new groups does not override any existing groups', async () => {
     await api
       .post('/api/groups')
+      .auth(token, { type: 'bearer' })
       .send(exampleGroup)
       .expect(200)
 
     await api
       .post('/api/groups')
+      .auth(token, { type: 'bearer' })
       .send(exampleGroup)
       .expect(200)
 
     await api
       .post('/api/groups')
+      .auth(token, { type: 'bearer' })
       .send(exampleGroup)
       .expect(200)
 

@@ -15,7 +15,7 @@ const GroupView = () => {
   const group = groups.find(group => group.id === id)
 
   // TODO: Refactor so it doesn't request the list of members if the user is not a member
-  // This will likely require significant rewrite, as the component relies on the list of
+  // This will likely require significant rewriting, as the component relies on the list of
   // members returned from the server to decide what to show. The best course of action
   // seems to be adding a group membership list to the user object returned by the backend
   // and checking against that instead of the group's list.
