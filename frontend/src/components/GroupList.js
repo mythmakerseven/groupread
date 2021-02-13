@@ -18,7 +18,7 @@ const GroupList = () => {
         Group Read
       </h1>
       <p>Note: This list is temporary for development purposes. Version 1.0 will not have a public list of groups.</p>
-      <div className='columns is-mobile is-centered'>
+      <div className='columns is-centered'>
         <div className='column is-5'>
           <div className='list mt-4'>
             <ul>
