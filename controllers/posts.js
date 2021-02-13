@@ -48,7 +48,9 @@ postsRouter.post('/:group', async (req, res) => {
       parent: body.parent,
       text: body.text,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      GroupId: group.id,
+      UserId: user.id
     })
   } else {
     post = await Post.build({
@@ -56,13 +58,13 @@ postsRouter.post('/:group', async (req, res) => {
       title: body.title,
       text: body.text,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      GroupId: group.id,
+      UserId: user.id
     })
   }
 
   await post.save()
-  await post.setUser(user)
-  await post.setGroup(group)
 
   res.status(200).send(post)
 })

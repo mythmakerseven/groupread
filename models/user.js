@@ -36,4 +36,12 @@ const User = db.define('User', {
 User.belongsToMany(Group, { through: 'UserGroups' })
 Group.belongsToMany(User, { through: 'UserGroups' })
 
+// add admin id to group
+User.hasMany(Group, {
+  foreignKey: {
+    name: 'AdminId'
+  },
+  as: 'admin'
+})
+
 module.exports = User

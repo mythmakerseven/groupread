@@ -14,7 +14,7 @@ const LoginModal = ({ open, setOpen }) => {
   const handleForm = () => {
     if (!showRegisterForm) {
       return (
-        <form onSubmit={handleSubmit(handleLogin)}>
+        <form key={1} onSubmit={handleSubmit(handleLogin)}>
           <ErrorMessage errors={errors} name='loginUsername' />
           <div className='field'>
             <label className='label'>Username</label>
@@ -67,7 +67,7 @@ const LoginModal = ({ open, setOpen }) => {
       )
     } else {
       return (
-        <form onSubmit={handleSubmit(handleRegister)}>
+        <form key={2} onSubmit={handleSubmit(handleRegister)}>
           <ErrorMessage errors={errors} name='registerUsername' />
           <div className='field'>
             <label className='label'>Username</label>
@@ -156,7 +156,6 @@ const LoginModal = ({ open, setOpen }) => {
                 })}
               />
             </div>
-            {errors.email && 'Email is required'}
           </div>
           <button className='button is-success' type="submit">Register</button>
         </form>

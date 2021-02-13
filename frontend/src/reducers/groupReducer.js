@@ -37,16 +37,17 @@ export const getGroupMembers = id => {
   }
 }
 
-export const createGroup = groupObject => {
+export const createGroup = (groupObject, token) => {
   return async dispatch => {
     try{
-      const response = await groupService.createGroup(groupObject)
+      const response = await groupService.createGroup(groupObject, token)
       dispatch({
         type: 'CREATE_GROUP',
         data: response
       })
       return response
     } catch(error) {
+      console.log(error)
       return error.response.data
     }
   }

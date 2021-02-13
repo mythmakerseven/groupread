@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createGroup, joinGroup } from '../reducers/groupReducer'
+import { createGroup } from '../reducers/groupReducer'
 import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import OpenLibraryResults from './OpenLibraryResults'
@@ -31,6 +31,12 @@ const CreateGroup = () => {
     }
   }, [modalOpen])
 
+  if (!user) {
+    return (
+      <p>You are not authorized to view this page. Please sign in first.</p>
+    )
+  }
+
   const handleGroup = async (data) => {
     const groupObject = {
       bookTitle: data.bookTitle,
@@ -41,7 +47,7 @@ const CreateGroup = () => {
       bookOLID: groupFormData.bookOLID
     }
 
-    const res = await dispatch(createGroup(groupObject))
+    const res = await dispatch(createGroup(groupObject, user.token))
 
     if (res.error) {
       return setError('bookTitle', { message: `${res.error}` })
@@ -52,12 +58,6 @@ const CreateGroup = () => {
     dispatch(formUpdateYear(''))
     dispatch(formUpdateIsbn(''))
     dispatch(formUpdateOLID(''))
-
-    const joinRes = await dispatch(joinGroup(res.id, user.token))
-
-    if (joinRes.error) {
-      return setError('bookTitle', { message: `${res.error}` })
-    }
 
     history.push(`/groups/${res.id}/schedule`)
   }

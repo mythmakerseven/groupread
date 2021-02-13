@@ -73,9 +73,7 @@ const GroupView = () => {
     switch (posts.length) {
     case 0:
       return (
-        <tr>
-          <th>No posts yet.</th>
-        </tr>
+        <p>No posts yet.</p>
       )
     default:
       return posts.map(p => displayPost(p))
@@ -94,7 +92,9 @@ const GroupView = () => {
 
   const handleJoinButton = userID => {
     if (!user) return (
-      <p className='title is-5'>You&apos;ve been invited to join.</p>
+      <>
+        <p className='title is-5'>You&apos;ve been invited to join.</p>
+      </>
     )
 
     if (!memberIDs.includes(userID)) {
@@ -191,11 +191,21 @@ const GroupView = () => {
     )
   }
 
+  const handleBookImage = olid => {
+    if (!olid) {
+      return null
+    } else {
+      return (
+        <img className='image is-inline-block' src={`https://covers.openlibrary.org/b/olid/${olid}-M.jpg`} />
+      )
+    }
+  }
+
   return (
     <div>
       {displayNonMemberHero()}
       <div className='box has-text-centered'>
-        <img className='image is-inline-block' src={`https://covers.openlibrary.org/b/olid/${group.bookOLID}-M.jpg`} />
+        {handleBookImage(group.bookOLID)}
         <h1 className='title'>{group.bookTitle}</h1>
         <h1 className='subtitle' as='h3'>by {group.bookAuthor}</h1>
       </div>

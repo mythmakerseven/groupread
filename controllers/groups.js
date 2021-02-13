@@ -50,14 +50,35 @@ groupsRouter.get('/:id/posts', async (req, res) => {
   const posts = await group.getPosts()
 
   const sortedPosts = await sortPosts(posts)
-  return res.status(200).json(sortedPosts)
+
+  // excluded scheduled posts which have future createdAt dates
+  const sortedPastPosts = sortedPosts.filter(p => Date.parse(p.createdAt) <= Date.parse(new Date()))
+
+  // console.log(Date.parse(sortedPosts[1].createdAt))
+
+  return res.status(200).json(sortedPastPosts)
 })
 
+// Group creation
 groupsRouter.post('/', async (req, res) => {
-  // TODO: user authentication for group creation
-
+  const token = req.token
   const body = req.body
+
   logger.info(`Received POST request:\n ${body}`)
+
+  let decodedToken
+  try {
+    decodedToken = jwt.verify(token, process.env.SECRET)
+  } catch {
+    return res.status(400).json({ error: 'invalid token' })
+  }
+
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: 'missing token' })
+  }
+
+  const user = await User.findOne({ where: { id: decodedToken.id } })
+  if (!user) return res.status(401).json({ error: 'user does not exist' })
 
   // ISBNs are comprised of numbers, except for the final digit which can be an X.
   // They are either 10 or 13 digits.
@@ -109,14 +130,14 @@ groupsRouter.post('/', async (req, res) => {
     bookYear: body.bookYear ? Number(body.bookYear) : null,
     bookIsbn: body.bookIsbn,
     bookOLID: body.bookOLID ? body.bookOLID : null,
-    bookPageCount: Number(body.bookPageCount)
+    bookPageCount: Number(body.bookPageCount),
+    AdminId: user.id
   })
 
-  await group.save()
+  const savedGroup = await group.save()
+  await user.addGroup(savedGroup)
 
-  res
-    .status(200)
-    .json(group)
+  res.status(200).json(savedGroup)
 })
 
 groupsRouter.post('/join/:group', async (req, res) => {
@@ -230,7 +251,7 @@ groupsRouter.post('/schedule/:group', async (req, res) => {
     const weekPost = {
       id: uuidv4(),
       title: `Weekly post for pages ${findLastWeeksPage(week)}-${parseInt(weeks[week])}`,
-      text: `This is the weekly discussion thread for week ${week}, covering pages ${findLastWeeksPage(week)}-${weeks[week]}.`,
+      text: `This is the auto-generated weekly discussion thread for week ${week}, covering pages ${findLastWeeksPage(week)}-${weeks[week]}.`,
       createdAt: calculateDate(parseInt(week)),
       updatedAt: calculateDate(parseInt(week)),
       UserId: user.id,

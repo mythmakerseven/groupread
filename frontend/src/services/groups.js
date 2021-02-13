@@ -21,8 +21,11 @@ const getGroupMembers = async id => {
   return res.data
 }
 
-const createGroup = async group => {
-  const res = await axios.post(baseUrl, group)
+const createGroup = async (group, token) => {
+  const config = {
+    headers: { Authorization: `bearer ${token}` }
+  }
+  const res = await axios.post(baseUrl, group, config)
   return res.data
 }
 
