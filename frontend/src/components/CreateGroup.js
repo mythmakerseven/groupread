@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createGroup } from '../reducers/groupReducer'
+import { createGroup, joinGroup } from '../reducers/groupReducer'
 import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import OpenLibraryResults from './OpenLibraryResults'
@@ -16,6 +16,7 @@ const CreateGroup = () => {
   const { register, handleSubmit, setValue, watch, setError, errors } = useForm()
 
   const groupFormData = useSelector(({ groupFormData }) => groupFormData)
+  const user = useSelector(({ user }) => user)
 
   const queryTitle = watch('bookTitle')
   const queryAuthor = watch('bookAuthor')
@@ -52,8 +53,16 @@ const CreateGroup = () => {
     dispatch(formUpdateIsbn(''))
     dispatch(formUpdateOLID(''))
 
-    history.push(`/groups/${res.id}`)
+    const joinRes = await dispatch(joinGroup(res.id, user.token))
+
+    if (joinRes.error) {
+      return setError('bookTitle', { message: `${res.error}` })
+    }
+
+    history.push(`/groups/${res.id}/schedule`)
   }
+
+  if (!user) return null
 
   // TODO: more client-side validation to match serverside
   // can likely be done easily with react-hook-form params

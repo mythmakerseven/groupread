@@ -84,6 +84,7 @@ export const joinGroup = (id, token) => {
       })
       return res
     } catch(error) {
+      console.log(error)
       return error.response.data
     }
   }
@@ -174,7 +175,10 @@ const groupReducer = (state = [], action) => {
     const group = state.find(g => g.id === action.data.groupID)
     if (!group) return state
 
-    const memberIDs = group.members.map(m => m.id)
+    console.log(group)
+    const memberIDs = group.members
+      ? group.members.map(m => m.id)
+      : []
 
     if (memberIDs.includes(action.data.userID)) {
       return state
@@ -186,7 +190,7 @@ const groupReducer = (state = [], action) => {
       displayName: action.data.displayName
     }
 
-    return state.map(g => g.id === action.data.groupID ? g = { ...g, members: g.members.concat(newMember) } : g)
+    return state.map(g => g.id === action.data.groupID ? g = { ...g, members: g.members ? g.members.concat(newMember) : [newMember] } : g)
   }
   default:
     return state
