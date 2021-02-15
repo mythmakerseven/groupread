@@ -6,7 +6,7 @@ Groupread is a website for hosting book discussions. Pick a book via OpenLibrary
 
 ## To do
 
-- automated scheduling of discussion threads
+- ~~automated scheduling of discussion threads~~
 
 - editing functionality for posts and comments
 

@@ -62,13 +62,7 @@ const GroupView = () => {
     case 2:
       return <p>{members[0].displayName} and {members[1].displayName} are reading {group.bookTitle}.</p>
     default:
-      return members.map(member => {
-        if (members.indexOf(member) === (members.length - 1)) {
-          return <span key={member.id}>and {member.displayName} are reading {group.bookTitle}.</span>
-        } else {
-          return <span key={member.id}>{member.displayName}, </span>
-        }
-      })
+      return <p>{members[0].displayName}, {members[1].displayName}, and {members.length - 2} others are reading {group.bookTitle}</p>
     }
   }
 
@@ -202,29 +196,18 @@ const GroupView = () => {
     }
   }
 
-  const handleJoinDate = user => {
-    if (user.UserGroups) {
-      return (
-        <span> - joined {dayjs().to(dayjs(user.UserGroups.createdAt))}</span>
-      )
-    }
-    return null
-  }
-
   const displayGroupMembers = () => (
     <>
       <h1 className='title'>Members</h1>
       <div className='box'>
         {members.map(m => (
           <p key={m.id}><strong>{m.displayName}</strong> {group.AdminId === m.id ? <span className='has-text-danger'>(admin)</span> : null}
-            {handleJoinDate(m)}
+             - joined {dayjs().to(dayjs(m.UserGroups.createdAt))}
           </p>
         ))}
       </div>
     </>
   )
-
-  console.log(members)
 
   return (
     <div>
