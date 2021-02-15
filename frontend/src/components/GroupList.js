@@ -20,21 +20,17 @@ const GroupList = () => {
       <p>Note: This list is temporary for development purposes. Version 1.0 will not have a public list of groups.</p>
       <div className='columns is-centered'>
         <div className='column is-5'>
-          <div className='list mt-4'>
-            <ul>
-              {groups.map(group =>
-                <div key={group.id} className='list-item'>
-                  <li className='has-text-centered mt-3 mb-3'>
-                    <Link to={`/groups/${group.id}`}>
-                      <strong className='is-size-4'>{group.bookTitle} by {group.bookAuthor}</strong>
-                      <br />
-                      (id: {group.id})
-                    </Link>
-                  </li>
+          {groups.map(group =>
+            <Link key={group.id} to={`/groups/${group.id}`}>
+              <div  className='box mt-4 mb-4'>
+                <div className='list-item has-text-centered'>
+                  <strong className='is-size-4 has-text-primary'>{group.bookTitle} by {group.bookAuthor}</strong>
+                  <br />
+                  (id: {group.id})
                 </div>
-              )}
-            </ul>
-          </div>
+              </div>
+            </Link>
+          )}
         </div>
       </div>
     </div>
