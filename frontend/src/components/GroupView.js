@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
 import { joinGroup } from '../reducers/groupReducer'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 
 const GroupView = () => {
   const { id } = useParams()
@@ -127,7 +130,7 @@ const GroupView = () => {
 
   const resolveUsername = id => {
     const userToShow = group.members.find(m => m.id === id)
-    if (!userToShow) return 'unknown'
+    if (!userToShow) return <span className='has-text-warning'>username not found</span>
     return userToShow.displayName
   }
 
@@ -144,7 +147,7 @@ const GroupView = () => {
                     <br />
                     <strong>{truncate(post.text)}</strong>
                     <br />
-              posted on {post.createdAt.substring(5,10)} by <strong>{resolveUsername(post.UserId)}</strong> &#183; {post.replies.length} replies
+                    posted {dayjs().to(dayjs(post.createdAt))} by <strong>{resolveUsername(post.UserId)}</strong> &#183; {post.replies.length} replies
                   </p>
                 </div>
               </div>
@@ -184,13 +187,11 @@ const GroupView = () => {
           </div>
         </div>
         {posts ? handlePosts(getParentPosts(posts)) : null}
-        <div className='has-text-centered'>
-          <p>[ Schedule link for development purposes: <Link to={`/groups/${group.id}/schedule`}>Schedule</Link> ]</p>
-        </div>
       </>
     )
   }
 
+  // eventually there should be alternate cover sources for books without an OLID
   const handleBookImage = olid => {
     if (!olid) {
       return null
@@ -201,6 +202,30 @@ const GroupView = () => {
     }
   }
 
+  const handleJoinDate = user => {
+    if (user.UserGroups) {
+      return (
+        <span> - joined {dayjs().to(dayjs(user.UserGroups.createdAt))}</span>
+      )
+    }
+    return null
+  }
+
+  const displayGroupMembers = () => (
+    <>
+      <h1 className='title'>Members</h1>
+      <div className='box'>
+        {members.map(m => (
+          <p key={m.id}><strong>{m.displayName}</strong> {group.AdminId === m.id ? <span className='has-text-danger'>(admin)</span> : null}
+            {handleJoinDate(m)}
+          </p>
+        ))}
+      </div>
+    </>
+  )
+
+  console.log(members)
+
   return (
     <div>
       {displayNonMemberHero()}
@@ -208,8 +233,10 @@ const GroupView = () => {
         {handleBookImage(group.bookOLID)}
         <h1 className='title'>{group.bookTitle}</h1>
         <h1 className='subtitle' as='h3'>by {group.bookAuthor}</h1>
+        <h4>Hosted by {resolveUsername(group.AdminId)}</h4>
       </div>
       {handleLoggedInContent()}
+      {displayGroupMembers()}
     </div>
   )
 }

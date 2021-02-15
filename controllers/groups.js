@@ -28,7 +28,7 @@ groupsRouter.get('/:id', async (req, res) => {
   const group = await Group.findOne({ where: { id: req.params.id } })
 
   if (!group) return res.status(400).json({ error: 'invalid group id' })
-
+  console.log(group)
   return res.status(200).json(group)
 })
 
@@ -159,14 +159,13 @@ groupsRouter.post('/join/:group', async (req, res) => {
   }
 
   const user = await User.findOne({ where: { id: decodedToken.id } })
-  const group = await Group.findOne({ where: { id: req.params.group } })
-
   if (!user) return res.status(400).json({ error: 'user not found' })
+  const group = await Group.findOne({ where: { id: req.params.group } })
   if (!group) return res.status(400).json({ error: 'group not found' })
 
   await user.addGroup(group)
 
-  res.status(200).json({ userID: user.id, username: user.username, displayName: user.displayName, groupID: group.id })
+  res.status(200).json({ user: user, groupID: group.id })
 })
 
 // scheduling auto-populates the list of posts with future weekly threads

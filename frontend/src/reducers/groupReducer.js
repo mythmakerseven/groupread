@@ -78,14 +78,17 @@ export const newPost = (id, postObject) => {
 export const joinGroup = (id, token) => {
   return async dispatch => {
     try {
-      const res = await groupService.joinGroup(id, token)
+      await groupService.joinGroup(id, token)
+      const newMemberList = await groupService.getGroupMembers(id)
       dispatch({
         type: 'JOIN_GROUP',
-        data: res
+        data: {
+          groupID: id,
+          members: newMemberList
+        }
       })
-      return res
+      return newMemberList
     } catch(error) {
-      console.log(error)
       return error.response.data
     }
   }
@@ -176,22 +179,7 @@ const groupReducer = (state = [], action) => {
     const group = state.find(g => g.id === action.data.groupID)
     if (!group) return state
 
-    console.log(group)
-    const memberIDs = group.members
-      ? group.members.map(m => m.id)
-      : []
-
-    if (memberIDs.includes(action.data.userID)) {
-      return state
-    }
-
-    const newMember = {
-      id: action.data.userID,
-      username: action.data.username,
-      displayName: action.data.displayName
-    }
-
-    return state.map(g => g.id === action.data.groupID ? g = { ...g, members: g.members ? g.members.concat(newMember) : [newMember] } : g)
+    return state.map(g => g.id === action.data.groupID ? g = { ...g, members: action.data.members } : g)
   }
   default:
     return state

@@ -5,6 +5,9 @@ import { useParams } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
 import { ErrorMessage } from '@hookform/error-message'
 import { newPost } from '../reducers/groupReducer'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 
 const PostView = () => {
   const dispatch = useDispatch()
@@ -59,7 +62,7 @@ const PostView = () => {
   const findUser = id => {
     const userMatch = group.members.find(m => m.id === id)
     if (!userMatch) return 'unknown'
-    return userMatch.username
+    return userMatch.displayName
   }
 
   const displayReplies = posts => {
@@ -67,7 +70,7 @@ const PostView = () => {
       <article className='media has-background-light has-text-black p-4 is-family-primary' key={post.id}>
         <div className='media-content'>
           <div className='content'>
-            <p><strong>{findUser(post.UserId)}</strong> <small>{post.createdAt.substring(5,10)}</small>
+            <p><strong>{findUser(post.UserId)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small>
               <br />
               {post.text}
             </p>
@@ -81,7 +84,7 @@ const PostView = () => {
     <div>
       <h1 className='title'>{post.title}</h1>
       <div className='has-background-light has-text-black p-4'>
-        <p><strong>{findUser(post.UserId)}</strong> <small>{post.createdAt.substring(5,10)}</small></p>
+        <p><strong>{findUser(post.UserId)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small></p>
         <p >{post.text}</p>
       </div>
       <br />
