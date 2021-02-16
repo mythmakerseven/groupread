@@ -7,17 +7,20 @@ import postService from '../services/posts'
 export const initializeUser = () => {
   return async dispatch => {
     let res
+    const userObject = await JSON.parse(window.localStorage.getItem('loggedInGroupreader'))
     try {
-      const userObject = window.localStorage.getItem('loggedInGroupreader')
       if (userObject) {
-        res = await userService.validateToken(JSON.parse(userObject).token)
+        res = await userService.validateToken(userObject.token)
       }
     } catch(e) {
-      window.localStorage.removeItem('loggedInGroupreader')
+      await window.localStorage.removeItem('loggedInGroupreader')
     } finally {
       dispatch({
         type: 'INIT_USER',
-        data: res
+        data: {
+          storedToken: userObject,
+          res: res
+        }
       })
     }
   }
@@ -69,8 +72,8 @@ const userReducer = (state = [], action) => {
   case 'INIT_USER':
     if (!action.data) {
       return null
-    } else if (action.data.success) {
-      const user = JSON.parse(action.data)
+    } else if (action.data.res.success) {
+      const user = action.data.storedToken
       postService.setToken(user.token)
       return user
     } else {
