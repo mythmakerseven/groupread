@@ -11,6 +11,8 @@ export const initializeUser = () => {
     try {
       if (userObject) {
         res = await userService.validateToken(userObject.token)
+      } else {
+        res = null
       }
     } catch(e) {
       await window.localStorage.removeItem('loggedInGroupreader')
@@ -19,7 +21,7 @@ export const initializeUser = () => {
         type: 'INIT_USER',
         data: {
           storedToken: userObject,
-          res: res
+          res: res ? res : null
         }
       })
     }
@@ -70,7 +72,7 @@ export const registerUser = userObject => {
 const userReducer = (state = [], action) => {
   switch(action.type) {
   case 'INIT_USER':
-    if (!action.data) {
+    if (!action.data.res) {
       return null
     } else if (action.data.res.success) {
       const user = action.data.storedToken

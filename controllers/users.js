@@ -80,11 +80,21 @@ usersRouter.post('/validate', async (req, res) => {
   let decodedToken
   try {
     decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
-  } catch {
-    return res.status(400).json({ error: 'invalid token' })
+  } catch(e) {
+    if (e.name === 'TokenExpiredError') {
+      return res.status(400).json({ error: 'Expired token, please sign in again' })
+    } else {
+      return res.status(400).json({ error: 'Invalid token, please sign in again' })
+    }
   }
 
-  const user = await User.findOne({ where: { id: decodedToken.id } })
+  const tokenID = decodedToken.data.id
+
+  if (!tokenID) {
+    return res.status(401).json({ error: 'Missing token' })
+  }
+
+  const user = await User.findOne({ where: { id: tokenID } })
   if (!user) return res.status(401).json({ error: 'user does not exist' })
 
   res.status(200).json({ success: 'token remains valid' })
@@ -93,7 +103,7 @@ usersRouter.post('/validate', async (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // The below paths were some of the earliest ones added when I first created Groupread        //
 // There is no current use for them, and re-activating them will likely require refactoring.  //
-// In particular, many should require tokens and should probably be restricted to the current //
+// In particular, they should require tokens and should probably be restricted to the current //
 // user looking up their own info.                                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 

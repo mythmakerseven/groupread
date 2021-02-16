@@ -73,15 +73,21 @@ groupsRouter.post('/', async (req, res) => {
   let decodedToken
   try {
     decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
-  } catch {
-    return res.status(400).json({ error: 'invalid token' })
+  } catch(e) {
+    if (e.name === 'TokenExpiredError') {
+      return res.status(400).json({ error: 'Expired token, please sign in again' })
+    } else {
+      return res.status(400).json({ error: 'Invalid token, please sign in again' })
+    }
   }
 
-  if (!decodedToken.id) {
-    return res.status(401).json({ error: 'missing token' })
+  const tokenID = decodedToken.data.id
+
+  if (!tokenID) {
+    return res.status(401).json({ error: 'Missing token' })
   }
 
-  const user = await User.findOne({ where: { id: decodedToken.id } })
+  const user = await User.findOne({ where: { id: tokenID } })
   if (!user) return res.status(401).json({ error: 'user does not exist' })
 
   // ISBNs are comprised of numbers, except for the final digit which can be an X.
@@ -154,15 +160,21 @@ groupsRouter.post('/join/:group', async (req, res) => {
   let decodedToken
   try {
     decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
-  } catch {
-    return res.status(400).json({ error: 'invalid token' })
+  } catch(e) {
+    if (e.name === 'TokenExpiredError') {
+      return res.status(400).json({ error: 'Expired token, please sign in again' })
+    } else {
+      return res.status(400).json({ error: 'Invalid token, please sign in again' })
+    }
   }
 
-  if (!decodedToken.id) {
-    return res.status(401).json({ error: 'missing token' })
+  const tokenID = decodedToken.data.id
+
+  if (!tokenID) {
+    return res.status(401).json({ error: 'Missing token' })
   }
 
-  const user = await User.findOne({ where: { id: decodedToken.id } })
+  const user = await User.findOne({ where: { id: tokenID } })
   if (!user) return res.status(400).json({ error: 'user not found' })
   const group = await Group.findOne({ where: { id: req.params.group } })
   if (!group) return res.status(400).json({ error: 'group not found' })
@@ -191,12 +203,22 @@ groupsRouter.post('/schedule/:group', async (req, res) => {
   let decodedToken
   try {
     decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
-  } catch {
-    return res.status(400).json({ error: 'invalid token' })
+  } catch(e) {
+    if (e.name === 'TokenExpiredError') {
+      return res.status(400).json({ error: 'Expired token, please sign in again' })
+    } else {
+      return res.status(400).json({ error: 'Invalid token, please sign in again' })
+    }
+  }
+
+  const tokenID = decodedToken.data.id
+
+  if (!tokenID) {
+    return res.status(401).json({ error: 'Missing token' })
   }
 
   const group = await Group.findOne({ where: { id: req.params.group } })
-  const user = await User.findOne({ where: { id: decodedToken.id } })
+  const user = await User.findOne({ where: { id: tokenID } })
 
   if (!group) {
     return res.status(400).json({ error: 'group not found' })

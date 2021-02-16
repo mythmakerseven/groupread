@@ -25,7 +25,7 @@ loginRouter.post('/', async (req, res) => {
 
   // TODO: make tokens more secure (expiration, encryption, etc)
   // see https://gist.github.com/soulmachine/b368ce7292ddd7f91c15accccc02b8df
-  const token = jwt.sign(userForToken, config.SECRET_TOKEN_KEY)
+  const token = jwt.sign({ exp: Math.floor(Date.now() / 1000) + (60 * 1), data: userForToken }, config.SECRET_TOKEN_KEY)
 
   res
     .status(200)
