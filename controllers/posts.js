@@ -1,4 +1,5 @@
 const postsRouter = require('express').Router()
+const config = require('../utils/config')
 const Post = require('../models/post')
 const { v4: uuidv4 } = require('uuid')
 const User = require('../models/user')
@@ -21,7 +22,7 @@ postsRouter.post('/:group', async (req, res) => {
 
   let decodedToken
   try {
-    decodedToken = jwt.verify(token, process.env.SECRET)
+    decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
   } catch {
     return res.status(400).json({ error: 'invalid token' })
   }

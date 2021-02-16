@@ -69,6 +69,27 @@ usersRouter.post('/', async (req, res) => {
     .send({ token, username: user.username, displayName: user.displayName, id: user.id })
 })
 
+// check if the token is still valid for an existing user
+usersRouter.post('/validate', async (req, res) => {
+  const token = req.token
+
+  if (!token) {
+    return res.status(400).json({ error: 'missing token' })
+  }
+
+  let decodedToken
+  try {
+    decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
+  } catch {
+    return res.status(400).json({ error: 'invalid token' })
+  }
+
+  const user = await User.findOne({ where: { id: decodedToken.id } })
+  if (!user) return res.status(401).json({ error: 'user does not exist' })
+
+  res.status(200).json({ success: 'token remains valid' })
+})
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // The below paths were some of the earliest ones added when I first created Groupread        //
 // There is no current use for them, and re-activating them will likely require refactoring.  //

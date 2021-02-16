@@ -6,4 +6,12 @@ const getUsername = async id => {
   return res.data
 }
 
-export default { getUsername }
+const validateToken = async token => {
+  const config = {
+    headers: { Authorization: `bearer ${token}` }
+  }
+  const res = await axios.post(`${baseUrl}/validate`, null, config)
+  return res.data
+}
+
+export default { getUsername, validateToken }

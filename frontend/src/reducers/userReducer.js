@@ -1,13 +1,25 @@
 import login from '../services/login'
+import userService from '../services/users'
 import postService from '../services/posts'
 
+// When the site is reloaded, the login cookie is validated serverside
+// to make sure 1) the user account still exists and 2) the token is still valid
 export const initializeUser = () => {
   return async dispatch => {
-    const userToken = await window.localStorage.getItem('loggedInGroupreader')
-    dispatch({
-      type: 'INIT_USER',
-      data: userToken
-    })
+    let res
+    try {
+      const userObject = window.localStorage.getItem('loggedInGroupreader')
+      if (userObject) {
+        res = await userService.validateToken(JSON.parse(userObject).token)
+      }
+    } catch(e) {
+      window.localStorage.removeItem('loggedInGroupreader')
+    } finally {
+      dispatch({
+        type: 'INIT_USER',
+        data: res
+      })
+    }
   }
 }
 
@@ -57,10 +69,12 @@ const userReducer = (state = [], action) => {
   case 'INIT_USER':
     if (!action.data) {
       return null
-    } else {
+    } else if (action.data.success) {
       const user = JSON.parse(action.data)
       postService.setToken(user.token)
       return user
+    } else {
+      return null
     }
   case 'LOGIN':
     if (!action.data) {
