@@ -23,9 +23,8 @@ loginRouter.post('/', async (req, res) => {
     id: user.id,
   }
 
-  // TODO: make tokens more secure (expiration, encryption, etc)
-  // see https://gist.github.com/soulmachine/b368ce7292ddd7f91c15accccc02b8df
-  const token = jwt.sign({ exp: Math.floor(Date.now() / 1000) + (60 * 1), data: userForToken }, config.SECRET_TOKEN_KEY)
+  // Tokens expire after 30 days
+  const token = jwt.sign({ exp: Math.floor(Date.now() / 1000) + (60 * 60 * 720), data: userForToken }, config.SECRET_TOKEN_KEY)
 
   res
     .status(200)

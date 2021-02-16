@@ -62,7 +62,8 @@ usersRouter.post('/', async (req, res) => {
     id: savedUser.id
   }
 
-  const token = jwt.sign(userForToken, config.SECRET_TOKEN_KEY)
+  // Tokens expire after 30 days
+  const token = jwt.sign({ exp: Math.floor(Date.now() / 1000) + (60 * 60 * 720), data: userForToken }, config.SECRET_TOKEN_KEY)
 
   res
     .status(200)
