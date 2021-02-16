@@ -181,6 +181,7 @@ groupsRouter.post('/join/:group', async (req, res) => {
 
   await user.addGroup(group)
 
+  // remove password info and username from public user list
   // eslint-disable-next-line no-unused-vars
   const sanitizeUser = (({ passwordHash, username, ...user }) => user)
 

@@ -89,6 +89,10 @@ usersRouter.post('/validate', async (req, res) => {
     }
   }
 
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'Missing token' })
+  }
+
   const tokenID = decodedToken.data.id
 
   if (!tokenID) {
