@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { titleCase } from 'title-case' // 27KB library - might implement the functionality myself and drop it
+import { titleCase } from 'title-case'
 import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../reducers/groupCreationReducer'
 import PropTypes from 'prop-types'
 
@@ -24,7 +24,7 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
   useEffect(async () => {
     if (open) {
       const searchUrl = queryOL(queryTitle, queryAuthor, queryIsbn)
-      // avoid querying OL's servers with empty searches
+      // avoid spamming OL's servers with empty searches
       if (searchUrl === 'https://openlibrary.org/search.json?') {
         return setResults([])
       }
@@ -55,7 +55,7 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
     }
 
     return results.map(r =>
-      <div className='media' key={`${r.key}`} style={{ minHeight: '100px', fontSize: '1.2em' }}>
+      <div className='media' key={`${r.key}`} style={{ minHeight: '100px' }}>
         <figure className='media-left'>
           <p className='image'>
             <img src={`http://covers.openlibrary.org/b/olid/${r.cover_edition_key}-S.jpg`}/>
@@ -63,7 +63,7 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
         </figure>
         <div className='media-content'>
           <div className='content'>
-            <p className='title'>{r.title}</p>
+            <p className='title is-size-4'>{r.title}</p>
             <p className='subtitle'>{r.author_name}</p>
           </div>
         </div>
@@ -80,20 +80,13 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
     )
   }
 
-  // const closeButton =
-  //   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="icon bi bi-x-circle " aria-label='close' viewBox="0 0 16 16" onClick={() => setOpen(false)}>
-  //     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-  //     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-  //   </svg>
-
   return (
     <div className={open ? 'modal is-active' : 'modal'}>
       <div className='modal-background' onClick={() => setOpen(false)} />
       <div className='modal-card'>
         <header className='modal-card-head'>
           <p className='modal-card-title'>Find a Book</p>
-          {/* TODO: add an icon for the close button*/}
-          <button className="delete" aria-label="close"></button>
+          <button className="delete" aria-label="close" onClick={() => setOpen(false)}></button>
         </header>
         <section className='modal-card-body'>
           {displayResults(results)}

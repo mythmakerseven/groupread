@@ -89,17 +89,11 @@ usersRouter.post('/validate', async (req, res) => {
     }
   }
 
-  if (!decodedToken) {
+  if (!decodedToken || !decodedToken.data || !decodedToken.data.id) {
     return res.status(401).json({ error: 'Missing token' })
   }
 
-  const tokenID = decodedToken.data.id
-
-  if (!tokenID) {
-    return res.status(401).json({ error: 'Missing token' })
-  }
-
-  const user = await User.findOne({ where: { id: tokenID } })
+  const user = await User.findOne({ where: { id: decodedToken.data.id } })
   if (!user) return res.status(401).json({ error: 'user does not exist' })
 
   res.status(200).json({ success: 'token remains valid' })

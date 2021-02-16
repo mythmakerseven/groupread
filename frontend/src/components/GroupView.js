@@ -108,8 +108,6 @@ const GroupView = () => {
     }
   }
 
-  // TODO: Button for leaving the group? Would require significant refactor, not sure if it's needed that badly.
-
   const handlePostButton = () => {
     if (!user) return null
 

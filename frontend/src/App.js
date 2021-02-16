@@ -11,15 +11,11 @@ import PostView from './components/PostView'
 import Footer from './components/Footer'
 import GroupScheduler from './components/GroupScheduler'
 
-// webpack-dev-server does not refresh the browser when code is updated
-// due to this bug: https://github.com/webpack/webpack-dev-server/issues/2758
-// TODO: either upgrade to the webpack beta or wait for bugfix
-
 const App = () => {
   return (
     <div>
       <Navbar />
-      <div className='container' style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+      <div className='container pt-4 pb-4'>
         <Switch>
           <Route path="/groups/create">
             <CreateGroup />

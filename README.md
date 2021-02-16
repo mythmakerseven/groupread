@@ -22,7 +22,7 @@ Groupread is a website for hosting book discussions. Pick a book via OpenLibrary
 
 - custom URL support for book covers (OL has spotty coverage)
 
-- enhanced security (token expiration and validation, etc)
+- ~~enhanced security (token expiration and validation, etc)~~
 
 ## Developer notes
 
