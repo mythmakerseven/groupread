@@ -117,7 +117,7 @@ const groupReducer = (state = [], action) => {
   case 'VIEW_GROUP':
   {
     const group = action.data
-    if (state.find(g => g === group)) return state
+    if (state.find(g => g.id === group.id)) return state
     return [ ...state, group ]
   }
   case 'GROUP_POSTS':

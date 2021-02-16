@@ -1,4 +1,5 @@
 const groupsRouter = require('express').Router()
+const config = require('../utils/config')
 const Group = require('../models/group')
 const { v4: uuidv4 } = require('uuid')
 const User = require('../models/user')
@@ -28,7 +29,6 @@ groupsRouter.get('/:id', async (req, res) => {
   const group = await Group.findOne({ where: { id: req.params.id } })
 
   if (!group) return res.status(400).json({ error: 'invalid group id' })
-  console.log(group)
   return res.status(200).json(group)
 })
 
@@ -38,8 +38,12 @@ groupsRouter.get('/:id/members', async (req, res) => {
   if (!group) return res.status(400).json({ error: 'invalid group id' })
 
   const users = await group.getUsers()
+  const dataValues = users.map(u => u.dataValues)
 
-  return res.status(200).json(users)
+  // eslint-disable-next-line no-unused-vars
+  const sanitizedUsers = await dataValues.map(({ passwordHash, username, ...u }) => u)
+
+  return res.status(200).json(sanitizedUsers)
 })
 
 groupsRouter.get('/:id/posts', async (req, res) => {
@@ -68,7 +72,7 @@ groupsRouter.post('/', async (req, res) => {
 
   let decodedToken
   try {
-    decodedToken = jwt.verify(token, process.env.SECRET)
+    decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
   } catch {
     return res.status(400).json({ error: 'invalid token' })
   }
@@ -149,7 +153,7 @@ groupsRouter.post('/join/:group', async (req, res) => {
 
   let decodedToken
   try {
-    decodedToken = jwt.verify(token, process.env.SECRET)
+    decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
   } catch {
     return res.status(400).json({ error: 'invalid token' })
   }
@@ -165,7 +169,10 @@ groupsRouter.post('/join/:group', async (req, res) => {
 
   await user.addGroup(group)
 
-  res.status(200).json({ user: user, groupID: group.id })
+  // eslint-disable-next-line no-unused-vars
+  const sanitizeUser = (({ passwordHash, username, ...user }) => user)
+
+  res.status(200).json({ user: sanitizeUser(user.dataValues), groupID: group.id })
 })
 
 // scheduling auto-populates the list of posts with future weekly threads
@@ -183,7 +190,7 @@ groupsRouter.post('/schedule/:group', async (req, res) => {
 
   let decodedToken
   try {
-    decodedToken = jwt.verify(token, process.env.SECRET)
+    decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
   } catch {
     return res.status(400).json({ error: 'invalid token' })
   }
@@ -246,7 +253,7 @@ groupsRouter.post('/schedule/:group', async (req, res) => {
 
   const postsToSchedule = []
 
-  Object.keys(weeks).forEach(async week => {
+  Object.keys(weeks).forEach(week => {
     const weekPost = {
       id: uuidv4(),
       title: `Weekly post for pages ${findLastWeeksPage(week)}-${parseInt(weeks[week])}`,
