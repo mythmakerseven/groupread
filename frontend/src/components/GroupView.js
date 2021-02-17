@@ -61,6 +61,8 @@ const GroupView = () => {
       return <p>{members[0].displayName} is reading {group.bookTitle}.</p>
     case 2:
       return <p>{members[0].displayName} and {members[1].displayName} are reading {group.bookTitle}.</p>
+    case 3:
+      return <p>{members[0].displayName}, {members[1].displayName}, and {members[2].displayName} are reading {group.bookTitle}</p>
     default:
       return <p>{members[0].displayName}, {members[1].displayName}, and {members.length - 2} others are reading {group.bookTitle}</p>
     }

@@ -44,7 +44,6 @@ const config = {
     port: 3001,
     publicPath: '/',
     historyApiFallback: { index: 'index.html' },
-    hot: true,
     inline: true
   },
   devtool: 'source-map',

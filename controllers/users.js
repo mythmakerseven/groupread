@@ -35,8 +35,6 @@ usersRouter.post('/', async (req, res) => {
   const existingUser = await User.findOne({ where: { username: body.username } })
   if (existingUser) return res.status(400).json({ error: 'Username already taken' })
 
-  // TODO: remove displayName, consider implementing on a per-group level
-  // so the user can pick a group-specific display name when they join
   const handleDisplayName = (username, displayName) => {
     if (!displayName) {
       return username
