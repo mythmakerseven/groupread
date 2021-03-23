@@ -8,7 +8,7 @@ Groupread is a website for hosting book discussions. Pick a book via OpenLibrary
 
 This has been my largest project by far, not least because I have challenged myself with new tools and techniques compared to previous projects. All my previous database work involved MongoDB, but for Groupread I branched out into Postgres, which led to replacing Mongoose with Sequelize. Sequelize is definitely more complex than Mongoose, and its docs are pretty bad. Particularly in the early stages of development, I had a lot of issues caused by poor documentation of basic functionality. I managed to hack it together with the help of random blog posts and StackOverflow pages, and now it's not too hard to work with.
 
-On the frontend, I tried out the up-and-coming Bulma CSS framework, which I've found more visually pleasant and performant than Material or Semantic UI. This has also been my first significant experience with modals, which are used for the login/register form as well as the book metadata search popup. Bulma requires more manual coding to make them work compared to other UI libraries, but I liked the increased customization it provides.
+On the frontend, I tried out the up-and-coming Bulma CSS framework, which I've found more visually pleasant and performant than Material or Semantic UI. This has also been my first significant experience with modals, which are used for the login/register form as well as the book metadata search popup. Bulma requires more manual coding to make modals work compared to other UI libraries, but I liked the increased customization it provides.
 
 I also chose not to use create-react-app, if only to learn more about the internal workings of packaging web applications. This move had surprisingly few drawbacks - maybe five or six hours of total time configuring and troubleshooting with webpack and eslint. In the future I'll probably go with create-react-app again, because there also hasn't been much benefit in dropping it. It has been good to learn more about what create-react-app is doing in the background, anyway.
 
@@ -32,14 +32,16 @@ I also chose not to use create-react-app, if only to learn more about the intern
 
 - address webpack warning about bundle size to improve loading performance
 
+- migrate to TypeScript?
+
 - ~~enhanced security (token expiration and validation, etc)~~
 
 ## How to run
 
-This project uses Yarn for scripts and package management. After cloning the repo, run ``yarn install`` to install dependencies.
+This project uses Yarn for scripts and package management. After cloning the repo, run ``yarn install`` to install dependencies. If you would rather use npm, delete ``yarn.lock`` and ``node_modules``, then run ``npm install``.
 
-To compile and run a production build, run ``yarn start:full``. This creates a fresh build of the frontend and starts the server in production mode.
+To compile and run a production build, run ``yarn start:full``. This creates a fresh build of the frontend and starts the server in production mode. (Or, if you want to do this in separate steps, run ``yarn build`` and then ``yarn start``.) You can access the production site at [http://localhost:3000/](http://localhost:3000/).
 
-To run a development build, run ``yarn dev`` for the backend and ``yarn dev:ui`` for the frontend.
+To run a development build, run ``yarn dev`` for the backend and ``yarn dev:ui`` for the frontend. The development frontend will be served at [http://localhost:3001/](http://localhost:3001/).
 
-Other commands can be found in ``package.json``.
+Other commands that may be of interest for development are ``yarn test`` and ``yarn lint``.
