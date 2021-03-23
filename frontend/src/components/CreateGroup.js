@@ -67,7 +67,7 @@ const CreateGroup = () => {
   // TODO: more client-side validation to match serverside
   // can likely be done easily with react-hook-form params
   return (
-    <div>
+    <div className='container pt-4 pb-4'>
       <h1 className='title'>Create a group</h1>
       <h1 className='subtitle'>Tip: Click &quot;Find info&quot; to fill out empty fields based on what you&apos;ve entered.</h1>
       <h1 className='subtitle'>If something looks wrong after fetching info, you can still make changes in the form.</h1>

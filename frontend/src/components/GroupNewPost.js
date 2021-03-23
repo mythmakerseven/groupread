@@ -36,7 +36,7 @@ const GroupNewPost = () => {
   }
 
   return (
-    <div>
+    <div className='container pt-4 pb-4'>
       <h1 className='title'>New post</h1>
       <form onSubmit={handleSubmit(handlePost)}>
         <ErrorMessage errors={errors} name='title' message='Title is required' />

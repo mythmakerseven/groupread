@@ -210,7 +210,7 @@ const GroupView = () => {
   )
 
   return (
-    <div>
+    <div className='container pt-4 pb-4'>
       {displayNonMemberHero()}
       <div className='box has-text-centered'>
         {handleBookImage(group.bookOLID)}

@@ -148,7 +148,7 @@ const GroupScheduler = () => {
   }
 
   return (
-    <div>
+    <div className='container pt-4 pb-4'>
       <h1 className='title'>Schedule</h1>
       <div className='card mt-4 mb-4'>
         <div className='card-content'>

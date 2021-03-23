@@ -1,0 +1,20 @@
+.homepage-hero {
+  background-position: center center;
+  background-repeat:  no-repeat;
+  background-size: cover;
+}
+
+.hero-text {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.homepage-group-link:hover {
+  text-decoration: underline;
+}
+
+/* Bulma phone breakpoint */
+@media only screen and (max-width: 768px) {
+  .homepage-title {
+    font-size: 0.2em;
+  }
+}

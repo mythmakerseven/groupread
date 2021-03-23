@@ -1,21 +1,26 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import backgroundImg from '../images/freestocks-OfaDD5o8hpk-unsplash.jpg'
 
 const HomePage = () => {
   return (
     <div>
-      <section className='hero is-primary is-medium'>
+      <section className='homepage-hero hero is-black is-fullheight-with-navbar' style={{ backgroundImage: `url(${backgroundImg})` }}>
         <div className='hero-body'>
-          <div className='container has-text-centered '>
-            <h1 className='title'>Read books with your friends.</h1>
-            <Link className='subtitle' to='/groups'>Click here to see a list of groups.</Link>
-          </div>
-        </div>
-      </section>
-      <section className='hero is-info is-medium'>
-        <div className='hero-body'>
-          <div className='container has-text-centered'>
-            <p className='title'>Automatically schedule discussions</p>
+          <div className='container'>
+            <div className='has-text-centered hero-text p-4'>
+              <h1 className='title is-size-1 homepage-title p-4'>Read books with your friends.</h1>
+              <div className='content p-4'>
+                <p>Join exclusive, members-only reading groups</p>
+                <p>Automatically schedule discussions</p>
+                <p>Invite your friends or make new ones</p>
+              </div>
+            </div>
+            <div className='has-text-centered hero-text p-4 mt-4'>
+              <Link to='/groups' className='is-size-4 p-4 homepage-group-link'>
+                <b>See what people are reading &#10132;</b>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

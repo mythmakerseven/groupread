@@ -81,7 +81,7 @@ const PostView = () => {
   }
 
   return (
-    <div>
+    <div className='container pt-4 pb-4'>
       <h1 className='title'>{post.title}</h1>
       <div className='has-background-light has-text-black p-4'>
         <p><strong>{findUser(post.UserId)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small></p>
