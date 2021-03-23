@@ -1,43 +1,36 @@
 @charset "utf-8";
 
-// TODO: replace with a first-party font
-// @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
 @import url('https://fonts.googleapis.com/css2?family=Archivo&family=Mukta&display=swap');
 
-// TODO: configure custom theme
-// $purple: #8a4d76;
-// $pink: #f79ac4;
-// $brown: #757763;
-// $beige-light: #d0d1cd;
-// $beige-lighter: #eff0eb;
-// $green: #8bf0e5;
-// $bg: #edd8b7;
-// $green: #9af7cd;
-$purple: #8a4d76;
-$pink: #fa7c91;
+// Custom colors
+$maroon: #b94e48;
 $brown: #757763;
-$beige-light: #d0d1cd;
-$beige-lighter: #eff0eb;
+$beige: #faf0e6;
+$beige-light: #f2f3f4;
+$rosy-brown: #bc8f8f;
+$sea-green: #3cb371;
+$blue: #73c2fb;
+$gray: #c4aead;
 
 // Global variables
-$family-sans-serif: 'Nunito', sans-serif;
-// $grey-dark: $brown;
-// $grey-light: $beige-light;
-// $primary: $purple;
-// $link: $pink;
+$family-sans-serif: 'Mukta', sans-serif;
 $widescreen-enabled: true;
 $fullhd-enabled: false;
-$grey-dark: $brown;
-$grey-light: $beige-light;
-$primary: $purple;
-$link: $pink;
+$primary: $rosy-brown;
+$success: $sea-green;
+$link: $maroon;
+$info: $blue;
+$light: $beige-light;
 
 // Component variables
 $control-border-width: 2px;
-// $navbar-background-color: $brown;
-// $navbar-item-color: $beige-lighter;
-// $navbar-item-hover-color: $beige-light;
-$body-background-color: $beige-lighter;
-$footer-background-color: $beige-lighter;
+$navbar-background-color: $primary;
+$navbar-item-color: $beige;
+$navbar-item-hover-background-color: $brown;
+$navbar-item-hover-color: $beige;
+$body-background-color: $beige;
+$footer-background-color: $beige;
+$navbar-box-shadow-size: 0 0 3px;
+$navbar-box-shadow-color: #4e4a4a;
 
 @import '../../node_modules/bulma/bulma.sass'

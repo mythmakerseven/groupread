@@ -58,13 +58,13 @@ const GroupView = () => {
     case 0:
       return <p>No one is reading {group.bookTitle} :(</p>
     case 1:
-      return <p>{members[0].displayName} is reading {group.bookTitle}.</p>
+      return <p>{members[0].displayName} is reading <em>{group.bookTitle}</em>.</p>
     case 2:
-      return <p>{members[0].displayName} and {members[1].displayName} are reading {group.bookTitle}.</p>
+      return <p>{members[0].displayName} and {members[1].displayName} are reading <em>{group.bookTitle}</em>.</p>
     case 3:
-      return <p>{members[0].displayName}, {members[1].displayName}, and {members[2].displayName} are reading {group.bookTitle}</p>
+      return <p>{members[0].displayName}, {members[1].displayName}, and {members[2].displayName} are reading <em>{group.bookTitle}</em></p>
     default:
-      return <p>{members[0].displayName}, {members[1].displayName}, and {members.length - 2} others are reading {group.bookTitle}</p>
+      return <p>{members[0].displayName}, {members[1].displayName}, and {members.length - 2} others are reading <em>{group.bookTitle}</em></p>
     }
   }
 
@@ -156,7 +156,7 @@ const GroupView = () => {
     if (user && memberIDs.includes(user.id)) return null
 
     return (
-      <div className='hero has-text-centered is-primary mb-4'>
+      <div className='box hero has-text-centered is-primary mb-4'>
         <div className='hero-body'>
           <h1 className='title'>{displayMembers(members)}</h1>
           {handleJoinButton(user ? user.id : null)}

@@ -67,25 +67,23 @@ const PostView = () => {
 
   const displayReplies = posts => {
     return posts.map(post => (
-      <article className='media has-background-light has-text-black p-4 is-family-primary' key={post.id}>
-        <div className='media-content'>
-          <div className='content'>
-            <p><strong>{findUser(post.UserId)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small>
-              <br />
-              {post.text}
-            </p>
-          </div>
+      <div key={post.id} className='box has-background-light has-text-black p-3'>
+        <div className='content'>
+          <p><strong>{findUser(post.UserId)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small>
+            <br />
+            {post.text}
+          </p>
         </div>
-      </article>
+      </div>
     ))
   }
 
   return (
     <div className='container pt-4 pb-4'>
       <h1 className='title'>{post.title}</h1>
-      <div className='has-background-light has-text-black p-4'>
+      <div className='box has-background-light has-text-black p-3'>
         <p><strong>{findUser(post.UserId)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small></p>
-        <p >{post.text}</p>
+        <p>{post.text}</p>
       </div>
       <br />
       <h1 className='title is-4'>Replies</h1>

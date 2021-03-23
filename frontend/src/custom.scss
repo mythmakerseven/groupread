@@ -1,3 +1,7 @@
+::selection {
+  background: #f5deb3;
+}
+
 .homepage-hero {
   background-position: center center;
   background-repeat:  no-repeat;
@@ -10,4 +14,8 @@
 
 .homepage-group-link:hover {
   text-decoration: underline;
+}
+
+.nav-button {
+  all: unset;
 }

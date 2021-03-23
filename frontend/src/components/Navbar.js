@@ -33,7 +33,14 @@ const Navbar = () => {
           <Link className='navbar-item' to='/groups/create'>
             &#x1F527; Create Group
           </Link>
-          <a className='navbar-item' onClick={() => dispatch(logOutUser())}>
+          <a
+            role='button'
+            onClick={() => dispatch(logOutUser())}
+            // Handle keyboard support for a11y
+            tabIndex='0'
+            className='navbar-item'
+            onKeyDown={(e) => e.key === 'Enter' ?  dispatch(logOutUser()) : null}
+          >
             &#x1F44B; Log out
           </a>
         </>
@@ -41,7 +48,14 @@ const Navbar = () => {
     } else {
       return (
         <>
-          <a className='navbar-item' onClick={() => setOpenModal(true)}>
+          <a
+            role='button'
+            onClick={() => setOpenModal(true)}
+            // Handle keyboard support for a11y
+            tabIndex='0'
+            className='navbar-item'
+            onKeyDown={(e) => e.key === 'Enter' ?  setOpenModal(true) : null}
+          >
             &#x1F44B; Log in or Register
           </a>
         </>
@@ -58,10 +72,10 @@ const Navbar = () => {
 
   // use Button component for login link
   return (
-    <nav className='navbar' role='navigation' aria-label='main navigation'>
+    <nav className='navbar has-shadow' role='navigation' aria-label='main navigation'>
       {handleLoginModal()}
       <div className='container'>
-        <div className='navbar-brand'>
+        <div className='navbar-start'>
           <Link className='navbar-item' to='/'>&#128218; Home</Link>
           <a role='button' className={checkIfActive('navbar-burger')} onClick={() => setMenuVisible(!menuVisible)} aria-label='menu' aria-expanded='false' data-target='navMenu'>
             <span aria-hidden="true"></span>

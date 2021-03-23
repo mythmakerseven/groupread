@@ -69,8 +69,8 @@ const CreateGroup = () => {
   return (
     <div className='container pt-4 pb-4'>
       <h1 className='title'>Create a group</h1>
-      <h1 className='subtitle'>Tip: Click &quot;Find info&quot; to fill out empty fields based on what you&apos;ve entered.</h1>
-      <h1 className='subtitle'>If something looks wrong after fetching info, you can still make changes in the form.</h1>
+      <p className='subtitle'>Tip: Click &quot;Find info&quot; to fill out empty fields based on what you&apos;ve entered.</p>
+      <p className='subtitle'>If something looks wrong after fetching info, you can still make changes in the form.</p>
       <form onSubmit={handleSubmit(handleGroup)}>
         <ErrorMessage errors={errors} name='bookTitle' />
         <div className='field'>
