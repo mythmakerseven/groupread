@@ -21,6 +21,11 @@ app.get('/favicon.ico', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'favicon.ico'))
 })
 
+// Okay this is getting ridiculous
+app.get('/1216b1c4c15ae0af7ae69ac9936cdce0.jpg', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', '1216b1c4c15ae0af7ae69ac9936cdce0.jpg'))
+})
+
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
