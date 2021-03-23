@@ -75,7 +75,7 @@ const Navbar = () => {
     <nav className='navbar has-shadow' role='navigation' aria-label='main navigation'>
       {handleLoginModal()}
       <div className='container'>
-        <div className='navbar-start'>
+        <div className='navbar-brand'>
           <Link className='navbar-item' to='/'>&#128218; Home</Link>
           <a role='button' className={checkIfActive('navbar-burger')} onClick={() => setMenuVisible(!menuVisible)} aria-label='menu' aria-expanded='false' data-target='navMenu'>
             <span aria-hidden="true"></span>

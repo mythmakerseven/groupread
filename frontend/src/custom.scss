@@ -19,3 +19,9 @@
 .nav-button {
   all: unset;
 }
+
+// For some reason Bulma doesn't apply normal navbar-item styles to items
+// within a navbar-brand element, so we have to force it.
+.navbar-brand .navbar-item:hover, .navbar-brand .navbar-item:focus {
+  background: #757763 !important;
+}
