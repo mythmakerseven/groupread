@@ -31,10 +31,10 @@ const Navbar = () => {
       return (
         <>
           <Link className='navbar-item' to='/groups/create'>
-            Create Group
+            &#x1F527; Create Group
           </Link>
           <a className='navbar-item' onClick={() => dispatch(logOutUser())}>
-            Log out
+            &#x1F44B; Log out
           </a>
         </>
       )
@@ -42,7 +42,7 @@ const Navbar = () => {
       return (
         <>
           <a className='navbar-item' onClick={() => setOpenModal(true)}>
-          Log in or Register
+            &#x1F44B; Log in or Register
           </a>
         </>
       )
@@ -60,17 +60,19 @@ const Navbar = () => {
   return (
     <nav className='navbar' role='navigation' aria-label='main navigation'>
       {handleLoginModal()}
-      <div className='navbar-brand'>
-        <Link className='navbar-item' to='/'>Home</Link>
-        <a role='button' className={checkIfActive('navbar-burger')} onClick={() => setMenuVisible(!menuVisible)} aria-label='menu' aria-expanded='false' data-target='navMenu'>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-      <div className={checkIfActive('navbar-menu')} id='navMenu'>
-        <div className='navbar-end'>
-          {checkLogin()}
+      <div className='container'>
+        <div className='navbar-brand'>
+          <Link className='navbar-item' to='/'>&#128218; Home</Link>
+          <a role='button' className={checkIfActive('navbar-burger')} onClick={() => setMenuVisible(!menuVisible)} aria-label='menu' aria-expanded='false' data-target='navMenu'>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div className={checkIfActive('navbar-menu')} id='navMenu'>
+          <div className='navbar-end'>
+            {checkLogin()}
+          </div>
         </div>
       </div>
     </nav>
