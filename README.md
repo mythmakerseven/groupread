@@ -2,7 +2,7 @@
 
 Groupread is a website for hosting book discussions. Pick a book via OpenLibrary's API and Groupread will fill in the metadata and create a private discussion room. Groups are instanced, meaning no one can access your group without a direct link to it*. Each group is inextricably tied to one book, which emphasizes the frictionless group creation process and keeps discussion focused and on-topic.
 
-*Note: the development version of the site has a public listing of all groups for ease of development - this will be removed in 1.0
+*Note: the development version of the site has a public listing of all groups for ease of development and showcasing - the current plan is to remove the list in 1.0.
 
 ## Developer notes
 
@@ -29,6 +29,8 @@ I also chose not to use create-react-app, if only to learn more about the intern
 - proper display of authors for books with multiple authors (OL's API is tricky about this)
 
 - custom URL support for book covers (OL has spotty coverage)
+
+- address webpack warning about bundle size to improve loading performance
 
 - ~~enhanced security (token expiration and validation, etc)~~
 
