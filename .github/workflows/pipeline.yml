@@ -13,23 +13,23 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: '15.x'
-      - name: npm install
-        run: npm install
+          node-version: '15'
+      - name: yarn install
+        run: yarn install
       - name: lint
-        run: npm run lint
+        run: yarn lint
       - name: build
-        run: npm run build
+        run: yarn build
       - name: test
         env:
           TEST_DB_URL: ${{ secrets.TEST_DB_URL }}
           PORT: ${{ secrets.PORT }}
           SECRET: ${{ secrets.SECRET }}
-        run: npm run test
+        run: yarn test
       - name: heroku deployment
-        uses: akhileshns/heroku-deploy@v3.8.9
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ancient-citadel-48192

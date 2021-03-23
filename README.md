@@ -31,3 +31,13 @@ This has been my largest project by far, not least because I have challenged mys
 On the frontend, I tried out the up-and-coming Bulma CSS framework, which I've found more visually pleasant and performant than Material or Semantic UI. This has also been my first significant experience with modals, which are used for the login/register form as well as the book metadata search popup. Bulma requires more manual coding to make them work compared to other UI libraries, but I liked the increased customization it provides.
 
 I also chose not to use create-react-app, if only to learn more about the internal workings of packaging web applications. This move had surprisingly few drawbacks - maybe five or six hours of total time configuring and troubleshooting with webpack and eslint. In the future I'll probably go with create-react-app again, because there also hasn't been much benefit in dropping it. It has been good to learn more about what create-react-app is doing in the background, anyway.
+
+## How to run
+
+This project uses Yarn for scripts and package management. After cloning the repo, run ``yarn install`` to install dependencies.
+
+To compile and run a production build, run ``yarn start:full``. This creates a fresh build of the frontend and starts the server in production mode.
+
+To run a development build, run ``yarn dev`` for the backend and ``yarn dev:ui`` for the frontend.
+
+Other commands can be found in ``package.json``.
