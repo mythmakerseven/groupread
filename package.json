@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "build": "webpack --mode=production",
     "dev:ui": "webpack serve --mode=development",
-    "start:full": "npm run build:ui && node index.js"
+    "start:full": "yarn build && yarn start"
   },
   "author": "",
   "license": "ISC",
