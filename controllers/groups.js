@@ -57,9 +57,6 @@ groupsRouter.get('/:id/posts', async (req, res) => {
 
   // excluded scheduled posts which have future createdAt dates
   const sortedPastPosts = sortedPosts.filter(p => Date.parse(p.createdAt) <= Date.parse(new Date()))
-
-  // console.log(Date.parse(sortedPosts[1].createdAt))
-
   return res.status(200).json(sortedPastPosts)
 })
 
@@ -207,9 +204,8 @@ groupsRouter.post('/schedule/:group', async (req, res) => {
   } catch(e) {
     if (e.name === 'TokenExpiredError') {
       return res.status(400).json({ error: 'Expired token, please sign in again' })
-    } else {
-      return res.status(400).json({ error: 'Invalid token, please sign in again' })
     }
+    return res.status(400).json({ error: 'Invalid token, please sign in again' })
   }
 
   const tokenID = decodedToken.data.id
@@ -247,15 +243,11 @@ groupsRouter.post('/schedule/:group', async (req, res) => {
   }
 
   const findLastWeeksPage = week => {
-    switch(parseInt(week)) {
-    case 1:
+    if (parseInt(week) === 1) {
       return 1
-    default:
-    {
-      const page = parseInt(weeks[week - 1]) + 1
-      return page
     }
-    }
+    const page = parseInt(weeks[week - 1]) + 1
+    return page
   }
 
   const weekNumbers = Object.keys(weeks)

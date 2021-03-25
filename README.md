@@ -20,7 +20,7 @@ I also chose not to use create-react-app, if only to learn more about the intern
 
 - moderation tools for group owners
 
-- proper display of authors for books with multiple authors (OL's API is tricky about this)
+- ~~proper display of authors for books with multiple authors~~
 
 - custom URL support for book covers (OL has spotty coverage)
 

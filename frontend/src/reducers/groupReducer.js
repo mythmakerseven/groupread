@@ -47,7 +47,6 @@ export const createGroup = (groupObject, token) => {
       })
       return response
     } catch(error) {
-      console.log(error)
       return error.response.data
     }
   }

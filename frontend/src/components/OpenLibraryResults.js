@@ -45,6 +45,18 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
     setOpen(false)
   }
 
+  const parseAuthors = authorList => {
+    if (!authorList || authorList.length === 0) {
+      return null
+    } else if (authorList.length === 1) {
+      return authorList[0]
+    } else if (authorList.length === 2) {
+      return `${authorList[0]} and ${authorList[1]}`
+    } else {
+      return `${authorList[0]}, ${authorList[1]}, et al.`
+    }
+  }
+
   const displayResults = results => {
     if (!results) {
       return <p className='subtitle'>loading...</p>
@@ -64,13 +76,13 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
         <div className='media-content'>
           <div className='content'>
             <p className='title is-size-4'>{r.title}</p>
-            <p className='subtitle'>{r.author_name}</p>
+            <p className='subtitle'>{parseAuthors(r.author_name)}</p>
           </div>
         </div>
         <div className='media-right'>
           <button className='button' type='button' onClick={() => updateForm(
             r.title,
-            r.author_name ? r.author_name[0] : null,
+            parseAuthors(r.author_name),
             r.publish_year ? r.publish_year[0] : null,
             r.isbn ? r.isbn[0] : null,
             r.cover_edition_key

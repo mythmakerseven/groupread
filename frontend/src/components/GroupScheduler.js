@@ -58,7 +58,6 @@ const GroupScheduler = () => {
   // set initial week counts
   useEffect(() => {
     if (!group) return null
-    console.log('first useEffect called')
     const initialObject = suggestWeeklyAmount(group.bookPageCount)
     const initialWeeks = initialObject.recommendedWeeks
     setWeeks(parseInt(initialWeeks))
@@ -68,8 +67,6 @@ const GroupScheduler = () => {
   // recalculate pages when the user changes the number of weeks
   useEffect(() => {
     if (!group) return null
-    console.log('second useEffect called')
-    console.log(weeks)
     const newWeeks = parseInt(watchWeeks)
     setWeeks(newWeeks)
     const newWeeklyPages = parseInt(group.bookPageCount / newWeeks)
