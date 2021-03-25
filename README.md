@@ -18,12 +18,6 @@ I also chose not to use create-react-app, if only to learn more about the intern
 
 - editing functionality for posts and comments
 
-- archived mode for groups that have finished their reading schedule
-
-- export group contents in a reasonable format (CSV, PDF, ?)
-
-- reworked and simplified book selection process
-
 - moderation tools for group owners
 
 - proper display of authors for books with multiple authors (OL's API is tricky about this)
@@ -33,6 +27,8 @@ I also chose not to use create-react-app, if only to learn more about the intern
 - address webpack warning about bundle size to improve loading performance
 
 - migrate to TypeScript?
+
+- proper frontend testing, probably with Cypress
 
 - ~~enhanced security (token expiration and validation, etc)~~
 
