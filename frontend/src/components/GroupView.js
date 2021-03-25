@@ -69,14 +69,13 @@ const GroupView = () => {
   }
 
   const handlePosts = posts => {
-    switch (posts.length) {
-    case 0:
+    if (posts.length === 0) {
       return (
         <p>No posts yet.</p>
       )
-    default:
-      return posts.map(p => displayPost(p))
     }
+
+    return posts.map(p => displayPost(p))
   }
 
   const truncate = text => {
