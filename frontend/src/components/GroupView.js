@@ -93,6 +93,7 @@ const GroupView = () => {
     if (!user) return (
       <>
         <p className='title is-5'>You&apos;ve been invited to join.</p>
+        <p className='subtitle'>After joining, you&apos;ll have access to this group&apos;s private discussions.</p>
       </>
     )
 
@@ -100,7 +101,8 @@ const GroupView = () => {
       return (
         <>
           <p className='title is-5'>You&apos;ve been invited to join.</p>
-          <button className='button is-success' type='button' onClick={() => handleGroupMembership(id, user.token)}>
+          <p className='subtitle'>After joining, you&apos;ll have access to this group&apos;s private discussions.</p>
+          <button className='button is-link' type='button' onClick={() => handleGroupMembership(id, user.token)}>
             Join
           </button>
         </>
