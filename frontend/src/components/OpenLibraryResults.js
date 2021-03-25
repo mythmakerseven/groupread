@@ -45,6 +45,7 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
     setOpen(false)
   }
 
+  // Would really prefer a proper author array in the DB, but this works as a band-aid.
   const parseAuthors = authorList => {
     if (!authorList || authorList.length === 0) {
       return null
