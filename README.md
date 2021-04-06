@@ -14,6 +14,8 @@ I also chose not to use create-react-app, if only to learn more about the intern
 
 ## To do
 
+- migrate to TypeScript (see below)
+
 - ~~automated scheduling of discussion threads~~
 
 - editing functionality for posts and comments
@@ -26,11 +28,23 @@ I also chose not to use create-react-app, if only to learn more about the intern
 
 - address webpack warning about bundle size to improve loading performance
 
-- migrate to TypeScript?
-
 - proper frontend testing, probably with Cypress
 
 - ~~enhanced security (token expiration and validation, etc)~~
+
+### TypeScript roadmap
+
+- ~~change frontend .js files to .tsx and make sure they build~~
+
+- change backend .js files to .tsx and make sure they build
+
+- create the most obvious types (e.g. group data, user data) and look into sharing them across back- and frontend
+
+  - possibly restructure so the repo root contains ``backend``, ``frontend``, and ``types`` folders
+
+- refactor Redux and React Hook Form code to satisfy TypeScript
+
+- rewrite validation code in ``/controllers`` to make full use of TypeScript
 
 ## How to run
 
