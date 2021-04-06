@@ -1,7 +1,7 @@
 const path = require('path')
 
 const config = {
-  entry: './frontend/src/index.js',
+  entry: './frontend/src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'main.js',
@@ -9,7 +9,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(tsx|js)$/,
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env', '@babel/preset-react']
@@ -34,6 +34,9 @@ const config = {
         },
       }
     ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.js']
   },
   devServer: {
     proxy: {
