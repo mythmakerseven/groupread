@@ -38,7 +38,7 @@ test('groups are returned as json', async () => {
 const exampleGroup = {
   'bookTitle': 'Gravity\'s Rainbow',
   'bookAuthor': 'Thomas Pynchon',
-  'bookYear': '1973',
+  'bookYear': 1973,
   'bookIsbn': '0143039946',
   'bookPageCount': 777
 }
@@ -64,7 +64,7 @@ describe('creating a group', () => {
   test('fails when title is missing', async () => {
     const malformedGroup = {
       'bookAuthor': 'Thomas Pynchon',
-      'bookYear': '1973',
+      'bookYear': 1973,
       'bookIsbn': '0143039946',
       'bookPageCount': 777
     }
@@ -80,7 +80,7 @@ describe('creating a group', () => {
     const malformedGroup = {
       'bookTitle': 'Gravity\'s Rainbow',
       'bookAuthor': 'Thomas Pynchon',
-      'bookYear': '1973',
+      'bookYear': 1973,
       'bookIsbn': '97463657483927865628379',
       'bookPageCount': 777
     }
@@ -96,7 +96,7 @@ describe('creating a group', () => {
     const malformedGroup = {
       'bookTitle': 'Gravity\'s Rainbow',
       'bookAuthor': 'Thomas Pynchon',
-      'bookYear': '1973',
+      'bookYear': 1973,
       'bookIsbn': '0143ABCD46',
       'bookPageCount': 777
     }
@@ -112,7 +112,7 @@ describe('creating a group', () => {
     const malformedGroup = {
       'bookTitle': 'Gravity\'s Rainbow',
       'bookAuthor': 'Thomas Pynchon',
-      'bookYear': '19733',
+      'bookYear': 19733,
       'bookIsbn': '0143039946',
       'bookPageCount': 777
     }
@@ -128,7 +128,7 @@ describe('creating a group', () => {
     const malformedGroup = {
       'bookTitle': 'Gravity\'s Rainbow',
       'bookAuthor': 'Thomas Pynchon',
-      'bookYear': '1973',
+      'bookYear': 1973,
       'bookIsbn': '0143039946'
     }
 
@@ -143,7 +143,7 @@ describe('creating a group', () => {
     const malformedGroup = {
       'bookTitle': 'Gravity\'s Rainbow',
       'bookAuthor': 'Thomas Pynchon',
-      'bookYear': '1973',
+      'bookYear': 1973,
       'bookIsbn': '0143039946',
       'bookPageCount': 'over 9000!'
     }
