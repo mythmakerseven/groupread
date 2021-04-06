@@ -10,7 +10,15 @@ const GroupNewPost = () => {
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const { register, handleSubmit, setError, errors } = useForm()
+  const {
+    register,
+    handleSubmit,
+    setError,
+
+    formState: {
+      errors,
+    },
+  } = useForm()
 
   const user = useSelector(({ user }) => user)
 
@@ -46,10 +54,8 @@ const GroupNewPost = () => {
             <input
               className='input'
               type='text'
-              name='title'
-              placeholder='Title goes here'
-              ref={register( { required: true })}
-            />
+              {...register('title', { required: true })}
+              placeholder='Title goes here' />
           </div>
         </div>
         <ErrorMessage errors={errors} name='text' message='We need some text here' />
@@ -58,17 +64,15 @@ const GroupNewPost = () => {
           <div className='control'>
             <textarea
               className='textarea'
-              name='text'
+              {...register('text', { required: true })}
               placeholder='Type something here'
-              rows={10}
-              ref={register({ required: true })}
-            />
+              rows={10} />
           </div>
         </div>
         <button className='button is-primary' type='submit'>Submit post</button>
       </form>
     </div>
-  )
+  );
 }
 
 export default GroupNewPost

@@ -9,7 +9,17 @@ const GroupScheduler = () => {
   const [weeks, setWeeks] = useState(1)
   const dispatch = useDispatch()
   const history = useHistory()
-  const { register, handleSubmit, setValue, setError, watch, errors } = useForm()
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    watch,
+
+    formState: {
+      errors,
+    },
+  } = useForm()
 
   const watchWeeks = watch('weeks')
 
@@ -122,14 +132,8 @@ const GroupScheduler = () => {
                   className='input'
                   type='number'
                   name={`${i}`}
-                  defaultValue={calculatePage(i)} // make sure the last item is properly filled in
-                  ref={register({
-                    required: {
-                      value: true,
-                      message: 'All weeks must have a page value'
-                    }
-                  })}
-                />
+                  // make sure the last item is properly filled in
+                  defaultValue={calculatePage(i)} />
               </div>
             </div>
           </td>
@@ -164,17 +168,15 @@ const GroupScheduler = () => {
                 style={{ maxWidth: '100px' }}
                 className='input is-medium'
                 type='number'
-                name='weeks'
-                min='1'
-                max='26'
-                defaultValue={suggestWeeklyAmount(group.bookPageCount).recommendedWeeks}
-                ref={register({
+                {...register('weeks', {
                   required: {
                     value: true,
                     message: 'Number of weeks is required'
                   }
                 })}
-              />
+                min='1'
+                max='26'
+                defaultValue={suggestWeeklyAmount(group.bookPageCount).recommendedWeeks} />
             </div>
           </div>
         </div>
@@ -196,7 +198,7 @@ const GroupScheduler = () => {
         </div>
       </form>
     </div>
-  )
+  );
 }
 
 export default GroupScheduler

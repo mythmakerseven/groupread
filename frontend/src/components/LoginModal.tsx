@@ -9,7 +9,15 @@ const LoginModal = ({ open, setOpen }) => {
   const [showRegisterForm, setShowRegisterForm] = useState(false)
 
   const dispatch = useDispatch()
-  const { register, handleSubmit, setError, errors } = useForm()
+  const {
+    register,
+    handleSubmit,
+    setError,
+
+    formState: {
+      errors,
+    },
+  } = useForm()
 
   const handleForm = () => {
     if (!showRegisterForm) {
@@ -23,8 +31,7 @@ const LoginModal = ({ open, setOpen }) => {
                 className='input'
                 type='text'
                 placeholder='username'
-                name='loginUsername'
-                ref={register({
+                {...register('loginUsername', {
                   required:
                   {
                     value: true,
@@ -34,8 +41,7 @@ const LoginModal = ({ open, setOpen }) => {
                     value: 32,
                     message: 'Username must be fewer than 32 characters'
                   }
-                })}
-              />
+                })} />
             </div>
           </div>
           <ErrorMessage errors={errors} name='loginPassword' />
@@ -46,8 +52,7 @@ const LoginModal = ({ open, setOpen }) => {
                 className='input'
                 type='password'
                 placeholder='&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;'
-                name='loginPassword'
-                ref={register({
+                {...register('loginPassword', {
                   required:
                   {
                     value: true,
@@ -58,13 +63,12 @@ const LoginModal = ({ open, setOpen }) => {
                     value: 8,
                     message: 'Password must be at least 8 characters'
                   }
-                })}
-              />
+                })} />
             </div>
           </div>
           <button className='button is-success' type="submit">Log In</button>
         </form>
-      )
+      );
     } else {
       return (
         <form key={2} onSubmit={handleSubmit(handleRegister)}>
@@ -76,8 +80,7 @@ const LoginModal = ({ open, setOpen }) => {
                 className='input'
                 type='text'
                 placeholder='username'
-                name='registerUsername'
-                ref={register({
+                {...register('registerUsername', {
                   required:
                   {
                     value: true,
@@ -87,8 +90,7 @@ const LoginModal = ({ open, setOpen }) => {
                     value: 32,
                     message: 'Username must be fewer than 32 characters'
                   }
-                })}
-              />
+                })} />
             </div>
           </div>
           <ErrorMessage errors={errors} name='registerDisplayName' />
@@ -99,8 +101,7 @@ const LoginModal = ({ open, setOpen }) => {
                 className='input'
                 type='text'
                 placeholder='My Name'
-                name='registerDisplayName'
-                ref={register({
+                {...register('registerDisplayName', {
                   required:
                   {
                     value: true,
@@ -110,8 +111,7 @@ const LoginModal = ({ open, setOpen }) => {
                     value: 32,
                     message: 'Display name must be fewer than 32 characters'
                   }
-                })}
-              />
+                })} />
             </div>
           </div>
           <ErrorMessage errors={errors} name='registerPassword' />
@@ -122,8 +122,7 @@ const LoginModal = ({ open, setOpen }) => {
                 className='input'
                 type='password'
                 placeholder='&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;'
-                name='registerPassword'
-                ref={register({
+                {...register('registerPassword', {
                   required:
                   {
                     value: true,
@@ -134,8 +133,7 @@ const LoginModal = ({ open, setOpen }) => {
                     value: 8,
                     message: 'Password must be at least 8 characters'
                   }
-                })}
-              />
+                })} />
             </div>
           </div>
           <ErrorMessage errors={errors} name='registerEmail' />
@@ -146,20 +144,18 @@ const LoginModal = ({ open, setOpen }) => {
                 className='input'
                 type='email'
                 placeholder='you@example.com'
-                name='registerEmail'
-                ref={register({
+                {...register('registerEmail', {
                   required:
                   {
                     value: true,
                     message: 'Email is required'
                   }
-                })}
-              />
+                })} />
             </div>
           </div>
           <button className='button is-success' type="submit">Register</button>
         </form>
-      )
+      );
     }
   }
 

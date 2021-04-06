@@ -104,9 +104,11 @@ groupsRouter.post('/', async (req, res) => {
     }
   }
 
+  console.log(body)
+
   const year = body.bookYear
   // years must be 4 digits - maybe an issue for edge cases of ancient books
-  if (year && (year.length !== 4 || isNaN(Number(year)))) {
+  if (year && (year.toString().length !== 4 || !Number.isInteger(year))) {
     return res
       .status(400)
       .json({ error: 'Invalid year' })

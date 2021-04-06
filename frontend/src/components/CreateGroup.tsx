@@ -13,7 +13,17 @@ const CreateGroup = () => {
 
   const dispatch = useDispatch()
   const history = useHistory()
-  const { register, handleSubmit, setValue, watch, setError, errors } = useForm()
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    setError,
+
+    formState: {
+      errors,
+    },
+  } = useForm()
 
   const groupFormData = useSelector(({ groupFormData }) => groupFormData)
   const user = useSelector(({ user }) => user)
@@ -46,6 +56,8 @@ const CreateGroup = () => {
       bookPageCount: data.bookPageCount,
       bookOLID: groupFormData.bookOLID
     }
+
+    console.log(groupObject)
 
     const res = await dispatch(createGroup(groupObject, user.token))
 
@@ -80,15 +92,13 @@ const CreateGroup = () => {
               className='input'
               type='text'
               placeholder='e.g. The Brothers Karamazov'
-              name='bookTitle'
-              defaultValue={groupFormData.bookTitle}
-              ref={register( {
+              {...register('bookTitle', {
                 required: {
                   value: true,
                   message: 'Book title is required'
                 }
               })}
-            />
+              defaultValue={groupFormData.bookTitle} />
           </div>
         </div>
         <div className='field'>
@@ -98,10 +108,8 @@ const CreateGroup = () => {
               className='input'
               type='text'
               placeholder='e.g. Fyodor Dostoyevsky'
-              name='bookAuthor'
-              defaultValue={groupFormData.bookAuthor}
-              ref={register}
-            />
+              {...register('bookAuthor')}
+              defaultValue={groupFormData.bookAuthor} />
           </div>
         </div>
         <div className='field'>
@@ -112,15 +120,13 @@ const CreateGroup = () => {
               className='input'
               type='text'
               placeholder='e.g. 1880'
-              name='bookYear'
-              defaultValue={groupFormData.bookYear}
-              ref={register({
+              {...register('bookYear', {
                 pattern: {
                   value: /^\d{4}$/,
                   message: 'Please enter a valid year'
                 }
               })}
-            />
+              defaultValue={groupFormData.bookYear} />
           </div>
         </div>
         <div className='field'>
@@ -131,9 +137,7 @@ const CreateGroup = () => {
               className='input'
               type='text'
               placeholder='e.g. 9780374528379'
-              name='bookIsbn'
-              defaultValue={groupFormData.bookIsbn}
-              ref={register({
+              {...register('bookIsbn', {
                 // TODO: replace with regex pattern
                 minLength: {
                   value: 10,
@@ -144,7 +148,7 @@ const CreateGroup = () => {
                   message: 'ISBN must be either 10 or 13 characters'
                 }
               })}
-            />
+              defaultValue={groupFormData.bookIsbn} />
           </div>
         </div>
         <div className='field'>
@@ -155,8 +159,7 @@ const CreateGroup = () => {
               className='input'
               type='text'
               placeholder='e.g. 776'
-              name='bookPageCount'
-              ref={register({
+              {...register('bookPageCount', {
                 required: {
                   value: true,
                   message: 'Please enter a page count'
@@ -165,8 +168,7 @@ const CreateGroup = () => {
                   value: /^\d+$/,
                   message: 'Page count must be a number'
                 }
-              })}
-            />
+              })} />
           </div>
         </div>
         <div className='buttons'>
@@ -182,7 +184,7 @@ const CreateGroup = () => {
         />
       </form>
     </div>
-  )
+  );
 }
 
 export default CreateGroup

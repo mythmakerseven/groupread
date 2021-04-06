@@ -11,7 +11,16 @@ dayjs.extend(relativeTime)
 
 const PostView = () => {
   const dispatch = useDispatch()
-  const { register, handleSubmit, setValue, setError, errors } = useForm()
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+
+    formState: {
+      errors,
+    },
+  } = useForm()
   const { id, pid } = useParams()
 
   useEffect(() => {
@@ -95,17 +104,15 @@ const PostView = () => {
           <div className='control'>
             <textarea
               className='textarea'
-              name='text'
+              {...register('text', { required: true })}
               placeholder='Type something here'
-              rows={6}
-              ref={register({ required: true })}
-            />
+              rows={6} />
           </div>
         </div>
         <button className='button is-primary' type='submit'>Submit</button>
       </form>
     </div>
-  )
+  );
 }
 
 export default PostView
