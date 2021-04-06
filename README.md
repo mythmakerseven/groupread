@@ -36,7 +36,7 @@ I also chose not to use create-react-app, if only to learn more about the intern
 
 - ~~change frontend .js files to .tsx and make sure they build~~
 
-- change backend .js files to .tsx and make sure they build
+- change backend .js files to .ts and make sure they build
 
 - create the most obvious types (e.g. group data, user data) and look into sharing them across back- and frontend
 
