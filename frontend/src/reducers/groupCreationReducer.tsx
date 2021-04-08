@@ -1,70 +1,45 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+export interface GroupCreationState {
+  bookTitle: string | null,
+  bookAuthor: string | null,
+  bookYear: number | null,
+  bookIsbn: string | null,
+  bookOLID: string | null
+}
+
 export const initialState = {
-  bookTitle: '',
-  bookAuthor: '',
-  bookYear: '',
-  bookIsbn: ''
-}
+  bookTitle: null,
+  bookAuthor: null,
+  bookYear: null,
+  bookIsbn: null,
+  bookOLID: null
+} as GroupCreationState
 
-export const formUpdateTitle = title => {
-  return dispatch => {
-    dispatch({
-      type: 'FORM_UPDATE_TITLE',
-      data: title
-    })
+const groupCreationSlice = createSlice({
+  name: 'groupCreationForm',
+  initialState,
+  reducers: {
+    formUpdateTitle(state, action: PayloadAction<string>) {
+      state.bookTitle = action.payload
+    },
+    formUpdateAuthor(state, action: PayloadAction<string>) {
+      state.bookAuthor = action.payload
+    },
+    formUpdateYear(state, action: PayloadAction<number>) {
+      state.bookYear = action.payload
+    },
+    formUpdateIsbn(state, action: PayloadAction<string>) {
+      state.bookIsbn = action.payload
+    },
+    formUpdateOLID(state, action: PayloadAction<string>) {
+      state.bookOLID = action.payload
+    }
   }
-}
+})
 
-export const formUpdateAuthor = author => {
-  return dispatch => {
-    dispatch({
-      type: 'FORM_UPDATE_AUTHOR',
-      data: author
-    })
-  }
-}
+export const { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } = groupCreationSlice.actions
 
-export const formUpdateYear = year => {
-  return dispatch => {
-    dispatch({
-      type: 'FORM_UPDATE_YEAR',
-      data: year
-    })
-  }
-}
+export default groupCreationSlice.reducer
 
-export const formUpdateIsbn = isbn => {
-  return dispatch => {
-    dispatch({
-      type: 'FORM_UPDATE_ISBN',
-      data: isbn
-    })
-  }
-}
-
-export const formUpdateOLID = olid => {
-  return dispatch => {
-    dispatch({
-      type: 'FORM_UPDATE_OLID',
-      data: olid
-    })
-  }
-}
-
-const groupCreationReducer = (state = initialState, action) => {
-  switch(action.type) {
-  case 'FORM_UPDATE_TITLE':
-    return { ...state, bookTitle: action.data }
-  case 'FORM_UPDATE_AUTHOR':
-    return { ...state, bookAuthor: action.data }
-  case 'FORM_UPDATE_YEAR':
-    return { ...state, bookYear: action.data }
-  case 'FORM_UPDATE_ISBN':
-    return { ...state, bookIsbn: action.data }
-  case 'FORM_UPDATE_OLID':
-    return { ...state, bookOLID: action.data }
-  default:
-    return state
-  }
-}
-
-export default groupCreationReducer
+export const groupFormSelector = (state: { groupCreationStore: GroupCreationState }): GroupCreationState => state.groupCreationStore
