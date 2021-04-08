@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { registerUser } from '../../reducers/userReducer'
 import { useDispatch } from 'react-redux'
 import { ErrorMessage } from '@hookform/error-message'
+import { RegisterData } from '../../types'
 
 interface Props {
   setOpen(boolean: boolean): void
@@ -21,7 +22,7 @@ const RegisterForm: React.FC<Props> = ({ setOpen }) => {
     },
   } = useForm()
 
-  const handleRegister = async (data) => {
+  const handleRegister = async (data: RegisterData) => {
     const userCredentials = {
       username: data.registerUsername,
       displayName: data.registerDisplayName,

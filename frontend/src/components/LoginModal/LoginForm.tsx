@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { logInUser } from '../../reducers/userReducer'
 import { useDispatch } from 'react-redux'
 import { ErrorMessage } from '@hookform/error-message'
+import { LoginData } from '../../types'
 
 interface Props {
   setOpen(boolean: boolean): void
@@ -21,7 +22,7 @@ const LoginForm: React.FC<Props> = ({ setOpen }) => {
     },
   } = useForm()
 
-  const handleLogin = async (data) => {
+  const handleLogin = async (data: LoginData) => {
     const userCredentials = {
       username: data.loginUsername,
       password: data.loginPassword

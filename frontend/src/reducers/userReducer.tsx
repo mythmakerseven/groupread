@@ -1,6 +1,7 @@
 import login from '../services/login'
 import userService from '../services/users'
 import postService from '../services/posts'
+import { LoginData, RegisterData } from '../types'
 
 // When the site is reloaded, the login cookie is validated serverside
 // to make sure 1) the user account still exists and 2) the token is still valid
@@ -28,10 +29,10 @@ export const initializeUser = () => {
   }
 }
 
-export const logInUser = userObject => {
+export const logInUser = (loginCredentials: LoginData) => {
   return async dispatch => {
     try {
-      const user = await login.login(userObject)
+      const user = await login.login(loginCredentials)
       await window.localStorage.setItem('loggedInGroupreader', JSON.stringify(user))
       dispatch({
         type: 'LOGIN',
@@ -53,10 +54,10 @@ export const logOutUser = () => {
   }
 }
 
-export const registerUser = userObject => {
+export const registerUser = (registerCredentials: RegisterData) => {
   return async dispatch => {
     try{
-      const user = await login.register(userObject)
+      const user = await login.register(registerCredentials)
       await window.localStorage.setItem('loggedInGroupreader', JSON.stringify(user))
       dispatch({
         type: 'REGISTER',
