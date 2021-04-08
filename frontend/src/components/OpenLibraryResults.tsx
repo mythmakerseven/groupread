@@ -18,7 +18,6 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
 
     const queryArray = [titleString, authorString, isbnString].filter(q => q)
     const queryString = `https://openlibrary.org/search.json?${queryArray.join('&')}`
-    console.log(queryString)
     return queryString
   }
 

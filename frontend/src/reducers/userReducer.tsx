@@ -62,10 +62,8 @@ export const registerUser = userObject => {
         type: 'REGISTER',
         data: user
       })
-      console.log('test')
       return user
     } catch(error) {
-      console.log(error)
       return error.response.data
     }
   }

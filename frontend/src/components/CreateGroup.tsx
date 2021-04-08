@@ -57,8 +57,6 @@ const CreateGroup = () => {
       bookOLID: groupFormData.bookOLID
     }
 
-    console.log(groupObject)
-
     const res = await dispatch(createGroup(groupObject, user.token))
 
     if (res.error) {
