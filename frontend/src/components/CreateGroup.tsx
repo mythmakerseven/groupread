@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { createGroup } from '../reducers/groupReducer'
 import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
@@ -7,11 +7,12 @@ import OpenLibraryResults from './OpenLibraryResults'
 import { useHistory } from 'react-router-dom'
 import { initialState as initialFormState } from '../reducers/groupCreationReducer'
 import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../reducers/groupCreationReducer'
+import { GroupCreationData } from '../types'
 
 const CreateGroup = () => {
   const [modalOpen, setModalOpen] = useState(false)
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const history = useHistory()
   const {
     register,
@@ -23,10 +24,10 @@ const CreateGroup = () => {
     formState: {
       errors,
     },
-  } = useForm()
+  } = useForm<GroupCreationData>()
 
-  const groupFormData = useSelector(({ groupFormData }) => groupFormData)
-  const user = useSelector(({ user }) => user)
+  const groupFormData = useAppSelector(({ groupFormData }) => groupFormData)
+  const user = useAppSelector(({ user }) => user)
 
   const queryTitle = watch('bookTitle')
   const queryAuthor = watch('bookAuthor')
@@ -47,7 +48,7 @@ const CreateGroup = () => {
     )
   }
 
-  const handleGroup = async (data) => {
+  const handleGroup = async (data: GroupCreationData) => {
     const groupObject = {
       bookTitle: data.bookTitle,
       bookAuthor: data.bookAuthor,
@@ -63,11 +64,11 @@ const CreateGroup = () => {
       return setError('bookTitle', { message: `${res.error}` })
     }
 
-    dispatch(formUpdateTitle(''))
-    dispatch(formUpdateAuthor(''))
-    dispatch(formUpdateYear(''))
-    dispatch(formUpdateIsbn(''))
-    dispatch(formUpdateOLID(''))
+    dispatch(formUpdateTitle(null))
+    dispatch(formUpdateAuthor(null))
+    dispatch(formUpdateYear(null))
+    dispatch(formUpdateIsbn(null))
+    dispatch(formUpdateOLID(null))
 
     history.push(`/groups/${res.id}/schedule`)
   }
@@ -96,7 +97,12 @@ const CreateGroup = () => {
                   message: 'Book title is required'
                 }
               })}
-              defaultValue={groupFormData.bookTitle} />
+              defaultValue={
+                groupFormData.bookTitle
+                ? groupFormData.bookTitle
+                : undefined
+              }
+            />
           </div>
         </div>
         <div className='field'>
@@ -107,7 +113,12 @@ const CreateGroup = () => {
               type='text'
               placeholder='e.g. Fyodor Dostoyevsky'
               {...register('bookAuthor')}
-              defaultValue={groupFormData.bookAuthor} />
+              defaultValue={
+                groupFormData.bookAuthor
+                ? groupFormData.bookAuthor
+                : undefined
+              }
+            />
           </div>
         </div>
         <div className='field'>
@@ -124,7 +135,12 @@ const CreateGroup = () => {
                   message: 'Please enter a valid year'
                 }
               })}
-              defaultValue={groupFormData.bookYear} />
+              defaultValue={
+                groupFormData.bookYear
+                ? groupFormData.bookYear
+                : undefined
+              }
+              />
           </div>
         </div>
         <div className='field'>
@@ -146,7 +162,12 @@ const CreateGroup = () => {
                   message: 'ISBN must be either 10 or 13 characters'
                 }
               })}
-              defaultValue={groupFormData.bookIsbn} />
+              defaultValue={
+                groupFormData.bookIsbn
+                ? groupFormData.bookIsbn
+                : undefined
+              }
+            />
           </div>
         </div>
         <div className='field'>

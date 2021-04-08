@@ -20,19 +20,19 @@ const groupCreationSlice = createSlice({
   name: 'groupCreationForm',
   initialState,
   reducers: {
-    formUpdateTitle(state, action: PayloadAction<string>) {
+    formUpdateTitle(state, action: PayloadAction<string | null>) {
       state.bookTitle = action.payload
     },
-    formUpdateAuthor(state, action: PayloadAction<string>) {
+    formUpdateAuthor(state, action: PayloadAction<string | null>) {
       state.bookAuthor = action.payload
     },
-    formUpdateYear(state, action: PayloadAction<number>) {
+    formUpdateYear(state, action: PayloadAction<number | null>) {
       state.bookYear = action.payload
     },
-    formUpdateIsbn(state, action: PayloadAction<string>) {
+    formUpdateIsbn(state, action: PayloadAction<string | null>) {
       state.bookIsbn = action.payload
     },
-    formUpdateOLID(state, action: PayloadAction<string>) {
+    formUpdateOLID(state, action: PayloadAction<string | null>) {
       state.bookOLID = action.payload
     }
   }
