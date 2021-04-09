@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",
-    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-env": "^7.13.15",
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.13.0",
     "babel-loader": "^8.2.2",
