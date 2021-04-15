@@ -3,16 +3,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import login from '../services/login'
 import userService from '../services/users'
 import postService from '../services/posts'
-import { LoginData, RegisterData } from '../types'
+import { LoginData, RegisterData, UserObject } from '../types'
 
-export interface UserInfo {
-  username: string,
-  displayName: string,
-  id: string,
-  token: string
-}
-
-export type UserState = UserInfo | null
+export type UserState = UserObject | null
 
 export const initialState = null as UserState
 
@@ -109,6 +102,17 @@ const userSlice = createSlice({
     })
   }
 })
+
+export const { logOutUser } = userSlice.actions
+
+// other functions (so you don't have to scroll up):
+// initializeUser, logInUser, registerUser
+
+export default userSlice.reducer
+
+export const userSelector = (state: { userStore: UserState }): UserState => state.userStore
+
+// Previous code temporarily saved below in case something breaks
 
 // export const initializeUser = () => {
 //   return async dispatch => {
@@ -211,12 +215,3 @@ const userSlice = createSlice({
 // }
 
 // export default userReducer
-
-export const { logOutUser } = userSlice.actions
-
-// other functions (so you don't have to scroll up):
-// initializeUser, logInUser, registerUser
-
-export default userSlice.reducer
-
-export const userSelector = (state: { userStore: UserState }): UserState => state.userStore

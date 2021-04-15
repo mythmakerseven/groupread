@@ -20,8 +20,8 @@ export interface GroupCreationData {
 }
 
 export interface UserObject {
-  username: string | null,
-  displayName: string | null,
-  id: string | null,
-  token: string | null
+  username: string,
+  displayName: string,
+  id: string,
+  token: string
 }
