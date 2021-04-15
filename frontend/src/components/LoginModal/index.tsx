@@ -25,8 +25,8 @@ const LoginModal: React.FC<Props> = ({ open, setOpen }) => {
         <div className='box'>
           <div className='tabs'>
             <ul>
-              <li className={showRegisterForm ? null : 'is-active'} onClick={() => setShowRegisterForm(false)}><a>Log in</a></li>
-              <li className={showRegisterForm ? 'is-active' : null} onClick={() => setShowRegisterForm(true)}><a>Register</a></li>
+              <li className={showRegisterForm ? undefined : 'is-active'} onClick={() => setShowRegisterForm(false)}><a>Log in</a></li>
+              <li className={showRegisterForm ? 'is-active' : undefined} onClick={() => setShowRegisterForm(true)}><a>Register</a></li>
             </ul>
           </div>
           {handleForm()}

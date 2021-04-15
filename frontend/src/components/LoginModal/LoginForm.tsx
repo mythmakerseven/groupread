@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { logInUser } from '../../reducers/userReducer'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../../hooks'
 import { ErrorMessage } from '@hookform/error-message'
 import { LoginData } from '../../types'
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const LoginForm: React.FC<Props> = ({ setOpen }) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const {
     register,
@@ -24,19 +24,22 @@ const LoginForm: React.FC<Props> = ({ setOpen }) => {
 
   const handleLogin = async (data: LoginData) => {
     const userCredentials = {
-      username: data.loginUsername,
-      password: data.loginPassword
+      username: data.username,
+      password: data.password
     }
     const res = await dispatch(logInUser(userCredentials))
+
+    // TODO: investigate TypeScript's complaint on the lines below
+    // the code works fine so 🤔
     if (res.error) {
-      return setError('loginUsername', { message: `${res.error}` })
+      return setError('username', { message: `${res.error.message}` })
     }
     setOpen(false)
   }
 
   return (
     <form key={1} onSubmit={handleSubmit(handleLogin)}>
-      <ErrorMessage errors={errors} name='loginUsername' />
+      <ErrorMessage errors={errors} name='username' />
       <div className='field'>
         <label className='label'>Username</label>
         <div className='control'>
@@ -44,7 +47,7 @@ const LoginForm: React.FC<Props> = ({ setOpen }) => {
             className='input'
             type='text'
             placeholder='username'
-            {...register('loginUsername', {
+            {...register('username', {
               required:
               {
                 value: true,
@@ -57,7 +60,7 @@ const LoginForm: React.FC<Props> = ({ setOpen }) => {
             })} />
         </div>
       </div>
-      <ErrorMessage errors={errors} name='loginPassword' />
+      <ErrorMessage errors={errors} name='password' />
       <div className='field'>
         <label className='label'>Password</label>
         <div className='control'>
@@ -65,7 +68,7 @@ const LoginForm: React.FC<Props> = ({ setOpen }) => {
             className='input'
             type='password'
             placeholder='&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;'
-            {...register('loginPassword', {
+            {...register('password', {
               required:
               {
                 value: true,

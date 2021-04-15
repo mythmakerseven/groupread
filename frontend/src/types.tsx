@@ -1,13 +1,13 @@
 export interface LoginData {
-  loginUsername: string,
-  loginPassword: string
+  username: string,
+  password: string
 }
 
 export interface RegisterData {
-  registerUsername: string,
-  registerPassword: string,
-  registerDisplayName: string,
-  registerEmail: string,
+  username: string,
+  password: string,
+  displayName: string,
+  email: string,
 }
 
 export interface GroupCreationData {
@@ -17,4 +17,11 @@ export interface GroupCreationData {
   bookIsbn: string | null,
   bookPageCount: number | null,
   bookOLID: string | null
+}
+
+export interface UserObject {
+  username: string | null,
+  displayName: string | null,
+  id: string | null,
+  token: string | null
 }

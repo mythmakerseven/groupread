@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { registerUser } from '../../reducers/userReducer'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../../hooks'
 import { ErrorMessage } from '@hookform/error-message'
 import { RegisterData } from '../../types'
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const RegisterForm: React.FC<Props> = ({ setOpen }) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const {
     register,
@@ -24,15 +24,16 @@ const RegisterForm: React.FC<Props> = ({ setOpen }) => {
 
   const handleRegister = async (data: RegisterData) => {
     const userCredentials = {
-      username: data.registerUsername,
-      displayName: data.registerDisplayName,
-      password: data.registerPassword,
-      email: data.registerEmail,
+      username: data.username,
+      displayName: data.displayName,
+      password: data.password,
+      email: data.email,
     }
 
+    // TODO: see comment on corresponding ./LoginForm code
     const res = await dispatch(registerUser(userCredentials))
     if (res.error) {
-      return setError('registerUsername', { message: `${res.error}` })
+      return setError('username', { message: `${res.error.message}` })
     }
     setOpen(false)
   }
@@ -40,7 +41,7 @@ const RegisterForm: React.FC<Props> = ({ setOpen }) => {
   return (
     (
       <form key={2} onSubmit={handleSubmit(handleRegister)}>
-        <ErrorMessage errors={errors} name='registerUsername' />
+        <ErrorMessage errors={errors} name='username' />
         <div className='field'>
           <label className='label'>Username</label>
           <div className='control'>
@@ -48,7 +49,7 @@ const RegisterForm: React.FC<Props> = ({ setOpen }) => {
               className='input'
               type='text'
               placeholder='username'
-              {...register('registerUsername', {
+              {...register('username', {
                 required:
                 {
                   value: true,
@@ -61,7 +62,7 @@ const RegisterForm: React.FC<Props> = ({ setOpen }) => {
               })} />
           </div>
         </div>
-        <ErrorMessage errors={errors} name='registerDisplayName' />
+        <ErrorMessage errors={errors} name='displayName' />
         <div className='field'>
           <label className='label'>Display Name</label>
           <div className='control'>
@@ -69,7 +70,7 @@ const RegisterForm: React.FC<Props> = ({ setOpen }) => {
               className='input'
               type='text'
               placeholder='My Name'
-              {...register('registerDisplayName', {
+              {...register('displayName', {
                 required:
                 {
                   value: true,
@@ -82,7 +83,7 @@ const RegisterForm: React.FC<Props> = ({ setOpen }) => {
               })} />
           </div>
         </div>
-        <ErrorMessage errors={errors} name='registerPassword' />
+        <ErrorMessage errors={errors} name='password' />
         <div className='field'>
           <label className='label'>Password</label>
           <div className='control'>
@@ -90,7 +91,7 @@ const RegisterForm: React.FC<Props> = ({ setOpen }) => {
               className='input'
               type='password'
               placeholder='&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;'
-              {...register('registerPassword', {
+              {...register('password', {
                 required:
                 {
                   value: true,
@@ -104,7 +105,7 @@ const RegisterForm: React.FC<Props> = ({ setOpen }) => {
               })} />
           </div>
         </div>
-        <ErrorMessage errors={errors} name='registerEmail' />
+        <ErrorMessage errors={errors} name='email' />
         <div className='field'>
           <label className='label'>Email</label>
           <div className='control'>
@@ -112,7 +113,7 @@ const RegisterForm: React.FC<Props> = ({ setOpen }) => {
               className='input'
               type='email'
               placeholder='you@example.com'
-              {...register('registerEmail', {
+              {...register('email', {
                 required:
                 {
                   value: true,

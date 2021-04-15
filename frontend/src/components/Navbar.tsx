@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { Link } from 'react-router-dom'
 import LoginModal from './LoginModal'
 import { initializeUser, logOutUser } from '../reducers/userReducer'
@@ -7,13 +7,15 @@ import { initializeUser, logOutUser } from '../reducers/userReducer'
 const Navbar = () => {
   const [openModal, setOpenModal] = useState(false)
   const [menuVisible, setMenuVisible] = useState(false)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(initializeUser())
   }, [dispatch])
 
-  const user = useSelector(({ user }) => user)
+  const user = useAppSelector(({ user }) => user)
+
+  console.log(user)
 
   const handleLoginModal = () => {
     if (!openModal) {
