@@ -4,6 +4,16 @@ Groupread is a website for hosting book discussions. Pick a book via OpenLibrary
 
 *Note: the development version of the site has a public listing of all groups for ease of development and showcasing - the current plan is to remove the list in 1.0.
 
+## Table of Contents
+
+- [Developer notes](#developer-notes)
+
+- [To do](#to-do)
+
+  - [TypeScript roadmap](#typescript-roadmap)
+
+- [How to run](#how-to-run)
+
 ## Developer notes
 
 This has been my largest project by far, not least because I have challenged myself with new tools and techniques compared to previous projects. All my previous database work involved MongoDB, but for Groupread I branched out into Postgres, which led to replacing Mongoose with Sequelize. Sequelize is definitely more complex than Mongoose, and its docs are pretty bad. Particularly in the early stages of development, I had a lot of issues caused by poor documentation of basic functionality. I managed to hack it together with the help of random blog posts and StackOverflow pages, and now it's not too hard to work with.
@@ -14,37 +24,43 @@ I also chose not to use create-react-app, if only to learn more about the intern
 
 ## To do
 
-- migrate to TypeScript (see below)
+⭐ = priority level
 
-- ~~automated scheduling of discussion threads~~
+- migrate to TypeScript (see below) ⭐⭐⭐
 
-- editing functionality for posts and comments
+- ~~automated scheduling of discussion threads~~ ⭐⭐
 
-- moderation tools for group owners
+- editing functionality for posts and comments ⭐⭐
 
-- ~~proper display of authors for books with multiple authors~~
+- moderation tools for group owners ⭐⭐⭐
 
-- custom URL support for book covers (OL has spotty coverage)
+- ~~proper display of authors for books with multiple authors~~ ⭐
 
-- address webpack warning about bundle size to improve loading performance
+- custom URL support for book covers (OL has spotty coverage) ⭐
 
-- proper frontend testing, probably with Cypress
+- address webpack warning about bundle size to improve loading performance ⭐
 
-- ~~enhanced security (token expiration and validation, etc)~~
+- proper frontend testing with Cypress ⭐⭐⭐
+
+- ~~enhanced security (token expiration and validation, etc)~~ ⭐⭐⭐
 
 ### TypeScript roadmap
 
 - ~~change frontend .js files to .tsx and make sure they build~~
 
-- change backend .js files to .ts and make sure they build
+- set up build process for backend to prepare for TypeScript conversion
 
-- create the most obvious types (e.g. group data, user data) and look into sharing them across back- and frontend
+  - rewrite validation code in ``/controllers`` to make full use of TypeScript
 
-  - possibly restructure so the repo root contains ``backend``, ``frontend``, and ``types`` folders
+- ~~create the most obvious types (e.g. group data, user data)~~
+
+  - share types across back- and frontend where appropriate
+
+  - restructure so the repo root contains ``backend``, ``frontend``, and ``types`` folders
 
 - refactor Redux and React Hook Form code to satisfy TypeScript
 
-- rewrite validation code in ``/controllers`` to make full use of TypeScript
+  - migrate fully to Redux Toolkit
 
 ## How to run
 
