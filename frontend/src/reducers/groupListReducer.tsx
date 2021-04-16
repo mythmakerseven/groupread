@@ -1,27 +1,33 @@
 // IMPORTANT: This reducer is temporary for early development. Version 1.0 will not load all groups into state.
 
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import groupService from '../services/groups'
 
-export const getAllGroups = () => {
-  return async dispatch => {
-    const groups = await groupService.getAllGroups()
-    dispatch({
-      type: 'INIT_GROUPS',
-      data: groups
-    })
-  }
-}
+// TODO: implement a proper type for group data
+type groupListState = Array<Object>
 
-const groupListReducer = (state = [], action) => {
-  switch(action.type) {
-  case 'INIT_GROUPS':
-  {
-    const groups = action.data
+const initialState = [] as groupListState
+
+export const getAllGroups = createAsyncThunk(
+  '/groupList/getAllGroupsStatus',
+  async (thunkAPI) => {
+    let groups = await groupService.getAllGroups()
     return groups
   }
-  default:
-    return state
-  }
-}
+)
 
-export default groupListReducer
+// TODO: handle connection errors if the server is down
+const groupListSlice = createSlice({
+  name: 'groupList',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(getAllGroups.fulfilled, (state, { payload }) => {
+      return state = payload
+    })
+  }
+})
+
+export default groupListSlice.reducer
+
+export const groupListSelector = (state: { groupListStore: groupListState }): groupListState => state.groupListStore
