@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { getAllGroups } from '../reducers/groupListReducer'
 import { Link } from 'react-router-dom'
 
 const GroupList = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(getAllGroups())
   }, [dispatch])
 
-  const groups = useSelector(({ groupList }) => groupList)
+  const groups = useAppSelector(({ groupList }) => groupList)
 
   return (
-    <div className='container pt-4 pb-4'>
-      <h1 className='title' textalign='center'>
-        Groups
+    <div className='container has-text-centered pt-5 pb-4'>
+      <h1 className='title'>
+        All Groups
       </h1>
       <div className='columns is-centered'>
         <div className='column is-5'>
