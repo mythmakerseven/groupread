@@ -1,188 +1,212 @@
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import groupService from '../services/groups'
 import postService from '../services/posts'
 
-export const getGroupDetails = id => {
-  return async dispatch => {
-    const group = await groupService.getGroupDetails(id)
-    dispatch({
-      type: 'VIEW_GROUP',
-      data: group
-    })
-  }
+import { GroupCreationData } from '../types'
+
+// The "group" state is actually an array of all group data from every visited group.
+// This way, we cache some data so the user can visit an already-visited group
+// without having to wait for loading.
+type GroupState = Array<object>
+
+// TODO: proper typing for group data
+const initialState = [] as GroupState
+
+interface GroupCreationPayload {
+  groupObject: GroupCreationData,
+  token: string
 }
 
-export const getGroupPosts = id => {
-  return async dispatch => {
-    const posts = await groupService.getGroupPosts(id)
-    dispatch({
-      type: 'GROUP_POSTS',
-      data: {
+interface NewPostPayload {
+  id: string,
+  postObject: object
+}
+
+interface JoinGroupPayload {
+  id: string,
+  token: string
+}
+
+interface SetSchedulePayload {
+  weekObject: object,
+  groupID: string,
+  token: string
+}
+
+export const getGroupDetails = createAsyncThunk(
+  '/group/groupDetailsStatus',
+  async (id: string, thunkAPI) => {
+    const group = await groupService.getGroupDetails(id)
+    return group
+  }
+)
+
+export const getGroupPosts = createAsyncThunk(
+  '/group/groupPostsStatus',
+  async (id: string, thunkAPI) => {
+    try {
+      const posts = await groupService.getGroupPosts(id)
+      return {
         posts: posts,
         id: id
       }
-    })
+    } catch(e) {
+      throw new Error(`${e.message}`)
+    }
   }
-}
+)
 
-export const getGroupMembers = id => {
-  return async dispatch => {
-    const members = await groupService.getGroupMembers(id)
-    dispatch({
-      type: 'LIST_MEMBERS',
-      data: {
+export const getGroupMembers = createAsyncThunk(
+  '/group/groupMembersStatus',
+  async (id: string, thunkAPI) => {
+    try {
+      const members = await groupService.getGroupMembers(id)
+      return {
         members: members,
         id: id
-      }
-    })
+        }
+    } catch(e) {
+      throw new Error(`${e.message}`)
+    }
   }
-}
+)
 
-export const createGroup = (groupObject, token) => {
-  return async dispatch => {
-    try{
-      const response = await groupService.createGroup(groupObject, token)
-      dispatch({
-        type: 'CREATE_GROUP',
-        data: response
-      })
+export const createGroup = createAsyncThunk(
+  '/group/createGroupStatus',
+  async (payload: GroupCreationPayload, thunkAPI) => {
+    try {
+      const response = await groupService.createGroup(payload.groupObject, payload.token)
       return response
-    } catch(error) {
-      return error.response.data
+    } catch(e) {
+      throw new Error(`${e.message}`)
     }
   }
-}
+)
 
-export const newPost = (id, postObject) => {
-  return async dispatch => {
+export const newPost = createAsyncThunk(
+  '/group/newPostStatus',
+  async (payload: NewPostPayload, thunkAPI) => {
     try {
-      const res = await postService.sendNewPost(id, postObject)
-      if (postObject.parent) {
-        dispatch({
-          type: 'NEW_REPLY',
+      const res = await postService.sendNewPost(payload.id, payload.postObject)
+      if (payload.postObject.parent) {
+        // legacy behavior because I couldn't figure out how to implement conditional action types
+        // ideally this will be rewritten with some RTK-native thing but it works fine now
+        return {
+          type: 'reply',
           data: res
-        })
+        }
       } else {
-        dispatch({
-          type: 'NEW_POST',
+        return {
+          type: 'reply',
           data: res
-        })
+        }        
       }
-      return res
-    } catch(error) {
-      return error.response.data
+    } catch(e) {
+      throw new Error(`${e.message}`)
     }
   }
-}
+)
 
-export const joinGroup = (id, token) => {
-  return async dispatch => {
+export const joinGroup = createAsyncThunk(
+  '/group/joinGroupStatus',
+  async (payload: JoinGroupPayload, thunkAPI) => {
     try {
-      await groupService.joinGroup(id, token)
-      const newMemberList = await groupService.getGroupMembers(id)
-      dispatch({
-        type: 'JOIN_GROUP',
-        data: {
-          groupID: id,
-          members: newMemberList
-        }
-      })
-      return newMemberList
-    } catch(error) {
-      return error.response.data
+      await groupService.joinGroup(payload.id, payload.token)
+      const newMemberList = await groupService.getGroupMembers(payload.id)
+      return {
+        groupID: payload.id,
+        members: newMemberList
+      }
+    } catch(e) {
+      throw new Error(`${e.message}`)
     }
   }
-}
+)
 
-export const setSchedule = (weekObject, groupID, token) => {
-  return async dispatch => {
+export const setSchedule = createAsyncThunk(
+  '/groups/setScheduleStatus',
+  async (payload: SetSchedulePayload, thunkAPI) => {
     try {
-      const res = await groupService.setSchedule(weekObject, groupID, token)
-      dispatch({
-        type: 'SET_SCHEDULE',
-        data: {
-          groupID: groupID,
-          posts: res
-        }
-      })
-      return res
-    } catch(error) {
-      return error.response.data
+      const res = await groupService.setSchedule(payload.weekObject, payload.groupID, payload.token)
+      return {
+        groupID: payload.groupID,
+        posts: res
+      }
+    } catch(e) {
+      throw new Error(`${e.message}`)
     }
   }
-}
+)
 
-const groupReducer = (state = [], action) => {
-  switch(action.type) {
-  case 'VIEW_GROUP':
-  {
-    const group = action.data
-    if (state.find(g => g.id === group.id)) return state
-    return [ ...state, group ]
-  }
-  case 'GROUP_POSTS':
-  {
-    const posts = action.data.posts
-    const id = action.data.id
-    return state.map(g => g.id === id ? g = { ...g, posts: posts } : g)
-  }
-  case 'LIST_MEMBERS':
-  {
-    const members = action.data.members
-    const id = action.data.id
-    return state.map(g => g.id === id ? g = { ...g, members: members } : g)
-  }
-  case 'CREATE_GROUP':
-  {
-    const group = action.data
-    return [...state, group]
-  }
-  case 'SET_SCHEDULE':
-  {
-    const groupID = action.data.groupID
-    const posts = action.data.posts
-    return state.map(g => g.id === groupID ? g = { ...g, posts: [ ...posts ] } : g)
-  }
-  case 'NEW_POST':
-  {
-    // The actual name is GroupId but this line works anyway.
-    const groupID = action.data.groupID
-    return state.map(g => g.id === groupID ? g = { ...g, posts: [ ...action.data ] } : g)
-  }
-  case 'NEW_REPLY':
-  {
-    // However, this one returned undefined until I changed it
-    // to say GroupId exactly. Why is this one case-sensitive while
-    // the other isn't? I have verified that the server response
-    // object uses the same GroupId field for both. There are no
-    // differences in the objects provided to these two cases.
-    const groupID = action.data.GroupId
-    const parentID = action.data.parent
-    return state.map(g => {
-      if (g.id === groupID) {
-        const posts = g.posts.map(p => {
-          if (p.id === parentID) {
-            const replies = [ ...p.replies, action.data ]
-            return { ...p, replies: replies }
+const groupSlice = createSlice({
+  name: 'groupSlice',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(getGroupDetails.fulfilled, (state, { payload }) => {
+      const group = payload
+      if (state.find(g => g.id === group.id)) {
+        return state = state
+      }
+      return state = [ ...state, group ]
+    }),
+    builder.addCase(getGroupPosts.fulfilled, (state, { payload }) => {
+      const posts = payload.posts
+      const id = payload.id
+      return state = state.map(g => g.id === id ? g = { ...g, posts: posts } : g)
+    }),
+    builder.addCase(getGroupMembers.fulfilled, (state, { payload }) => {
+      const members = payload.members
+      const id = payload.id
+      return state = state.map(g => g.id === id ? g = { ...g, members: members } : g)
+    }),
+    builder.addCase(createGroup.fulfilled, (state, { payload }) => {
+      const group = payload
+      return state = [...state, group]
+    }),
+    builder.addCase(newPost.fulfilled, (state, { payload }) => {
+      if (payload.type === 'reply') {
+        // New post that will be associated with a parent post
+        // The frontend uses nested objects for this
+        const groupID = payload.data.GroupId
+        const parentID = payload.data.parent
+        return state = state.map(g => {
+          if (g.id === groupID) {
+            const posts = g.posts.map(p => {
+              if (p.id === parentID) {
+                const replies = [ ...p.replies, payload.data ]
+                return { ...p, replies: replies }
+              } else {
+                return p
+              }
+            })
+            return { ...g, posts: posts }
           } else {
-            return p
+            return g
           }
         })
-        return { ...g, posts: posts }
       } else {
-        return g
+        // New top-level post
+        const groupID = payload.data.groupID
+        return state = state.map(g => g.id === groupID ? g = { ...g, posts: [ ...payload.data ] } : g)
       }
+    }),
+    builder.addCase(joinGroup.fulfilled, (state, { payload }) => {
+      const group = state.find(g => g.id === payload.groupID)
+      if (!group) {
+        return state = state
+      }
+      return state = state.map(g => g.id === payload.groupID ? g = { ...g, members: payload.members } : g)
+    }),
+    builder.addCase(setSchedule.fulfilled, (state, { payload }) => {
+      const groupID = payload.groupID
+      const posts = payload.posts
+      return state = state.map(g => g.id === groupID ? g = { ...g, posts: [ ...posts ] } : g)
     })
   }
-  case 'JOIN_GROUP':
-  {
-    const group = state.find(g => g.id === action.data.groupID)
-    if (!group) return state
+})
 
-    return state.map(g => g.id === action.data.groupID ? g = { ...g, members: action.data.members } : g)
-  }
-  default:
-    return state
-  }
-}
+export default groupSlice.reducer
 
-export default groupReducer
+export const groupSelector = (state: { groupStore: GroupState }): GroupState => state.groupStore

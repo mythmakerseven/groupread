@@ -15,8 +15,6 @@ const Navbar = () => {
 
   const user = useAppSelector(({ user }) => user)
 
-  console.log(user)
-
   const handleLoginModal = () => {
     if (!openModal) {
       return null

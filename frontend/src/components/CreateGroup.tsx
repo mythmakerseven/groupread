@@ -58,7 +58,10 @@ const CreateGroup = () => {
       bookOLID: groupFormData.bookOLID
     }
 
-    const res = await dispatch(createGroup(groupObject, user.token))
+    const res = await dispatch(createGroup({
+      groupObject: groupObject,
+      token: user.token
+    }))
 
     if (res.error) {
       return setError('bookTitle', { message: `${res.error}` })
@@ -70,7 +73,8 @@ const CreateGroup = () => {
     dispatch(formUpdateIsbn(null))
     dispatch(formUpdateOLID(null))
 
-    history.push(`/groups/${res.id}/schedule`)
+    console.log(res)
+    history.push(`/groups/${res.payload.id}/schedule`)
   }
 
   if (!user) return null

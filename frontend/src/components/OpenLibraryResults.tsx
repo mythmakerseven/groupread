@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../hooks'
 import { titleCase } from 'title-case'
 import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../reducers/groupCreationReducer'
 import PropTypes from 'prop-types'
@@ -9,7 +9,7 @@ import PropTypes from 'prop-types'
 const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen }) => {
   const [results, setResults] = useState(null)
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const queryOL = (title, author, isbn) => {
     const titleString = title ? `title=${title}` : null

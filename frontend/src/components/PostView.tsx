@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
@@ -10,7 +10,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
 const PostView = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const {
     register,
     handleSubmit,
@@ -35,7 +35,7 @@ const PostView = () => {
     dispatch(getGroupMembers(id))
   }, [id])
 
-  const groups = useSelector(({ group }) => group)
+  const groups = useAppSelector(({ group }) => group)
   const group = groups.find(group => group.id === id)
 
   if (!group || !group.posts || !group.members) {
@@ -59,7 +59,10 @@ const PostView = () => {
       parent: pid
     }
 
-    const res = await dispatch(newPost(id, postObject))
+    const res = await dispatch(newPost({
+      id: id,
+      postObject: postObject
+    }))
 
     if (res.error) {
       return setError('text', { message: `${res.error}` })

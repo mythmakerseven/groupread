@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
 import { joinGroup } from '../reducers/groupReducer'
@@ -10,11 +10,11 @@ dayjs.extend(relativeTime)
 const GroupView = () => {
   const { id } = useParams()
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const history = useHistory()
 
-  const user = useSelector(({ user }) => user)
-  const groups = useSelector(({ group }) => group)
+  const user = useAppSelector(({ user }) => user)
+  const groups = useAppSelector(({ group }) => group)
   const group = groups.find(group => group.id === id)
 
   // TODO: Refactor so it doesn't request the list of members if the user is not a member
@@ -85,7 +85,10 @@ const GroupView = () => {
   }
 
   const handleGroupMembership = (id, token) => {
-    dispatch(joinGroup(id, token))
+    dispatch(joinGroup({
+      id: id,
+      token: token
+    }))
   }
 
   const handleJoinButton = userID => {

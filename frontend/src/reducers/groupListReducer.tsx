@@ -1,6 +1,6 @@
 // IMPORTANT: This reducer is temporary for early development. Version 1.0 will not load all groups into state.
 
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import groupService from '../services/groups'
 
 // TODO: implement a proper type for group data

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import { useParams, useHistory } from 'react-router-dom'
@@ -7,7 +7,7 @@ import { getGroupDetails, setSchedule } from '../reducers/groupReducer'
 
 const GroupScheduler = () => {
   const [weeks, setWeeks] = useState(1)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const history = useHistory()
   const {
     register,
@@ -47,9 +47,9 @@ const GroupScheduler = () => {
     }
   }
 
-  const groups = useSelector(({ group }) => group)
+  const groups = useAppSelector(({ group }) => group)
   const group = groups.find(group => group.id === id)
-  const user = useSelector(({ user }) => user)
+  const user = useAppSelector(({ user }) => user)
 
   const fillOutWeekValues = (weekCount, pagesPerWeek) => {
     const handlePages = i => {
@@ -102,7 +102,11 @@ const GroupScheduler = () => {
   const submitSchedule = async data => {
     const weekData = data
     await delete weekData.weeks
-    const res = await dispatch(setSchedule(weekData, group.id, user.token))
+    const res = await dispatch(setSchedule({
+      weekObject: weekData,
+      groupID: group.id,
+      token: user.token
+    }))
 
     if (res.error) {
       return setError('weeks', { message: `${res.error}` })

@@ -58,9 +58,9 @@ I also chose not to use create-react-app, if only to learn more about the intern
 
   - restructure so the repo root contains ``backend``, ``frontend``, and ``types`` folders
 
-- refactor Redux and React Hook Form code to satisfy TypeScript
+- ~~refactor Redux and React Hook Form code to satisfy TypeScript~~
 
-  - migrate fully to Redux Toolkit
+  - ~~migrate fully to Redux Toolkit~~
 
 ## How to run
 

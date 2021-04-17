@@ -1,13 +1,13 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { newPost } from '../reducers/groupReducer'
 import { ErrorMessage } from '@hookform/error-message'
 
 const GroupNewPost = () => {
   const { id } = useParams()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const history = useHistory()
 
   const {
@@ -20,7 +20,7 @@ const GroupNewPost = () => {
     },
   } = useForm()
 
-  const user = useSelector(({ user }) => user)
+  const user = useAppSelector(({ user }) => user)
 
   if (!user) {
     return (
