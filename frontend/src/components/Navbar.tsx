@@ -37,7 +37,7 @@ const Navbar = () => {
             role='button'
             onClick={() => dispatch(logOutUser())}
             // Handle keyboard support for a11y
-            tabIndex='0'
+            tabIndex={0}
             className='navbar-item'
             onKeyDown={(e) => e.key === 'Enter' ?  dispatch(logOutUser()) : null}
           >
@@ -52,7 +52,7 @@ const Navbar = () => {
             role='button'
             onClick={() => setOpenModal(true)}
             // Handle keyboard support for a11y
-            tabIndex='0'
+            tabIndex={0}
             className='navbar-item'
             onKeyDown={(e) => e.key === 'Enter' ?  setOpenModal(true) : null}
           >
@@ -63,7 +63,7 @@ const Navbar = () => {
     }
   }
 
-  const checkIfActive = base => {
+  const checkIfActive = (base: string) => {
     return menuVisible
       ? `${base} is-active`
       : base
