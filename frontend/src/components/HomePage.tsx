@@ -5,7 +5,7 @@ import backgroundImg from '../images/freestocks-OfaDD5o8hpk-unsplash.jpg'
 const HomePage = () => {
   return (
     <div>
-      <section className='homepage-hero hero is-black is-fullheight-with-navbar' style={{ backgroundImage: `url(${backgroundImg})` }}>
+      <section id='home-page' className='homepage-hero hero is-black is-fullheight-with-navbar' style={{ backgroundImage: `url(${backgroundImg})` }}>
         <div className='hero-body'>
           <div className='container is-max-desktop'>
             <div className='has-text-centered hero-text p-6 mb-4'>
@@ -20,7 +20,7 @@ const HomePage = () => {
               </div>
             </div>
             <div className='has-text-centered hero-text p-4 mt-4'>
-              <Link to='/groups' className='is-size-4 is-size-6-mobile homepage-group-link'>
+              <Link to='/groups' id='group-list-link' className='is-size-4 is-size-6-mobile homepage-group-link'>
                 <b>See what people are reading &#10132;</b>
               </Link>
             </div>

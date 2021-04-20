@@ -30,10 +30,15 @@ const Navbar = () => {
     if (user) {
       return (
         <>
-          <Link className='navbar-item' to='/groups/create'>
+          <Link
+            id='create-group-button'
+            className='navbar-item'
+            to='/groups/create'
+          >
             &#x1F527; Create Group
           </Link>
           <a
+            id='logout-button'
             role='button'
             onClick={() => dispatch(logOutUser())}
             // Handle keyboard support for a11y
@@ -49,6 +54,7 @@ const Navbar = () => {
       return (
         <>
           <a
+            id='login-button'
             role='button'
             onClick={() => setOpenModal(true)}
             // Handle keyboard support for a11y
@@ -72,11 +78,11 @@ const Navbar = () => {
 
   // use Button component for login link
   return (
-    <nav className='navbar has-shadow' role='navigation' aria-label='main navigation'>
+    <nav id='navbar' className='navbar has-shadow' role='navigation' aria-label='main navigation'>
       {handleLoginModal()}
       <div className='container'>
         <div className='navbar-brand'>
-          <Link className='navbar-item' to='/'>&#128218; Home</Link>
+          <Link id='nav-home-link' className='navbar-item' to='/'>&#128218; Home</Link>
           <a role='button' className={checkIfActive('navbar-burger')} onClick={() => setMenuVisible(!menuVisible)} aria-label='menu' aria-expanded='false' data-target='navMenu'>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
