@@ -1,6 +1,6 @@
 {
   "name": "groupread",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Read books with your friends.",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "start:full": "yarn build && yarn start"
   },
   "author": "",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@hookform/error-message": "2.0.0",
     "@reduxjs/toolkit": "^1.5.1",
