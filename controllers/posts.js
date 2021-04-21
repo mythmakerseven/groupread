@@ -120,6 +120,8 @@ postsRouter.put('/edit/:id', async (req, res) => {
   let post = await Post.findOne({ where: { id: req.params.id } })
   if (!post) return res.status(401).json({ error: 'post does not exist' })
 
+  if (user.id !== post.UserId) return res.status(401).json({ error: 'you do not have permission to edit this post' })
+
   // Add the new stuff
   post.text = body.text
   post.updatedAt = new Date()

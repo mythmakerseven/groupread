@@ -19,6 +19,7 @@ beforeAll(async () => {
   // Maybe Jest is sending special headers for some reason that interfere
   // with normal functionality?
   const user = JSON.parse(res.text)
+  // eslint-disable-next-line no-unused-vars
   token = user.token
 })
 
