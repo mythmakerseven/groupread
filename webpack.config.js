@@ -1,4 +1,5 @@
 const path = require('path')
+const envConfig = require('./utils/config')
 
 const config = {
   entry: './frontend/src/index.tsx',
@@ -44,7 +45,7 @@ const config = {
   },
   devServer: {
     proxy: {
-      '/api': 'http://localhost:3000'
+      '/api': `http://localhost:${envConfig.PORT}`
     },
     contentBase: path.resolve(__dirname, 'build'),
     compress: true,
