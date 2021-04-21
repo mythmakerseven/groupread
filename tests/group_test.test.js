@@ -2,15 +2,13 @@ const supertest = require('supertest')
 const { getPool } = require('../utils/db')
 const db = getPool()
 const app = require('../app')
-const helper = require('./test_helper')
+const {
+  exampleGroup,
+  exampleUser,
+  groupsInDb
+} = require('./test_helper')
 
 const api = supertest(app)
-
-const exampleUser = {
-  'username': 'gruser',
-  'password': 'mypassword',
-  'email': 'me@mywebsite.com'
-}
 
 let token
 beforeAll(async () => {
@@ -35,14 +33,6 @@ test('groups are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-const exampleGroup = {
-  'bookTitle': 'Gravity\'s Rainbow',
-  'bookAuthor': 'Thomas Pynchon',
-  'bookYear': 1973,
-  'bookIsbn': '0143039946',
-  'bookPageCount': 777
-}
-
 describe('creating a group', () => {
   test('is successful with valid parameters', async () => {
     await api
@@ -56,9 +46,9 @@ describe('creating a group', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    const groups = await helper.groupsInDb()
+    const groups = await groupsInDb()
     const titles = groups.map(g => g.bookTitle)
-    expect(titles).toContain('Gravity\'s Rainbow')
+    expect(titles).toContain(exampleGroup.bookTitle)
   })
 
   test('fails when title is missing', async () => {
@@ -78,11 +68,8 @@ describe('creating a group', () => {
 
   test('fails with invalid ISBN length', async () => {
     const malformedGroup = {
-      'bookTitle': 'Gravity\'s Rainbow',
-      'bookAuthor': 'Thomas Pynchon',
-      'bookYear': 1973,
-      'bookIsbn': '97463657483927865628379',
-      'bookPageCount': 777
+      ...exampleGroup,
+      'bookIsbn': '97463657483927865628379'
     }
 
     await api
@@ -94,11 +81,8 @@ describe('creating a group', () => {
 
   test('fails with non-numerical ISBN', async () => {
     const malformedGroup = {
-      'bookTitle': 'Gravity\'s Rainbow',
-      'bookAuthor': 'Thomas Pynchon',
-      'bookYear': 1973,
-      'bookIsbn': '0143ABCD46',
-      'bookPageCount': 777
+      ...exampleGroup,
+      'bookIsbn': '0143ABCD46'
     }
 
     await api
@@ -110,11 +94,8 @@ describe('creating a group', () => {
 
   test('fails with invalid year', async () => {
     const malformedGroup = {
-      'bookTitle': 'Gravity\'s Rainbow',
-      'bookAuthor': 'Thomas Pynchon',
+      ...exampleGroup,
       'bookYear': 19733,
-      'bookIsbn': '0143039946',
-      'bookPageCount': 777
     }
 
     await api
@@ -126,10 +107,8 @@ describe('creating a group', () => {
 
   test('fails with missing page count', async () => {
     const malformedGroup = {
-      'bookTitle': 'Gravity\'s Rainbow',
-      'bookAuthor': 'Thomas Pynchon',
-      'bookYear': 1973,
-      'bookIsbn': '0143039946'
+      ...exampleGroup,
+      'bookPageCount': undefined
     }
 
     await api
@@ -141,10 +120,7 @@ describe('creating a group', () => {
 
   test('fails with non-numerical page count', async () => {
     const malformedGroup = {
-      'bookTitle': 'Gravity\'s Rainbow',
-      'bookAuthor': 'Thomas Pynchon',
-      'bookYear': 1973,
-      'bookIsbn': '0143039946',
+      ...exampleGroup,
       'bookPageCount': 'over 9000!'
     }
 
@@ -174,7 +150,7 @@ describe('creating a group', () => {
       .send(exampleGroup)
       .expect(200)
 
-    const groups = await helper.groupsInDb()
+    const groups = await groupsInDb()
     expect(groups).toHaveLength(4)
   })
 })
