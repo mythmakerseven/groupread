@@ -1,8 +1,8 @@
 # Groupread
 
-Groupread is a website for hosting book discussions. Pick a book via OpenLibrary's API and Groupread will fill in the metadata and create a private discussion room. Groups are instanced, meaning no one can access your group without a direct link to it*. Each group is inextricably tied to one book, which emphasizes the frictionless group creation process and keeps discussion focused and on-topic.
+Groupread is a **self-hostable** platform for hosting book discussions.
 
-*Note: the development version of the site has a public listing of all groups for ease of development and showcasing - the current plan is to remove the list in 1.0.
+Pick a book via OpenLibrary's API and Groupread will fill in the metadata and create a discussion group. Each group is inextricably tied to one book, which emphasizes the frictionless group creation process and keeps discussion focused and on-topic.
 
 ## Table of Contents
 
@@ -22,17 +22,23 @@ On the frontend, I tried out the up-and-coming Bulma CSS framework, which I've f
 
 I also chose not to use create-react-app, if only to learn more about the internal workings of packaging web applications. This move had surprisingly few drawbacks - maybe five or six hours of total time configuring and troubleshooting with webpack and eslint. In the future I'll probably go with create-react-app again, because there also hasn't been much benefit in dropping it. It has been good to learn more about what create-react-app is doing in the background, anyway.
 
+When I began working on Groupread, I had no significant experience with TypeScript. Since then, I've become much more comfortable working with it, so I use it for new code and I'm gradually adding making use of TypeScript features for old code. Types should strengthen data validation and simplify the backend code. On the frontend, I've already caught bug I didn't know existed thanks to TypeScript error messages.
+
 ## To do
 
 ⭐ = priority level
 
 - migrate to TypeScript (see below) ⭐⭐⭐
 
+- moderation tools for group owners ⭐⭐⭐
+
+- proper frontend testing with Cypress ⭐⭐⭐
+
+- ~~enhanced security (token expiration and validation, etc)~~ ⭐⭐⭐
+
 - ~~automated scheduling of discussion threads~~ ⭐⭐
 
 - editing functionality for posts and comments ⭐⭐
-
-- moderation tools for group owners ⭐⭐⭐
 
 - ~~proper display of authors for books with multiple authors~~ ⭐
 
@@ -40,9 +46,7 @@ I also chose not to use create-react-app, if only to learn more about the intern
 
 - address webpack warning about bundle size to improve loading performance ⭐
 
-- proper frontend testing with Cypress ⭐⭐⭐
-
-- ~~enhanced security (token expiration and validation, etc)~~ ⭐⭐⭐
+- Docker container for easier self-hosting ⭐
 
 ### TypeScript roadmap
 
