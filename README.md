@@ -1,4 +1,4 @@
-# Groupread
+# Groupread - Self-hosted reading groups
 
 Groupread is a **self-hostable** platform for hosting book discussions.
 
@@ -47,6 +47,8 @@ When I began working on Groupread, I had no significant experience with TypeScri
 - address webpack warning about bundle size to improve loading performance ⭐
 
 - Docker container for easier self-hosting ⭐
+
+- logo ⭐
 
 ### TypeScript roadmap
 
