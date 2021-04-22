@@ -5,6 +5,7 @@ const User = require('../models/user')
 const config = require('../utils/config')
 const { v4: uuidv4 } = require('uuid')
 
+// Create an account
 usersRouter.post('/', async (req, res) => {
   const body = req.body
 
@@ -80,7 +81,8 @@ usersRouter.post('/', async (req, res) => {
     .send({ token, username: user.username, displayName: user.displayName, id: user.id })
 })
 
-// check if the token is still valid for an existing user
+// Check if the token is still valid for an existing user
+// The frontend hits this endpoint on first page load
 usersRouter.post('/validate', async (req, res) => {
   const token = req.token
 

@@ -19,12 +19,14 @@ const sortPosts = posts => {
   return sortedPosts
 }
 
+// Get list of groups
 groupsRouter.get('/all', async (req, res) => {
   const groups = await Group.findAll()
 
   return res.status(200).json(groups)
 })
 
+// Get details of one group
 groupsRouter.get('/:id', async (req, res) => {
   const group = await Group.findOne({ where: { id: req.params.id } })
 
@@ -32,6 +34,7 @@ groupsRouter.get('/:id', async (req, res) => {
   return res.status(200).json(group)
 })
 
+// Get members of a group
 groupsRouter.get('/:id/members', async (req, res) => {
   const group = await Group.findOne({ where: { id: req.params.id } })
 
@@ -46,6 +49,7 @@ groupsRouter.get('/:id/members', async (req, res) => {
   return res.status(200).json(sanitizedUsers)
 })
 
+// Get posts from a group
 groupsRouter.get('/:id/posts', async (req, res) => {
   const group = await Group.findOne({ where: { id: req.params.id } })
 
@@ -60,7 +64,7 @@ groupsRouter.get('/:id/posts', async (req, res) => {
   return res.status(200).json(sortedPastPosts)
 })
 
-// Group creation
+// Create a group
 groupsRouter.post('/', async (req, res) => {
   const token = req.token
   const body = req.body
@@ -147,6 +151,7 @@ groupsRouter.post('/', async (req, res) => {
   res.status(200).json(savedGroup)
 })
 
+// Join a group
 groupsRouter.post('/join/:group', async (req, res) => {
   const token = req.token
 
@@ -185,9 +190,10 @@ groupsRouter.post('/join/:group', async (req, res) => {
   res.status(200).json({ user: sanitizeUser(user.dataValues), groupID: group.id })
 })
 
-// scheduling auto-populates the list of posts with future weekly threads
+// Schedule posts for a group
+// Auto-populates the list of posts with future weekly threads
 groupsRouter.post('/schedule/:group', async (req, res) => {
-  // basic schema:
+  // request schema:
   // {
   //   1: 50
   //   2: 100
