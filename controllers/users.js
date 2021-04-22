@@ -14,19 +14,31 @@ usersRouter.post('/', async (req, res) => {
     })
   }
 
-  if (body.username.length > 32) {
+  if (!body.username) {
     return res.status(400).json({
-      error: 'Usernames must be fewer than 32 characters'
+      error: 'Username cannot be empty'
     })
   }
 
-  if (body.displayName && body.displayName.length > 32) {
+  if (body.username.length < 3 || body.username.length > 32) {
     return res.status(400).json({
-      error: 'Display names must be fewer than 32 characters'
+      error: 'Usernames must between 3 and 32 characters'
     })
   }
 
-  if (body.email > 64) {
+  if (body.displayName && (body.displayName.length > 32 || body.displayName.length < 3)) {
+    return res.status(400).json({
+      error: 'Display names must be between 3 and 32 characters'
+    })
+  }
+
+  if(!body.email) {
+    return res.status(400).json({
+      error: 'Email is required'
+    })
+  }
+
+  if (body.email.length > 64) {
     return res.status(400).json({
       error: 'Emails must be fewer than 64 characters'
     })

@@ -1,4 +1,5 @@
 const Group = require('../models/group')
+const Post = require('../models/post')
 const User = require('../models/user')
 
 const groupsInDb = async () => {
@@ -9,8 +10,23 @@ const usersInDb = async () => {
   return await User.findAll()
 }
 
+const postsInDb = async () => {
+  return await Post.findAll()
+}
+
+const searchUsers = async (id) => {
+  const res = await User.findOne({ where: { id: id } })
+  return res.dataValues
+}
+
+const searchPosts = async (id) => {
+  const res = await Post.findOne({ where: { id: id } })
+  return res.dataValues
+}
+
 const exampleUser = {
   'username': 'gruser',
+  'displayName': 'Groupread User',
   'password': 'mypassword',
   'email': 'me@mywebsite.com'
 }
@@ -28,16 +44,27 @@ const exampleParentPost = {
   'text': 'This is the text of the post',
 }
 
-// Note: needs a parent parameter for each test
-const exampleReply = {
-  'text': 'This is the text of the reply'
+const exampleReply = (parentId) => (
+  {
+    'parent': parentId,
+    'text': 'This is the text of the reply'
+  }
+)
+
+// They will all be numbers, but it is a string
+const getRandomString = () => {
+  return `${Math.random().toString().substr(2, 8)}${Math.random().toString().substr(2, 8)}`
 }
 
 module.exports = {
   groupsInDb,
   usersInDb,
+  postsInDb,
+  searchUsers,
+  searchPosts,
   exampleUser,
   exampleGroup,
   exampleParentPost,
-  exampleReply
+  exampleReply,
+  getRandomString
 }
