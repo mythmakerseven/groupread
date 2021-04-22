@@ -24,7 +24,7 @@ To self-host, you will need:
 
 - The Yarn package manager
 
-- A database of any type supported by [Sequelize](https://sequelize.org/)
+- A database of any kind supported by [Sequelize](https://sequelize.org/)
 
 For now, Groupread combines the backend and frontend into a single repository. This may change in the future.
 
@@ -32,13 +32,13 @@ To begin, ``git clone`` the repo into your desired location, and run ``yarn inst
 
 The server expects the following environment variables:
 
-- DB_URL: the URL to the database you plan to use. Groupread uses the Sequelize ORM with strictly platform-agnostic code, so any type of database supported by Sequelize will work. Sequelize will set up the tables for you on Groupread's first run.
+- **DB_URL**: the URL to the database you plan to use. Groupread uses the Sequelize ORM with strictly database-agnostic code, so any database supported by Sequelize will work. Sequelize will set up the tables for you on Groupread's first run.
 
-- TEST_DB_URL: the URL to the database used for running tests. **Warning**: This database is wiped during tests. Do not use the same database that you used above.
+- **TEST_DB_URL**: the URL to the database used for running tests. **Warning**: This database is wiped during tests. Do not use the same one that you used above.
 
-- SECRET: bcrypt's secret parameter, used for generating secure tokens. Use a long, random string.
+- **SECRET**: bcrypt's secret parameter, used for generating secure tokens. Use a long, random string.
 
-- PORT: the port on which the sever will run.
+- **PORT**: the port on which the server will run.
 
 Before launching, you might want to run the test suite to make sure everything works. ``yarn test:jest`` will run the backend unit tests, and ``yarn test:component`` runs frontend component tests with Cypress. Note that test coverage is not great right now, with the frontend tests in particular being a work in progress.
 
@@ -48,7 +48,7 @@ Now you can run ``yarn start:full`` to build and serve a production-ready app. T
 
 This project welcomes contributions.
 
-You can host a live server on your local machine to make development easier. After cloning and running ``yarn install``, start the development backend server with ``yarn dev`` and the frontend development server with ``yarn dev:ui``. The frontend will be served at [http://localhost:3001/](http://localhost:3001/).
+You can host a live server on your local machine to make development easier. After cloning the repo and running ``yarn install``, start the development backend server with ``yarn dev`` and the frontend development server with ``yarn dev:ui``. The frontend will be served at [http://localhost:3001/](http://localhost:3001/).
 
 If you plan to work on new functionality, please file an issue first so no one duplicates your efforts.
 
@@ -106,4 +106,4 @@ On the frontend, I tried out the up-and-coming Bulma CSS framework, which I've f
 
 I also chose not to use create-react-app, if only to learn more about the internal workings of packaging web applications. This move had surprisingly few drawbacks - maybe five or six hours of total time configuring and troubleshooting with webpack and eslint. In the future I'll probably go with create-react-app again, because there also hasn't been much benefit in dropping it. It has been good to learn more about what create-react-app is doing in the background, anyway.
 
-When I began working on Groupread, I had no significant experience with TypeScript. Since then, I've become much more comfortable working with it, so I use it for new code and I'm gradually adding making use of TypeScript features for old code. Types should strengthen data validation and simplify the backend code. On the frontend, I've already caught bug I didn't know existed thanks to TypeScript error messages.
+When I began working on Groupread, I had no significant experience with TypeScript. Since then, I've become much more comfortable working with it, so I use it for new code and I'm gradually adding making use of TypeScript features for old code. Types should strengthen data validation and simplify the backend code. I've already caught frontend bugs thanks to TypeScript error messages.
