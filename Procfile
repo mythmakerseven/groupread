@@ -1,1 +1,1 @@
-npm run start:full
+yarn start:full
