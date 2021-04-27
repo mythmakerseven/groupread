@@ -28,13 +28,16 @@ const GroupNewPost = () => {
     )
   }
 
-  const handlePost = async data => {
+  const handlePost = async (data) => {
     const postObject = {
       title: data.title,
       text: data.text,
     }
 
-    const res = await dispatch(newPost(id, postObject))
+    const res = await dispatch(newPost({
+      id: id,
+      postObject: postObject
+    }))
 
     if (res.error) {
       return setError('title', { message: `${res.error}` })
