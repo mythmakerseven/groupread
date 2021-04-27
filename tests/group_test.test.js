@@ -35,11 +35,13 @@ test('groups are returned as json', async () => {
 
 describe('creating a group', () => {
   test('is successful with valid parameters', async () => {
-    await api
+    const res = await api
       .post('/api/groups')
       .auth(token, { type: 'bearer' })
       .send(exampleGroup)
       .expect(200)
+
+    expect(res.text).toContain(exampleGroup.bookIsbn)
 
     await api
       .get('/api/groups/all')
@@ -59,11 +61,13 @@ describe('creating a group', () => {
       'bookPageCount': 777
     }
 
-    await api
+    const res = await api
       .post('/api/groups')
       .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
+
+    expect(res.text).toContain('Title is required')
   })
 
   test('fails with invalid ISBN length', async () => {
@@ -72,11 +76,13 @@ describe('creating a group', () => {
       'bookIsbn': '97463657483927865628379'
     }
 
-    await api
+    const res = await api
       .post('/api/groups')
       .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
+
+    expect(res.text).toContain('ISBN must be 10 or 13 characters')
   })
 
   test('fails with non-numerical ISBN', async () => {
@@ -85,11 +91,13 @@ describe('creating a group', () => {
       'bookIsbn': '0143ABCD46'
     }
 
-    await api
+    const res = await api
       .post('/api/groups')
       .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
+
+    expect(res.text).toContain('Invalid ISBN')
   })
 
   test('fails with invalid year', async () => {
@@ -98,24 +106,31 @@ describe('creating a group', () => {
       'bookYear': 19733,
     }
 
-    await api
+    const res = await api
       .post('/api/groups')
       .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
+
+    expect(res.text).toContain('Invalid year')
   })
 
   test('fails with missing page count', async () => {
     const malformedGroup = {
-      ...exampleGroup,
-      'bookPageCount': undefined
+      bookTitle: exampleGroup.bookTitle,
+      bookAuthor: exampleGroup.bookAuthor,
+      bookIsbn: exampleGroup.bookIsbn,
+      bookYear: exampleGroup.bookYear
+      // no bookPageCount
     }
 
-    await api
+    const res = await api
       .post('/api/groups')
       .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
+
+    expect(res.text).toContain('Page count is required')
   })
 
   test('fails with non-numerical page count', async () => {
@@ -124,11 +139,13 @@ describe('creating a group', () => {
       'bookPageCount': 'over 9000!'
     }
 
-    await api
+    const res = await api
       .post('/api/groups')
       .auth(token, { type: 'bearer' })
       .send(malformedGroup)
       .expect(400)
+
+    expect(res.text).toContain('Page count must be a number')
   })
 
   test('adding multiple new groups does not override any existing groups', async () => {

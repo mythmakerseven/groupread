@@ -1,14 +1,10 @@
 const postsRouter = require('express').Router()
-const config = require('../utils/config')
 const Post = require('../models/post')
 const { v4: uuidv4 } = require('uuid')
 const User = require('../models/user')
 const logger = require('../utils/logger')
-const jwt = require('jsonwebtoken')
 const Group = require('../models/group')
-
-// TODO: make a validateToken utility function for less repetition
-// Could be used across controllers
+const { checkToken } = require('./utils')
 
 // Create a post
 postsRouter.post('/:group', async (req, res) => {
@@ -16,29 +12,16 @@ postsRouter.post('/:group', async (req, res) => {
   logger.info(`Received POST request:\n ${body}`)
 
   const token = req.token
-  if (!token) {
-    return res.status(401).json({ error: 'missing token' })
-  }
 
   if (!body.text) {
     return res.status(400).json({ error: 'Posts cannot be empty' })
   }
 
-  let decodedToken
+  let tokenID
   try {
-    decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
+    tokenID = checkToken(token)
   } catch(e) {
-    if (e.name === 'TokenExpiredError') {
-      return res.status(400).json({ error: 'Expired token, please sign in again' })
-    } else {
-      return res.status(400).json({ error: 'Invalid token, please sign in again' })
-    }
-  }
-
-  const tokenID = decodedToken.data.id
-
-  if (!tokenID) {
-    return res.status(401).json({ error: 'Missing token' })
+    return res.status(400).json({ error: `${e.message}` })
   }
 
   // Three queries here - maybe these could be refactored as one,
@@ -101,29 +84,16 @@ postsRouter.put('/edit/:id', async (req, res) => {
   logger.info(`Received PUT request:\n ${body}`)
 
   const token = req.token
-  if (!token) {
-    return res.status(401).json({ error: 'missing token' })
-  }
 
   if (!body.text) {
     return res.status(400).json({ error: 'Post content cannot be empty' })
   }
 
-  let decodedToken
+  let tokenID
   try {
-    decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
+    tokenID = checkToken(token)
   } catch(e) {
-    if (e.name === 'TokenExpiredError') {
-      return res.status(400).json({ error: 'Expired token, please sign in again' })
-    } else {
-      return res.status(400).json({ error: 'Invalid token, please sign in again' })
-    }
-  }
-
-  const tokenID = decodedToken.data.id
-
-  if (!tokenID) {
-    return res.status(401).json({ error: 'Missing token' })
+    return res.status(400).json({ error: `${e.message}` })
   }
 
   const user = await User.findOne({ where: { id: tokenID } })

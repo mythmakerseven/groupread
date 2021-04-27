@@ -1,20 +1,16 @@
 const groupsRouter = require('express').Router()
-const config = require('../utils/config')
 const Group = require('../models/group')
 const { v4: uuidv4 } = require('uuid')
 const User = require('../models/user')
 const logger = require('../utils/logger')
-const jwt = require('jsonwebtoken')
 const Post = require('../models/post')
+const { checkToken } = require('./utils')
 
 // utility function for returning all posts, properly sorted by parent/child
 const sortPosts = posts => {
   const parentPosts = posts.filter(post => !post.parent)
 
-  // Prior to refactor (when this function returned a simple array of posts),
-  // we didn't need this weird hack to unpack the dataValues field.
-  // No idea why it suddenly formats the parentPosts (and ONLY those) that way,
-  // but this workaround works!
+  // Sort the posts into a hierarchical object with replies as children, etc
   const sortedPosts = parentPosts.map(post => post = { ...post.dataValues, replies: posts.filter(childPost => childPost.parent === post.id) } )
   return sortedPosts
 }
@@ -71,21 +67,11 @@ groupsRouter.post('/', async (req, res) => {
 
   logger.info(`Received POST request:\n ${body}`)
 
-  let decodedToken
+  let tokenID
   try {
-    decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
+    tokenID = checkToken(token)
   } catch(e) {
-    if (e.name === 'TokenExpiredError') {
-      return res.status(400).json({ error: 'Expired token, please sign in again' })
-    } else {
-      return res.status(400).json({ error: 'Invalid token, please sign in again' })
-    }
-  }
-
-  const tokenID = decodedToken.data.id
-
-  if (!tokenID) {
-    return res.status(401).json({ error: 'Missing token' })
+    return res.status(400).json({ error: `${e.message}` })
   }
 
   const user = await User.findOne({ where: { id: tokenID } })
@@ -101,7 +87,8 @@ groupsRouter.post('/', async (req, res) => {
         .json({ error: 'ISBN must be 10 or 13 characters' })
     }
 
-    if (isNaN(Number(isbn.slice(0, -2))) || (isNaN(Number(isbn.slice(-1))) && isbn.charAt(isbn.length - 1) !== 'X' )) {
+    // Ugly way to make sure every char is a number except for the possible trailing X
+    if (!Number.isInteger(Number(isbn.slice(0, -2))) || (!Number.isInteger(Number(isbn.slice(-1))) && isbn.charAt(isbn.length - 1) !== 'X' )) {
       return res
         .status(400)
         .json({ error: 'Invalid ISBN' })
@@ -128,7 +115,7 @@ groupsRouter.post('/', async (req, res) => {
       .json({ error: 'Page count is required' })
   }
 
-  if (isNaN(Number(body.bookPageCount))) {
+  if (!Number.isInteger(body.bookPageCount)) {
     return res
       .status(400)
       .json({ error: 'Page count must be a number' })
@@ -155,25 +142,11 @@ groupsRouter.post('/', async (req, res) => {
 groupsRouter.post('/join/:group', async (req, res) => {
   const token = req.token
 
-  if (!token) {
-    return res.status(400).json({ error: 'token missing or invalid' })
-  }
-
-  let decodedToken
+  let tokenID
   try {
-    decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
+    tokenID = checkToken(token)
   } catch(e) {
-    if (e.name === 'TokenExpiredError') {
-      return res.status(400).json({ error: 'Expired token, please sign in again' })
-    } else {
-      return res.status(400).json({ error: 'Invalid token, please sign in again' })
-    }
-  }
-
-  const tokenID = decodedToken.data.id
-
-  if (!tokenID) {
-    return res.status(401).json({ error: 'Missing token' })
+    return res.status(400).json({ error: `${e.message}` })
   }
 
   const user = await User.findOne({ where: { id: tokenID } })
@@ -200,24 +173,11 @@ groupsRouter.post('/schedule/:group', async (req, res) => {
   // }
   const token = req.token
 
-  if (!token) {
-    return res.status(400).json({ error: 'token missing or invalid ' })
-  }
-
-  let decodedToken
+  let tokenID
   try {
-    decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
+    tokenID = checkToken(token)
   } catch(e) {
-    if (e.name === 'TokenExpiredError') {
-      return res.status(400).json({ error: 'Expired token, please sign in again' })
-    }
-    return res.status(400).json({ error: 'Invalid token, please sign in again' })
-  }
-
-  const tokenID = decodedToken.data.id
-
-  if (!tokenID) {
-    return res.status(401).json({ error: 'Missing token' })
+    return res.status(400).json({ error: `${e.message}` })
   }
 
   const group = await Group.findOne({ where: { id: req.params.group } })

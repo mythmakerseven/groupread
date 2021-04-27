@@ -6,8 +6,6 @@ const { exampleUser, exampleGroup, exampleParentPost, exampleReply, searchPosts 
 
 const api = supertest(app)
 
-
-// TODO: split off authentication into a test_helper function
 let token
 let groupId
 const badToken = 'when_the_token_is_sus!!!'
@@ -32,29 +30,36 @@ beforeAll(async () => {
 
 describe('creating a parent post', () => {
   test('is successful with valid parameters', async () => {
-    await api
+    const res = await api
       .post(`/api/posts/${groupId}`)
       .auth(token, { type: 'bearer' })
       .send(exampleParentPost)
       .expect(200)
+
+    expect(res.text).toContain(exampleParentPost.text)
   })
 
   test('fails with missing token', async () => {
-    await api
+    const res = await api
       .post(`/api/posts/${groupId}`)
       .send(exampleParentPost)
-      .expect(401)
+      .expect(400)
+
+    expect(res.text).toContain('Missing token')
   })
 
   test('fails with empty title', async () => {
     const malformedParentPost = {
       text: exampleParentPost.text
     }
-    await api
+
+    const res = await api
       .post(`/api/posts/${groupId}`)
       .auth(token, { type: 'bearer' })
       .send(malformedParentPost)
       .expect(400)
+
+    expect(res.text).toContain('parent posts require a title')
   })
 
   test('fails with empty text', async () => {
@@ -62,36 +67,42 @@ describe('creating a parent post', () => {
       title: exampleParentPost.title
     }
 
-    await api
+    const res = await api
       .post(`/api/posts/${groupId}`)
       .auth(token, { type: 'bearer' })
       .send(malformedParentPost)
       .expect(400)
+
+    expect(res.text).toContain('Posts cannot be empty')
   })
 
   test('fails with invalid token', async () => {
-    await api
+    const res = await api
       .post(`/api/posts/${groupId}`)
       .auth(badToken, { type: 'bearer' })
       .send(exampleParentPost)
       .expect(400)
+
+    expect(res.text).toContain('Invalid token')
   })
 
   test('fails when user is not in group', async () => {
     // Make a new user because the exampleUser joined this group already
-    const res = await api
+    const userRes = await api
       .post('/api/users')
       .send({ ...exampleUser, username: 'anotherone' })
       .expect(200)
 
-    const newUser = JSON.parse(res.text)
+    const newUser = JSON.parse(userRes.text)
     const newUserToken = newUser.token
 
-    await api
+    const res = await api
       .post(`/api/posts/${groupId}`)
       .auth(newUserToken, { type: 'bearer' })
       .send(exampleParentPost)
       .expect(401)
+
+    expect(res.text).toContain('you are not a member of this group')
   })
 })
 
@@ -110,23 +121,28 @@ describe('creating a reply', () => {
   })
 
   test('is successful with valid parameters', async () => {
-    await api
+    const res = await api
       .post(`/api/posts/${groupId}`)
       .auth(token, { type: 'bearer' })
       .send(exampleReply(parentId))
       .expect(200)
+
+    expect(res.text).toContain('This is the text of the reply')
   })
 
-  test('fails with missing parent', async () => {
+  test('fails with incorrect parent', async () => {
     const replyWithoutParent = {
-      'text': 'test string'
+      'text': 'test string',
+      'parent': 'ueohrwhuewhoiuwehoi'
     }
 
-    await api
+    const res = await api
       .post(`/api/posts/${groupId}`)
       .auth(token, { type: 'bearer' })
       .send(replyWithoutParent)
       .expect(400)
+
+    expect(res.text).toContain('parent post not found')
   })
 })
 
@@ -142,64 +158,78 @@ describe('editing a post', () => {
   })
 
   test('works with valid parameters', async () => {
-    await api
+    const res = await api
       .put(`/api/posts/edit/${postID}`)
       .auth(token, { type: 'bearer' })
       .send({ text: 'this post is now edited' })
       .expect(200)
 
+    // check server response
+    expect(res.text).toContain('this post is now edited')
+
+    // check in DB
     const post = await searchPosts(postID)
     expect(post.text).toBe('this post is now edited')
   })
 
   test('doesn\'t work when the user tries to edit someone else\'s post', async () => {
     // Create second user to test
-    const res = await api
+    const userRes = await api
       .post('/api/users')
       .send({ ...exampleUser, username: 'one_more' })
       .expect(200)
 
-    const newUserToken = res.body.token
+    const newUserToken = userRes.body.token
 
-    await api
+    const res = await api
       .put(`/api/posts/edit/${postID}`)
       .auth(newUserToken, { type: 'bearer' })
       .send({ text: 'this is an unauthorized edit' })
       .expect(401)
 
+    expect(res.text).toContain('you do not have permission to edit this post')
+
     const post = await searchPosts(postID)
     expect(post.text).not.toBe('this is an unauthorized edit')
   })
 
-  test('doesn\'t work without a valid token', async () => {
-    await api
+  test('doesn\'t work with invalid token', async () => {
+    const res = await api
       .put(`/api/posts/edit/${postID}`)
       .auth(badToken, { type: 'bearer' })
       .send({ text: 'time for another edit!' })
       .expect(400)
+
+    expect(res.text).toContain('Invalid token')
   })
 
   test('doesn\'t work with a missing token', async () => {
-    await api
+    const res = await api
       .put(`/api/posts/edit/${postID}`)
       .send({ text: 'time for another edit!' })
-      .expect(401)
+      .expect(400)
+
+    expect(res.text).toContain('Missing token')
   })
 
   test('doesn\'t work when the post doesn\'t already exist', async () => {
-    await api
+    const res = await api
       .put('/api/posts/edit/fakeidisfakehahaha')
       .auth(token, { type: 'bearer' })
       .send({ text: 'this one shouldn\'t work!' })
       .expect(400)
+
+    expect(res.text).toContain('post does not exist')
   })
 
   test('doesn\'t accept an empty text field', async () => {
-    await api
+    const res = await api
       .put(`/api/posts/edit/${postID}`)
       .auth(token, { type: 'bearer' })
       .send({ text: '' })
       .expect(400)
+
+    expect(res.text).toContain('Post content cannot be empty')
   })
 })
 

@@ -4,6 +4,7 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 const config = require('../utils/config')
 const { v4: uuidv4 } = require('uuid')
+const { checkToken } = require('./utils')
 
 // Create an account
 usersRouter.post('/', async (req, res) => {
@@ -15,19 +16,15 @@ usersRouter.post('/', async (req, res) => {
     })
   }
 
-  if (!body.username) {
-    return res.status(400).json({
-      error: 'Username cannot be empty'
-    })
-  }
-
-  if (body.username.length < 3 || body.username.length > 32) {
+  if (!body.username || body.username.length < 3 || body.username.length > 32) {
     return res.status(400).json({
       error: 'Usernames must between 3 and 32 characters'
     })
   }
 
-  if (body.displayName && (body.displayName.length > 32 || body.displayName.length < 3)) {
+  // if displayName is missing, it is automatically populated with the username
+  // so we only need to validate its length if one exists in the request
+  if (body.displayName && (body.displayName.length < 3 || body.displayName.length > 32)) {
     return res.status(400).json({
       error: 'Display names must be between 3 and 32 characters'
     })
@@ -74,11 +71,19 @@ usersRouter.post('/', async (req, res) => {
   }
 
   // Tokens expire after 30 days
-  const token = jwt.sign({ exp: Math.floor(Date.now() / 1000) + (60 * 60 * 720), data: userForToken }, config.SECRET_TOKEN_KEY)
+  const token = jwt.sign({
+    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 720),
+    data: userForToken
+  }, config.SECRET_TOKEN_KEY)
 
   res
     .status(200)
-    .send({ token, username: user.username, displayName: user.displayName, id: user.id })
+    .send({
+      token,
+      username: user.username,
+      displayName: user.displayName,
+      id: user.id
+    })
 })
 
 // Check if the token is still valid for an existing user
@@ -86,64 +91,17 @@ usersRouter.post('/', async (req, res) => {
 usersRouter.post('/validate', async (req, res) => {
   const token = req.token
 
-  if (!token) {
-    return res.status(400).json({ error: 'missing token' })
-  }
-
-  let decodedToken
+  let tokenID
   try {
-    decodedToken = jwt.verify(token, config.SECRET_TOKEN_KEY)
+    tokenID = checkToken(token)
   } catch(e) {
-    if (e.name === 'TokenExpiredError') {
-      return res.status(400).json({ error: 'Expired token, please sign in again' })
-    } else {
-      return res.status(400).json({ error: 'Invalid token, please sign in again' })
-    }
+    return res.status(400).json({ error: `${e.message}` })
   }
 
-  if (!decodedToken || !decodedToken.data || !decodedToken.data.id) {
-    return res.status(401).json({ error: 'Missing token' })
-  }
-
-  const user = await User.findOne({ where: { id: decodedToken.data.id } })
+  const user = await User.findOne({ where: { id: tokenID } })
   if (!user) return res.status(401).json({ error: 'user does not exist' })
 
   res.status(200).json({ success: 'token remains valid' })
 })
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-// The below paths were some of the earliest ones added when I first created Groupread        //
-// There is no current use for them, and re-activating them will likely require refactoring.  //
-// In particular, they should require tokens and should probably be restricted to the current //
-// user looking up their own info.                                                            //
-////////////////////////////////////////////////////////////////////////////////////////////////
-
-// usersRouter.get('/:user/username', async (req, res) => {
-//   const user = await User.findOne({ where: { id: req.params.user } })
-
-//   if (!user) res.status(400).send({ error: 'invalid user id' })
-
-//   res.status(200).send(user.username)
-// })
-
-// usersRouter.get('/:user/groups', async (req, res) => {
-//   const user = await User.findOne({ where: { id: req.params.user } })
-
-//   if (!user) res.status(400).send({ error: 'invalid user id' })
-
-//   const groups = await user.getGroups()
-
-//   res.status(200).send(groups)
-// })
-
-// usersRouter.get('/:user/posts', async (req, res) => {
-//   const user = await User.findOne({ where: { id: req.params.user } })
-
-//   if (!user) res.status(400).send({ error: 'invalid user id' })
-
-//   const posts = await user.getPosts()
-
-//   res.status(200).send(posts)
-// })
 
 module.exports = usersRouter
