@@ -1,4 +1,4 @@
 node_modules
 .env
-requests
-cypress/videos
+server/requests
+frontend/cypress/videos

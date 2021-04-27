@@ -10,24 +10,24 @@ const server = http.createServer(app)
 // other requests are routed to the /build folder
 // in which the compiled frontend resides
 app.get('/main.js', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'main.js'))
+  res.sendFile(path.join(__dirname, '..', 'build', 'main.js'))
 })
 
 app.get('/main.css', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'main.css'))
+  res.sendFile(path.join(__dirname, '..', 'build', 'main.css'))
 })
 
 app.get('/favicon.ico', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'favicon.ico'))
+  res.sendFile(path.join(__dirname, '..', 'build', 'favicon.ico'))
 })
 
 // Okay this is getting ridiculous
 app.get('/1216b1c4c15ae0af7ae69ac9936cdce0.jpg', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', '1216b1c4c15ae0af7ae69ac9936cdce0.jpg'))
+  res.sendFile(path.join(__dirname, '..', 'build', '1216b1c4c15ae0af7ae69ac9936cdce0.jpg'))
 })
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'))
+  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'))
 })
 
 // TODO: this is not a good solution, we can't have a separate route for each file in /build

@@ -1,5 +1,5 @@
 const path = require('path')
-const envConfig = require('./utils/config')
+const envConfig = require('./server/utils/config')
 
 const config = {
   entry: './frontend/src/index.tsx',

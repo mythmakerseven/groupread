@@ -1,6 +1,12 @@
 {
   "component": {
     "componentFolder": "frontend/src",
-    "testFiles": "**/*cypress.{js,jsx,ts,tsx}"
+    "testFiles": "**/*cypress.{js,jsx,ts,tsx}",
+    "fixturesFolder": "frontend/cypress/fixtures",
+    "integrationFolder": "frontend/cypress/integration",
+    "pluginsFile": "frontend/cypress/plugins/index.js",
+    "screenshotsFolder": "frontend/cypress/screenshots",
+    "videosFolder": "frontend/cypress/videos",
+    "supportFile": "frontend/cypress/support/index.js"
   }
 }

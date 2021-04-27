@@ -1,3 +1,11 @@
-build
-node_modules
-cypress
+# This file only works in the root directory,
+# unlike eslintrc.js where we can use different
+# versions in different places
+
+# ignore cypress stuff
+**/cypress
+
+# ignore config files
+# these confuse eslint which expects node-style exports
+.eslintrc.js
+webpack.config.js
