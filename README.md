@@ -28,21 +28,25 @@ To self-host, you will need:
 
 For now, Groupread combines the backend and frontend into a single repository. This may change in the future.
 
-To begin, ``git clone`` the repo into your desired location, and run ``yarn install`` to install dependencies.
+To begin, ``git clone`` the repo into your desired location.
+
+First, pick a database. Groupread uses the Sequelize ORM, which supports Postgres, MySQL, MariaDB, SQLite, and Microsoft SQL Server, but requires a driver package for the chosen database. By default, Groupread includes the ``pg`` and ``pg-hstore`` packages for Postgres support. If you wish to connect to another supported database, you must add the required driver ([detailed here](https://sequelize.org/master/manual/getting-started.html#installing)) to ``package.json``.
+
+Now you can run ``yarn install`` to install dependencies.
 
 The server expects the following environment variables:
 
-- **DB_URL**: the URL to the database you plan to use. Groupread uses the Sequelize ORM with strictly database-agnostic code, so any database supported by Sequelize will work. Sequelize will set up the tables for you on Groupread's first run.
+- **DB_URL**: the URL to the database you plan to use. The tables will automatically be created on first run.
 
-- **TEST_DB_URL**: the URL to the database used for running tests. **Warning**: This database is wiped during tests. Do not use the same one that you used above.
+- **TEST_DB_URL**: the URL to the database used for running tests. **Warning**: This database is repeatedly wiped during tests. Do not use the same one that you used above.
 
 - **SECRET**: bcrypt's secret parameter, used for generating secure tokens. Use a long, random string.
 
 - **PORT**: the port on which the server will run.
 
-Before launching, you might want to run the test suite to make sure everything works. ``yarn test:jest`` will run the backend unit tests, and ``yarn test:component`` runs frontend component tests with Cypress. Note that test coverage is not great right now, with the frontend tests in particular being a work in progress.
+Before launching, you might want to run the test suite to make sure everything works. ``yarn test:jest`` will run the backend unit tests, and ``yarn test:component`` will run frontend component tests. Note that test coverage is not great right now, with the frontend tests in particular being a work in progress.
 
-Now you can run ``yarn start:full`` to build and serve a production-ready app. The site will be hosted locally, e.g. at [http://localhost:3000/](http://localhost:3000/) if you set PORT to 3000.
+Now you can run ``yarn start:full`` to build and serve a production-ready app. The site will be hosted locally, e.g. at [http://localhost:3000/](http://localhost:3000/) if you set ``PORT`` to 3000.
 
 ## Contributing
 
@@ -52,7 +56,7 @@ You can host a live server on your local machine to make development easier. Aft
 
 If you plan to work on new functionality, please file an issue first so no one duplicates your efforts.
 
-Before submitting a pull request, make sure to lint your code with ``yarn lint`` and test with both ``yarn test:jest`` and ``yarn test:component``. Code style isn't very strict right now beyond the basic linting rules, althought more stringency might be enforced in the future.
+Before submitting a pull request, make sure to lint your code with ``yarn lint`` and test with both ``yarn test:jest`` and ``yarn test:component``. Code style isn't very strict right now beyond the basic linting rules, although more stringency might be enforced in the future.
 
 ## To do
 
