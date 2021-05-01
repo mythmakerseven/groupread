@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
 import { ErrorMessage } from '@hookform/error-message'
 import { newPost } from '../reducers/groupReducer'
+import Reply from './Posts/Reply'
+import { getDisplayName } from '../utils/posts'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
@@ -35,8 +37,15 @@ const PostView = () => {
     dispatch(getGroupMembers(id))
   }, [id])
 
+  const user = useAppSelector(({ user }) => user)
   const groups = useAppSelector(({ group }) => group)
   const group = groups.find(group => group.id === id)
+
+  if (!user) {
+    return (
+      <p>You are not authorized to view this page.</p>
+    )
+  }
 
   if (!group || !group.posts || !group.members) {
     return (
@@ -71,35 +80,22 @@ const PostView = () => {
     setValue('text', '')
   }
 
-  const findUser = id => {
-    const userMatch = group.members.find(m => m.id === id)
-    if (!userMatch) return 'unknown'
-    return userMatch.displayName
-  }
-
-  const displayReplies = posts => {
-    return posts.map(post => (
-      <div key={post.id} className='box has-background-light has-text-black p-3'>
-        <div className='content'>
-          <p><strong>{findUser(post.UserId)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small>
-            <br />
-            {post.text}
-          </p>
-        </div>
-      </div>
-    ))
+  const displayReplies = () => {
+    return post.replies.map(reply => 
+      <Reply key={reply.id} groupMembers={group.members} replyObject={reply} />
+    )
   }
 
   return (
     <div className='container pt-4 pb-4'>
       <h1 className='title'>{post.title}</h1>
       <div className='box has-background-light has-text-black p-3'>
-        <p><strong>{findUser(post.UserId)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small></p>
+        <p><strong>{getDisplayName(post.UserId, group.members)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small></p>
         <p>{post.text}</p>
       </div>
       <br />
       <h1 className='title is-4'>Replies</h1>
-      {displayReplies(post.replies)}
+      {displayReplies()}
       <form onSubmit={handleSubmit(handlePost)}>
         <ErrorMessage errors={errors} name='text' message='This can&apos;t be empty' />
         <div className='field'>
