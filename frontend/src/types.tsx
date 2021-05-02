@@ -49,12 +49,12 @@ export interface NonMemberGroup {
   bookPageCount: number,
   createdAt: Date,
   updatedAt: Date,
-  AdminID: string
+  AdminID: string,
+  members: Array<User>
 }
 
 // What members can see
 export interface MemberGroup extends NonMemberGroup {
-  members: Array<User>,
   posts: Array<ParentPost>
 }
 

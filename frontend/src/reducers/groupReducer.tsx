@@ -3,14 +3,13 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import groupService from '../services/groups'
 import postService from '../services/posts'
 
-import { GroupCreationData } from '../types'
+import { NonMemberGroup, MemberGroup, GroupCreationData } from '../types'
 
 // The "group" state is actually an array of all group data from every visited group.
 // This way, we cache some data so the user can visit an already-visited group
 // without having to wait for loading.
-type GroupState = Array<object>
+type GroupState = Array<NonMemberGroup | MemberGroup>
 
-// TODO: proper typing for group data
 const initialState = [] as GroupState
 
 interface GroupCreationPayload {

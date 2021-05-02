@@ -5,23 +5,19 @@ import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/gro
 import { joinGroup } from '../reducers/groupReducer'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { NonMemberGroup, MemberGroup, UserObject } from '../types'
 dayjs.extend(relativeTime)
 
 const GroupView = () => {
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
 
   const dispatch = useAppDispatch()
   const history = useHistory()
 
   const user = useAppSelector(({ user }) => user)
-  const groups = useAppSelector(({ group }) => group)
-  const group = groups.find(group => group.id === id)
+  const groups: Array<NonMemberGroup | MemberGroup> = useAppSelector(({ group }) => group)
+  const group: undefined | NonMemberGroup | MemberGroup = groups.find(group => group.id === id)
 
-  // TODO: Refactor so it doesn't request the list of members if the user is not a member
-  // This will likely require significant rewriting, as the component relies on the list of
-  // members returned from the server to decide what to show. The best course of action
-  // seems to be adding a group membership list to the user object returned by the backend
-  // and checking against that instead of the group's list.
   const members = group ? group.members : null
   const posts = group ? group.posts : null
   const memberIDs = members ? group.members.map(m => m.id) : []
@@ -126,7 +122,7 @@ const GroupView = () => {
     )
   }
 
-  const resolveUsername = id => {
+  const resolveUsername = (id: string) => {
     const userToShow = group.members.find(m => m.id === id)
     if (!userToShow) return <span className='has-text-warning'>username not found</span>
     return userToShow.displayName
@@ -190,7 +186,7 @@ const GroupView = () => {
   }
 
   // eventually there should be alternate cover sources for books without an OLID
-  const handleBookImage = olid => {
+  const handleBookImage = (olid: string) => {
     if (!olid) {
       return null
     } else {
