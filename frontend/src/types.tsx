@@ -37,8 +37,7 @@ export interface User {
   UserGroups: UserGroups
 }
 
-// What non-members can see
-export interface NonMemberGroup {
+export interface Group {
   id: string,
   bookTitle: string,
   bookAuthor: string,
@@ -49,7 +48,9 @@ export interface NonMemberGroup {
   createdAt: Date,
   updatedAt: Date,
   AdminId: string,
-  members: Array<User>
+  members: Array<User>,
+  // posts is null because non-members can't see a group's posts
+  posts: Array<Post> | null
 }
 
 // Objects for each user showing which groups they're in
@@ -58,11 +59,6 @@ export interface UserGroups {
   updatedAt: Date,
   UserId: string,
   GroupId: string
-}
-
-// What members can see
-export interface MemberGroup extends NonMemberGroup {
-  posts: Array<Post>
 }
 
 // For now, parent and reply types are combined

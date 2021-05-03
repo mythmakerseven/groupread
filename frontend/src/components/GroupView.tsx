@@ -7,8 +7,7 @@ import { getDisplayName } from '../utils/posts'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import {
-  NonMemberGroup,
-  MemberGroup,
+  Group,
   UserObject,
   Post,
   UserGroups,
@@ -23,10 +22,10 @@ const GroupView = () => {
   const history = useHistory()
 
   const user = useAppSelector(({ user }) => user)
-  const groups: Array<NonMemberGroup | MemberGroup> = useAppSelector(({ group }) => group)
+  const groups: Array<Group> = useAppSelector(({ group }) => group)
 
   // See if the group exists
-  const groupResponse: undefined | MemberGroup | NonMemberGroup = groups.find(group => group.id === id)
+  const groupResponse: undefined | Group = groups.find(group => group.id === id)
 
   // Set these up so they can be filled in later if applicable
   let members: Array<User> = []
@@ -49,7 +48,7 @@ const GroupView = () => {
 
   // Now we can have a properly typed group object with
   // the possibility of being undefined out of the way
-  let group: MemberGroup | NonMemberGroup
+  let group: Group
   if (!groupResponse) {
     return <p>Group not found</p>
   }
