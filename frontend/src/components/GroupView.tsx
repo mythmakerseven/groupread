@@ -24,7 +24,7 @@ const GroupView = () => {
   const user: UserObject | null = useAppSelector(({ user }) => user)
   const groups: Array<Group> = useAppSelector(({ group }) => group)
 
-  // See if the group exists
+  // See if the group exists in the cache
   const groupQuery: undefined | Group = groups.find(group => group.id === id)
 
   // Set these up so they can be filled in later if applicable

@@ -23,7 +23,14 @@ export const getDisplayName = (userID: string, groupMembers: Array<User>) => {
   return userMatch.displayName
 }
 
+export const truncate = (text: string) => {
+  return (text.length > 80)
+    ? `${text.substring(0, 80)}...`
+    : text
+}
+
 export default {
   parseMarkdown,
-  getDisplayName
+  getDisplayName,
+  truncate
 }
