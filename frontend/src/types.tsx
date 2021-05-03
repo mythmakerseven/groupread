@@ -49,7 +49,7 @@ export interface Group {
   updatedAt: Date,
   AdminId: string,
   members: Array<User>,
-  // posts is null because non-members can't see a group's posts
+  // posts can be null because non-members can't see a group's posts
   posts: Array<Post> | null
 }
 

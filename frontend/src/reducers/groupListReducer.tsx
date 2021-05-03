@@ -2,10 +2,11 @@
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import groupService from '../services/groups'
+import {
+  Group
+} from '../types'
 
-// TODO: implement a proper type for group data
-type groupListState = Array<Object>
-
+type groupListState = Array<Group>
 const initialState = [] as groupListState
 
 export const getAllGroups = createAsyncThunk(

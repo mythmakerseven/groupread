@@ -10,10 +10,10 @@ import {
   Group,
   UserObject,
   Post,
-  UserGroups,
   User
 } from '../types'
 dayjs.extend(relativeTime)
+import unknownCover from '../images/unknown_cover.webp'
 
 const GroupView = () => {
   const { id } = useParams<{ id: string }>()
@@ -21,7 +21,7 @@ const GroupView = () => {
   const dispatch = useAppDispatch()
   const history = useHistory()
 
-  const user = useAppSelector(({ user }) => user)
+  const user: UserObject | null = useAppSelector(({ user }) => user)
   const groups: Array<Group> = useAppSelector(({ group }) => group)
 
   // See if the group exists
@@ -207,10 +207,10 @@ const GroupView = () => {
   // eventually there should be alternate cover sources for books without an OLID
   const handleBookImage = (olid: string) => {
     if (!olid) {
-      return null
+      return <img className='image cover-image is-inline-block' src={unknownCover} />
     } else {
       return (
-        <img className='image is-inline-block' src={`https://covers.openlibrary.org/b/olid/${olid}-M.jpg`} />
+        <img className='image cover-image is-inline-block' src={`https://covers.openlibrary.org/b/olid/${olid}-M.jpg`} />
       )
     }
   }
@@ -231,7 +231,7 @@ const GroupView = () => {
   return (
     <div className='container pt-4 pb-4'>
       {displayNonMemberHero()}
-      <div className='box has-text-centered'>
+      <div className='box has-text-centered group-hero'>
         {handleBookImage(group.bookOLID)}
         <h1 className='title'>{group.bookTitle}</h1>
         <h1 className='subtitle'>by {group.bookAuthor}</h1>
