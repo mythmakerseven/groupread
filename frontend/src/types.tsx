@@ -50,7 +50,7 @@ export interface Group {
   AdminId: string,
   members: Array<User>,
   // posts can be null because non-members can't see a group's posts
-  posts: Array<Post> | null
+  posts: Array<Post>
 }
 
 // Objects for each user showing which groups they're in
