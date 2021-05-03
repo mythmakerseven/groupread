@@ -64,6 +64,7 @@ const GroupNewPost = () => {
         <ErrorMessage errors={errors} name='text' message='We need some text here' />
         <div className='field'>
           <label className='label'>Text</label>
+          <p className='has-text-weight-light is-size-7'>You can format your post with <a href="https://www.markdownguide.org/cheat-sheet/">Markdown</a></p>
           <div className='control'>
             <textarea
               className='textarea'

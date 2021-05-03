@@ -3,9 +3,17 @@ import { useAppDispatch, useAppSelector } from '../hooks'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
 import { joinGroup } from '../reducers/groupReducer'
+import { getDisplayName } from '../utils/posts'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { NonMemberGroup, MemberGroup, UserObject } from '../types'
+import {
+  NonMemberGroup,
+  MemberGroup,
+  UserObject,
+  Post,
+  UserGroups,
+  User
+} from '../types'
 dayjs.extend(relativeTime)
 
 const GroupView = () => {
@@ -16,11 +24,14 @@ const GroupView = () => {
 
   const user = useAppSelector(({ user }) => user)
   const groups: Array<NonMemberGroup | MemberGroup> = useAppSelector(({ group }) => group)
-  const group: undefined | NonMemberGroup | MemberGroup = groups.find(group => group.id === id)
 
-  const members = group ? group.members : null
-  const posts = group ? group.posts : null
-  const memberIDs = members ? group.members.map(m => m.id) : []
+  // See if the group exists
+  const groupResponse: undefined | MemberGroup | NonMemberGroup = groups.find(group => group.id === id)
+
+  // Set these up so they can be filled in later if applicable
+  let members: Array<User> = []
+  let posts: Array<Post> = []
+  let memberIDs: Array<string> = []
 
   useEffect(() => {
     dispatch(getGroupDetails(id))
@@ -31,17 +42,31 @@ const GroupView = () => {
   }, [id])
 
   useEffect(() => {
-    if (!user || !memberIDs.includes(user.id)) {
-      return null
-    } else {
+    if (user && memberIDs.includes(user.id)) {
       dispatch(getGroupPosts(id))
     }
   }, [id, user, members])
 
-  if (!group) return null
+  // Now we can have a properly typed group object with
+  // the possibility of being undefined out of the way
+  let group: MemberGroup | NonMemberGroup
+  if (!groupResponse) {
+    return <p>Group not found</p>
+  }
+  group = groupResponse
 
-  // filter the list of all posts to return only parent-level posts
-  const getParentPosts = posts => {
+  // Fill in the members list
+  members = group.members
+  memberIDs = members ? members.map(m => m.id) : []
+
+  // Fill in the posts list
+  if (user && memberIDs.includes(user.id) && group.posts) {
+    posts = group.posts
+  }
+
+  // Filter the list of all posts to return only parent-level posts
+  const getParentPosts = (posts: Array<Post>): Array<
+  Post> => {
     return posts.filter(p => !p.parent)
   }
 
@@ -49,7 +74,8 @@ const GroupView = () => {
     return <p>loading...</p>
   }
 
-  const displayMembers = members => {
+  const displayMembers = (members: Array<User> | null) => {
+    if (!members) return null
     switch(members.length) {
     case 0:
       return <p>No one is reading {group.bookTitle} :(</p>
@@ -64,7 +90,7 @@ const GroupView = () => {
     }
   }
 
-  const handlePosts = posts => {
+  const handlePosts = (posts: Array<Post>) => {
     if (posts.length === 0) {
       return (
         <p>No posts yet.</p>
@@ -74,21 +100,21 @@ const GroupView = () => {
     return posts.map(p => displayPost(p))
   }
 
-  const truncate = text => {
+  const truncate = (text: string) => {
     return (text.length > 80)
       ? `${text.substring(0, 80)}...`
       : text
   }
 
-  const handleGroupMembership = (id, token) => {
+  const handleGroupMembership = (id: string, token: string) => {
     dispatch(joinGroup({
       id: id,
       token: token
     }))
   }
 
-  const handleJoinButton = userID => {
-    if (!user) return (
+  const handleJoinButton = (userID: string | null) => {
+    if (!user || !userID) return (
       <>
         <p className='title is-5'>You&apos;ve been invited to join.</p>
         <p className='subtitle'>After joining, you&apos;ll have access to this group&apos;s private discussions.</p>
@@ -122,13 +148,7 @@ const GroupView = () => {
     )
   }
 
-  const resolveUsername = (id: string) => {
-    const userToShow = group.members.find(m => m.id === id)
-    if (!userToShow) return <span className='has-text-warning'>username not found</span>
-    return userToShow.displayName
-  }
-
-  const displayPost = post => (
+  const displayPost = (post: Post) => (
     <Link key={post.id} to={`/groups/${group.id}/${post.id}`}>
       <div className='card mt-4 mb-4'>
         <div className='card-content'>
@@ -141,7 +161,7 @@ const GroupView = () => {
                     <br />
                     <strong>{truncate(post.text)}</strong>
                     <br />
-                    posted {dayjs().to(dayjs(post.createdAt))} by <strong>{resolveUsername(post.UserId)}</strong> &#183; {post.replies.length} replies
+                    posted {dayjs().to(dayjs(post.createdAt))} by <strong>{getDisplayName(post.UserId, group.members)}</strong> &#183; {post.replies ? post.replies.length : 0} replies
                   </p>
                 </div>
               </div>
@@ -215,8 +235,8 @@ const GroupView = () => {
       <div className='box has-text-centered'>
         {handleBookImage(group.bookOLID)}
         <h1 className='title'>{group.bookTitle}</h1>
-        <h1 className='subtitle' as='h3'>by {group.bookAuthor}</h1>
-        <h4>Hosted by {resolveUsername(group.AdminId)}</h4>
+        <h1 className='subtitle'>by {group.bookAuthor}</h1>
+        <h4>Hosted by {getDisplayName(group.AdminId, group.members)}</h4>
       </div>
       {handleLoggedInContent()}
       {displayGroupMembers()}

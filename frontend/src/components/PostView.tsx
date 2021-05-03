@@ -100,6 +100,7 @@ const PostView = () => {
         <ErrorMessage errors={errors} name='text' message='This can&apos;t be empty' />
         <div className='field'>
           <label className='label'>Reply</label>
+          <p className='has-text-weight-light is-size-7'>You can format your post with <a href="https://www.markdownguide.org/cheat-sheet/">Markdown</a></p>
           <div className='control'>
             <textarea
               className='textarea'

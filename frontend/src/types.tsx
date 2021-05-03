@@ -1,5 +1,3 @@
-import { string } from "prop-types"
-
 export interface LoginData {
   username: string,
   password: string
@@ -35,7 +33,8 @@ export interface User {
   email: string,
   nameColor: string,
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
+  UserGroups: UserGroups
 }
 
 // What non-members can see
@@ -49,29 +48,33 @@ export interface NonMemberGroup {
   bookPageCount: number,
   createdAt: Date,
   updatedAt: Date,
-  AdminID: string,
+  AdminId: string,
   members: Array<User>
+}
+
+// Objects for each user showing which groups they're in
+export interface UserGroups {
+  createdAt: Date,
+  updatedAt: Date,
+  UserId: string,
+  GroupId: string
 }
 
 // What members can see
 export interface MemberGroup extends NonMemberGroup {
-  posts: Array<ParentPost>
+  posts: Array<Post>
 }
 
+// For now, parent and reply types are combined
+// with null for the optional values
 export interface Post {
   id: string,
   text: string,
   createdAt: Date,
   updatedAt: Date,
   GroupId: string,
-  UserId: string
-}
-
-export interface ReplyPost extends Post {
-  parent: string
-}
-
-export interface ParentPost extends Post {
-  title: string,
-  replies: Array<ReplyPost>
+  UserId: string,
+  parent: string | null,
+  title: string | null,
+  replies: Array<Post> | null
 }
