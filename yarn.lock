@@ -951,17 +951,17 @@
     date-fns "^1.27.2"
     figures "^1.7.0"
 
-"@cypress/mount-utils@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@cypress/mount-utils/-/mount-utils-1.0.1.tgz#04a3b9c73add3daf2f0ba38a610dc49de9e8a252"
-  integrity sha512-mfY3W/5gJpXEgONguawAeTdI0n2wNvM0oW1aP4UyYLkTK6RhSS+95CU2tvW3RNuA3xJzpfOCDODtOgLBZI4obg==
+"@cypress/mount-utils@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@cypress/mount-utils/-/mount-utils-1.0.2.tgz#afbc4f8c350b7cd86edc5ad0db0cbe1e0181edc8"
+  integrity sha512-Fn3fdTiyayHoy8Ol0RSu4MlBH2maQ2ZEXeEVKl/zHHXEQpld5HX3vdNLhK5YLij8cLynA4DxOT/nO9iEnIiOXw==
 
-"@cypress/react@^5.4.0":
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/@cypress/react/-/react-5.4.0.tgz#4008e64c7b3970961b13d8ff1315b2592139e351"
-  integrity sha512-/pFtT1IojtchMFWswlZUbtqgjGcnp47PlS5MS3xf/eAPNUv7fGOTlw3+C++GSa+3nW30yFgIaF09y6eI9VbQ2w==
+"@cypress/react@^5.4.2":
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/@cypress/react/-/react-5.4.2.tgz#5bff55d8e50f7122d9581c54de39ac90993044de"
+  integrity sha512-fpuZIsX1fRurgMSIYe0+BQrdCHsTWzD07SKYKF85nqJZ2/B8yNDJpkCSp5qyOG2uU3F+tw+BbMAMPL1zTq4yHA==
   dependencies:
-    "@cypress/mount-utils" "1.0.1"
+    "@cypress/mount-utils" "1.0.2"
     "@cypress/webpack-preprocessor" "5.7.0"
     debug "4.3.2"
     find-webpack "2.2.1"
@@ -3088,10 +3088,10 @@ debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@4, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.1.tgz#f0d229c505e0c6d8c49ac553d1b13dc183f6b2ee"
-  integrity sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==
+debug@4, debug@4.3.2, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"
+  integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
   dependencies:
     ms "2.1.2"
 
@@ -3101,13 +3101,6 @@ debug@4.1.1:
   integrity sha512-pYAIzeRo8J6KPEaJ0VWOh5Pzkbw/RetuzehGM7QRRX5he4fPHx2rdKMB256ehJCkX+XRQm16eZLqLNS8RSZXZw==
   dependencies:
     ms "^2.1.1"
-
-debug@4.3.2:
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"
-  integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
-  dependencies:
-    ms "2.1.2"
 
 debug@^3.1.0, debug@^3.1.1, debug@^3.2.6:
   version "3.2.7"
