@@ -4,21 +4,22 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { parseMarkdown } from '../../utils/posts'
 import { getDisplayName } from '../../utils/posts'
 dayjs.extend(relativeTime)
+import { Post } from '../../types'
 
 interface Props {
   groupMembers: Array<any>,
-  replyObject: Object
+  replyObject: Post
 }
 
 const Reply: React.FC<Props> = ({ groupMembers, replyObject }) => {
   // Remark is async, so we have to do some state management
   // to wait for it to do its thing
-  const [text, setText] = useState(null)
+  const [text, setText] = useState<string>('loading...')
 
   // Call the remark function on component load
   useEffect(() => {
-    const getHTML = async (text) => {
-      const formattedText = await parseMarkdown(text)
+    const getHTML = async (postContent: string) => {
+      const formattedText = await parseMarkdown(postContent)
       setText(formattedText)
     }
 

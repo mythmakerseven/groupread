@@ -4,7 +4,7 @@ import {
   User
 } from '../types'
 
-export const parseMarkdown = async (text: String): Promise<String> => {
+export const parseMarkdown = async (text: string): Promise<string> => {
   // remark-html sanitizes on its own, no need for another plugin
   const parsedText = await remark()
     .use(html)
