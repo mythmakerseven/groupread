@@ -30,19 +30,18 @@ const PostList: React.FC<Props> = ({ groupID, groupMembers }) => {
 
   const group = groupQuery
 
+  // Make sure nothing comes up when the user isn't signed in
   useEffect(() => {
     if (user) {
       dispatch(getGroupPosts(groupID))
     }
   }, [user])
 
+  // There won't be posts on the first load if the group isn't cached,
+  // so run setPosts again when the group data is in state
   useEffect(() => {
     setPosts(group.posts)
   }, [group])
-
-  const getParentPosts = (posts: Array<Post>): Array<Post> => {
-    return posts.filter(p => !p.parent)
-  }
 
   const handlePosts = (posts: Array<Post>) => {
     if (posts.length === 0) {
@@ -51,7 +50,9 @@ const PostList: React.FC<Props> = ({ groupID, groupMembers }) => {
       )
     }
 
-    return posts.map(p => <PostCard key={p.id} groupID={groupID} post={p} groupMembers={groupMembers} />)
+    const parentPosts = posts.filter(p => !p.parent)
+
+    return parentPosts.map(p => <PostCard key={p.id} groupID={groupID} post={p} groupMembers={groupMembers} />)
   }
 
   return (
