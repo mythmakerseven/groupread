@@ -22,8 +22,8 @@ app.get('/favicon.ico', (req, res) => {
 })
 
 // Okay this is getting ridiculous
-app.get('/1216b1c4c15ae0af7ae69ac9936cdce0.webp', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'build', '1216b1c4c15ae0af7ae69ac9936cdce0.webp'))
+app.get('/f571d6d590cf815f2a7587588bf80987.webp', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'build', 'f571d6d590cf815f2a7587588bf80987.webp'))
 })
 
 app.get('/*', (req, res) => {
