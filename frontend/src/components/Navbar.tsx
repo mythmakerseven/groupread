@@ -78,7 +78,7 @@ const Navbar: React.FC = () => {
 
   // use Button component for login link
   return (
-    <nav id='navbar' className='navbar has-shadow' role='navigation' aria-label='main navigation'>
+    <nav id='navbar' className='navbar has-shadow is-fixed-top' role='navigation' aria-label='main navigation'>
       {handleLoginModal()}
       <div className='container'>
         <div className='navbar-brand'>

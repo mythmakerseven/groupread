@@ -12,10 +12,10 @@ import PostView from './components/PostView'
 import Footer from './components/Footer'
 import GroupScheduler from './components/GroupScheduler'
 
-const App = () => {
-  return (
-    <div>
-      <Navbar />
+const App: React.FC = () => (
+  <div>
+    <Navbar />
+    <div className='navbar-offset'>
       <Switch>
         <Route path="/groups/create">
           <CreateGroup />
@@ -41,7 +41,7 @@ const App = () => {
       </Switch>
       <Footer />
     </div>
-  )
-}
+  </div>
+)
 
 export default App
