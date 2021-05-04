@@ -3,7 +3,11 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import groupService from '../services/groups'
 import postService from '../services/posts'
 
-import { Group, GroupCreationData } from '../types'
+import {
+  Group,
+  GroupCreationData,
+  Post
+} from '../types'
 
 // The "group" state is actually an array of all group data from every visited group.
 // This way, we cache some data so the user can visit an already-visited group
@@ -19,7 +23,15 @@ interface GroupCreationPayload {
 
 interface NewPostPayload {
   id: string,
-  postObject: object
+  postObject: NewPostObject
+}
+
+interface NewPostObject {
+  title: string | null,
+  text: string,
+  GroupId: string,
+  UserId: string,
+  parent: string | null
 }
 
 interface JoinGroupPayload {
@@ -170,11 +182,11 @@ const groupSlice = createSlice({
         // The frontend uses nested objects for this
         const groupID = payload.data.GroupId
         const parentID = payload.data.parent
-        return state = state.map(g => {
+        return state = state.map((g: Group) => {
           if (g.id === groupID) {
-            const posts = g.posts.map(p => {
+            const posts = g.posts.map((p: Post) => {
               if (p.id === parentID) {
-                const replies = [ ...p.replies, payload.data ]
+                const replies = p.replies ? [ ...p.replies, payload.data ] : [payload.data]
                 return { ...p, replies: replies }
               } else {
                 return p
