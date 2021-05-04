@@ -5,7 +5,7 @@ const Compatibility: React.FC = () => (
     <div className='content'>
       <h1 className='title'>What platforms does Groupread support?</h1>
       <p>Groupread officially supports a wide range of web browsers. You may still be able to use Groupread if your browser is not on this list. Unfortunately, Groupread does not support Internet Explorer or old versions of Microsoft Edge.</p>
-      <p>On PC and Mac, Groupread should work with any of the following browsers:</p>
+      <p>On PC and Mac, Groupread should work with the latest version of the following browsers:</p>
       <ul>
         <li>Mozilla Firefox</li>
         <li>Google Chrome</li>
@@ -13,11 +13,7 @@ const Compatibility: React.FC = () => (
         <li>Opera</li>
         <li>Safari (only on macOS Big Sur and later)</li>
       </ul>
-      <p>On iOS (only on iOS 14 and later):</p>
-      <ul>
-        <li>Safari</li>
-        <li>Any other browser (all iOS browsers use the Safari engine)</li>
-      </ul>
+      <p>Groupread should work in iOS Safari on iOS 14 and later.</p>
       <p>On Android:</p>
       <ul>
         <li>Google Chrome</li>
