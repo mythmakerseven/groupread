@@ -11,6 +11,7 @@ import GroupList from './components/GroupList'
 import PostView from './components/PostView'
 import Footer from './components/Footer'
 import GroupScheduler from './components/GroupScheduler'
+import Compatibility from './components/Compatibility'
 import { initializeUser } from './reducers/userReducer'
 import { useAppDispatch } from './hooks'
 
@@ -44,6 +45,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/groups">
             <GroupList />
+          </Route>
+          <Route path="/compatibility">
+            <Compatibility />
           </Route>
           <Route path="/">
             <HomePage />
