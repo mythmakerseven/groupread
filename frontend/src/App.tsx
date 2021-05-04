@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './App.scss'
 import './custom.scss'
 import Navbar from './components/Navbar'
@@ -11,37 +11,48 @@ import GroupList from './components/GroupList'
 import PostView from './components/PostView'
 import Footer from './components/Footer'
 import GroupScheduler from './components/GroupScheduler'
+import { initializeUser } from './reducers/userReducer'
+import { useAppDispatch } from './hooks'
 
-const App: React.FC = () => (
-  <div>
-    <Navbar />
-    <div className='navbar-offset'>
-      <Switch>
-        <Route path="/groups/create">
-          <CreateGroup />
-        </Route>
-        <Route path="/groups/:id/schedule">
-          <GroupScheduler />
-        </Route>
-        <Route path="/groups/:id/submit">
-          <GroupNewPost />
-        </Route>
-        <Route path="/groups/:id/:pid">
-          <PostView />
-        </Route>
-        <Route path="/groups/:id">
-          <GroupView />
-        </Route>
-        <Route path="/groups">
-          <GroupList />
-        </Route>
-        <Route path="/">
-          <HomePage />
-        </Route>
-      </Switch>
-      <Footer />
+const App: React.FC = () => {
+  const dispatch = useAppDispatch()
+
+  // Put the user into state as soon as they load the site
+  useEffect(() => {
+    dispatch(initializeUser())
+  }, [dispatch])
+
+  return (
+    <div>
+      <Navbar />
+      <div className='navbar-offset'>
+        <Switch>
+          <Route path="/groups/create">
+            <CreateGroup />
+          </Route>
+          <Route path="/groups/:id/schedule">
+            <GroupScheduler />
+          </Route>
+          <Route path="/groups/:id/submit">
+            <GroupNewPost />
+          </Route>
+          <Route path="/groups/:id/:pid">
+            <PostView />
+          </Route>
+          <Route path="/groups/:id">
+            <GroupView />
+          </Route>
+          <Route path="/groups">
+            <GroupList />
+          </Route>
+          <Route path="/">
+            <HomePage />
+          </Route>
+        </Switch>
+        <Footer />
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default App

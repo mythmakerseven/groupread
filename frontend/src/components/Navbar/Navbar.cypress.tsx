@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { mount } from '@cypress/react'
-import Navbar from './Navbar'
+import Navbar from '.'
 import { Provider } from 'react-redux'
-import store from '../store'
+import store from '../../store'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 // TODO: test mobile functionality for navbar
