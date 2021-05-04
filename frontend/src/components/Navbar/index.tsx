@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { useAppDispatch } from '../../hooks'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { initializeUser } from '../../reducers/userReducer'
 import LoginButton from './LoginButton'
 
 const Navbar: React.FC = () => {
   const [menuVisible, setMenuVisible] = useState(false)
-  const dispatch = useAppDispatch()
 
   const checkIfActive = (base: string) => {
     return menuVisible

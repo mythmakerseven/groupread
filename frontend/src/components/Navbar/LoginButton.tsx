@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { initializeUser, logOutUser } from '../../reducers/userReducer'
+import { logOutUser } from '../../reducers/userReducer'
 import { Link } from 'react-router-dom'
 import LoginModal from '../LoginModal'
 
