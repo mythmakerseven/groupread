@@ -9,7 +9,7 @@ import { initialState as initialFormState } from '../reducers/groupCreationReduc
 import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../reducers/groupCreationReducer'
 import { GroupCreationData } from '../types'
 
-const CreateGroup = () => {
+const CreateGroup: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
 
   const dispatch = useAppDispatch()
@@ -54,7 +54,7 @@ const CreateGroup = () => {
       bookAuthor: data.bookAuthor,
       bookYear: data.bookYear,
       bookIsbn: data.bookIsbn,
-      bookPageCount: data.bookPageCount,
+      bookPageCount: parseInt(data.bookPageCount),
       bookOLID: groupFormData.bookOLID
     }
 
@@ -73,7 +73,6 @@ const CreateGroup = () => {
     dispatch(formUpdateIsbn(null))
     dispatch(formUpdateOLID(null))
 
-    console.log(res)
     history.push(`/groups/${res.payload.id}/schedule`)
   }
 

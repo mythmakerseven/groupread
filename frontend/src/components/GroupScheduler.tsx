@@ -5,7 +5,7 @@ import { ErrorMessage } from '@hookform/error-message'
 import { useParams, useHistory } from 'react-router-dom'
 import { getGroupDetails, setSchedule } from '../reducers/groupReducer'
 
-const GroupScheduler = () => {
+const GroupScheduler: React.FC = () => {
   const [weeks, setWeeks] = useState(1)
   const dispatch = useAppDispatch()
   const history = useHistory()
@@ -23,22 +23,26 @@ const GroupScheduler = () => {
 
   const watchWeeks = watch('weeks')
 
-  const { id } = useParams()
+  const { id } = useParams<({ id: string })>()
 
   useEffect(() => {
     dispatch(getGroupDetails(id))
   }, [id])
 
-  const suggestWeeklyAmount = pageCount => {
+  const groups = useAppSelector(({ group }) => group)
+  const group = groups.find(group => group.id === id)
+  const user = useAppSelector(({ user }) => user)
+
+  const suggestWeeklyAmount = (pageCount: number) => {
     if (pageCount <= 500) {
-      const weeklyPagesSuggestion = parseInt(group.bookPageCount / 4)
+      const weeklyPagesSuggestion = pageCount / 4
       return ({
         recommendedWeeks: 4,
         weeklyPages: weeklyPagesSuggestion,
         remainder: pageCount - (weeklyPagesSuggestion * 3)
       })
     } else {
-      const weeklyPagesSuggestion = parseInt(group.bookPageCount / 8)
+      const weeklyPagesSuggestion = pageCount / 8
       return ({
         recommendedWeeks: 8,
         weeklyPages: weeklyPagesSuggestion,
@@ -47,11 +51,15 @@ const GroupScheduler = () => {
     }
   }
 
-  const groups = useAppSelector(({ group }) => group)
-  const group = groups.find(group => group.id === id)
-  const user = useAppSelector(({ user }) => user)
+  if (!group) {
+    return <p>Group not found</p>
+  }
 
-  const fillOutWeekValues = (weekCount, pagesPerWeek) => {
+  if (!user) {
+    return <p>Invalid user ID</p>
+  }
+
+  const fillOutWeekValues = (weekCount: number, pagesPerWeek: number) => {
     const handlePages = i => {
       if (i === weekCount) {
         return group.bookPageCount
@@ -69,21 +77,20 @@ const GroupScheduler = () => {
   useEffect(() => {
     if (!group) return null
     const initialObject = suggestWeeklyAmount(group.bookPageCount)
-    const initialWeeks = initialObject.recommendedWeeks
+    const initialWeeks: number = initialObject.recommendedWeeks
     setWeeks(parseInt(initialWeeks))
     return fillOutWeekValues(initialWeeks, initialObject.weeklyPages)
   }, [group])
 
   // recalculate pages when the user changes the number of weeks
   useEffect(() => {
-    if (!group) return null
-    const newWeeks = parseInt(watchWeeks)
-    setWeeks(newWeeks)
-    const newWeeklyPages = parseInt(group.bookPageCount / newWeeks)
-    return fillOutWeekValues(newWeeks, newWeeklyPages)
+    if (group) {
+      const newWeeks = parseInt(watchWeeks)
+      setWeeks(newWeeks)
+      const newWeeklyPages = group.bookPageCount / newWeeks
+      return fillOutWeekValues(newWeeks, newWeeklyPages)
+    }
   }, [watchWeeks])
-
-  if (!group) return null
 
   const displayRecommendation = () => {
     const weeklyAmount = suggestWeeklyAmount(group.bookPageCount)
@@ -118,7 +125,7 @@ const GroupScheduler = () => {
   const handleScheduleForm = () => {
     let weekList = []
 
-    const weeklyReading = parseInt(group.bookPageCount / weeks)
+    const weeklyReading = group.bookPageCount / weeks
 
     const calculatePage = i => {
       if (i === weeks) return group.bookPageCount

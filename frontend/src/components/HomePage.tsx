@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import backgroundImg from '../images/freestocks-OfaDD5o8hpk-unsplash.jpg'
 
-const HomePage = () => {
+const HomePage: React.FC = () => {
   return (
     <div>
       <section id='home-page' className='homepage-hero hero is-black is-fullheight-with-navbar' style={{ backgroundImage: `url(${backgroundImg})` }}>

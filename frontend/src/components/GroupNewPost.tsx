@@ -5,8 +5,8 @@ import { useAppDispatch, useAppSelector } from '../hooks'
 import { newPost } from '../reducers/groupReducer'
 import { ErrorMessage } from '@hookform/error-message'
 
-const GroupNewPost = () => {
-  const { id } = useParams()
+const GroupNewPost: React.FC = () => {
+  const { id } = useParams<{ id: string }>()
   const dispatch = useAppDispatch()
   const history = useHistory()
 

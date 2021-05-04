@@ -11,7 +11,11 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
-const PostView = () => {
+import {
+  Post
+} from '../types'
+
+const PostView: React.FC = () => {
   const dispatch = useAppDispatch()
   const {
     register,
@@ -23,7 +27,7 @@ const PostView = () => {
       errors,
     },
   } = useForm()
-  const { id, pid } = useParams()
+  const { id, pid } = useParams<({ id: string, pid: string })>()
 
   useEffect(() => {
     dispatch(getGroupDetails(id))
@@ -53,7 +57,7 @@ const PostView = () => {
     )
   }
 
-  const post = group.posts.find(post => post.id === pid)
+  const post: Post | undefined = group.posts.find(post => post.id === pid)
 
   if (!post) {
     return (
@@ -61,7 +65,7 @@ const PostView = () => {
     )
   }
 
-  const handlePost = async data => {
+  const handlePost = async (data: { title: string; text: string }) => {
     const postObject = {
       title: data.title,
       text: data.text,
@@ -81,9 +85,16 @@ const PostView = () => {
   }
 
   const displayReplies = () => {
-    return post.replies.map(reply => 
-      <Reply key={reply.id} groupMembers={group.members} replyObject={reply} />
-    )
+    // Check if there are any replies first
+    if (post.replies && post.replies.length > 0) {
+      return post.replies.map(reply => 
+        <Reply key={reply.id} groupMembers={group.members} replyObject={reply} />
+      )
+    } else {
+      return (
+        <p className='subtitle'>No replies yet.</p>
+      )
+    }
   }
 
   return (

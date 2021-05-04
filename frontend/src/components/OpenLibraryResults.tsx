@@ -3,15 +3,21 @@ import React, { useState, useEffect } from 'react'
 import { useAppDispatch } from '../hooks'
 import { titleCase } from 'title-case'
 import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../reducers/groupCreationReducer'
-import PropTypes from 'prop-types'
 
+interface Props {
+  queryTitle: string,
+  queryAuthor: string,
+  queryIsbn: string,
+  open: boolean,
+  setOpen: (event: boolean) => void
+}
 
-const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen }) => {
-  const [results, setResults] = useState(null)
+const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen }) => {
+  const [results, setResults] = useState<Array<any>>([])
 
   const dispatch = useAppDispatch()
 
-  const queryOL = (title, author, isbn) => {
+  const queryOL = (title: string, author: string, isbn: string) => {
     const titleString = title ? `title=${title}` : null
     const authorString = author ? `author=${author}` : null
     const isbnString = isbn ? `isbn=${isbn}` : null
@@ -32,11 +38,11 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
       const resultsObject = await axios.get(searchUrl)
       return setResults(resultsObject.data.docs)
     } else {
-      return setResults(null)
+      return setResults([])
     }
   }, [open])
 
-  const updateForm = (title, author, year, isbn, olid) => {
+  const updateForm = (title: string, author: string, year: number, isbn: string, olid: string) => {
     dispatch(formUpdateTitle(titleCase(title)))
     dispatch(formUpdateAuthor(author))
     dispatch(formUpdateYear(year))
@@ -58,7 +64,7 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
     }
   }
 
-  const displayResults = results => {
+  const displayResults = (results: Array<any>) => {
     if (!results) {
       return <p className='subtitle'>loading...</p>
     }
@@ -110,14 +116,6 @@ const OpenLibraryResults = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen 
       </div>
     </div>
   )
-}
-
-OpenLibraryResults.propTypes = {
-  queryTitle: PropTypes.string,
-  queryAuthor: PropTypes.string,
-  queryIsbn: PropTypes.string,
-  open: PropTypes.bool.isRequired,
-  setOpen: PropTypes.func.isRequired
 }
 
 export default OpenLibraryResults

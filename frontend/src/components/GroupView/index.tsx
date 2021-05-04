@@ -14,7 +14,7 @@ import {
   User
 } from '../../types'
 
-const GroupView = () => {
+const GroupView: React.FC = () => {
   const { id } = useParams<{ id: string }>()
 
   const dispatch = useAppDispatch()

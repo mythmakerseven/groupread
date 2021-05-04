@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../hooks'
 import { getAllGroups } from '../reducers/groupListReducer'
 import { Link } from 'react-router-dom'
 
-const GroupList = () => {
+const GroupList: React.FC = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {

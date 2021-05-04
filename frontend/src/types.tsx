@@ -15,7 +15,7 @@ export interface GroupCreationData {
   bookAuthor: string | null,
   bookYear: number | null,
   bookIsbn: string | null,
-  bookPageCount: number | null,
+  bookPageCount: number,
   bookOLID: string | null
 }
 

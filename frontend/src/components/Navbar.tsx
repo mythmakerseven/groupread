@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import LoginModal from './LoginModal'
 import { initializeUser, logOutUser } from '../reducers/userReducer'
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   const [openModal, setOpenModal] = useState(false)
   const [menuVisible, setMenuVisible] = useState(false)
   const dispatch = useAppDispatch()
