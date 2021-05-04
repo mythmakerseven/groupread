@@ -116,7 +116,7 @@ const GroupScheduler: React.FC = () => {
     }))
 
     if (res.error) {
-      return setError('weeks', { message: `${res.error}` })
+      return setError('weeks', { message: `${res.error.message}` })
     }
 
     history.push(`/groups/${group.id}`)

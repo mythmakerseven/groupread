@@ -78,7 +78,7 @@ const PostView: React.FC = () => {
     }))
 
     if (res.error) {
-      return setError('text', { message: `${res.error}` })
+      return setError('text', { message: `${res.error.message}` })
     }
 
     setValue('text', '')

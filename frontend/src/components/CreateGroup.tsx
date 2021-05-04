@@ -64,7 +64,7 @@ const CreateGroup: React.FC = () => {
     }))
 
     if (res.error) {
-      return setError('bookTitle', { message: `${res.error}` })
+      return setError('bookTitle', { message: `${res.error.message}` })
     }
 
     dispatch(formUpdateTitle(null))

@@ -40,7 +40,7 @@ const GroupNewPost: React.FC = () => {
     }))
 
     if (res.error) {
-      return setError('title', { message: `${res.error}` })
+      return setError('title', { message: `${res.error.message}` })
     }
 
     history.push(`/groups/${id}`)
