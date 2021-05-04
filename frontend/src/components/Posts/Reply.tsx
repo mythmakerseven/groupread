@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { parseMarkdown } from '../../utils/posts'
-import { getDisplayName } from '../../utils/posts'
+import { parseMarkdown, getDisplayName } from '../../lib/posts'
 dayjs.extend(relativeTime)
 import { Post } from '../../types'
 

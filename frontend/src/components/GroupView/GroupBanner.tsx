@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { joinGroup } from '../../reducers/groupReducer'
-import { getDisplayName } from '../../utils/posts'
+import { getDisplayName } from '../../lib/posts'
 import {
   Group,
   User,

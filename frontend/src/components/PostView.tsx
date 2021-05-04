@@ -6,7 +6,7 @@ import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/gro
 import { ErrorMessage } from '@hookform/error-message'
 import { newPost } from '../reducers/groupReducer'
 import Reply from './Posts/Reply'
-import { getDisplayName } from '../utils/posts'
+import { getDisplayName } from '../lib/posts'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
