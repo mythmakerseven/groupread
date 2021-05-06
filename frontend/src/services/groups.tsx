@@ -1,4 +1,8 @@
 import axios from 'axios'
+import {
+  GroupCreationData
+} from '../types'
+
 const baseUrl = '/api/groups'
 
 const getAllGroups = async () => {
@@ -6,22 +10,22 @@ const getAllGroups = async () => {
   return res.data
 }
 
-const getGroupDetails = async id => {
+const getGroupDetails = async (id: string) => {
   const res = await axios.get(`${baseUrl}/${id}`)
   return res.data
 }
 
-const getGroupPosts = async id => {
+const getGroupPosts = async (id: string) => {
   const res = await axios.get(`${baseUrl}/${id}/posts`)
   return res.data
 }
 
-const getGroupMembers = async id => {
+const getGroupMembers = async (id: string) => {
   const res = await axios.get(`${baseUrl}/${id}/members`)
   return res.data
 }
 
-const createGroup = async (group, token) => {
+const createGroup = async (group: GroupCreationData, token: string) => {
   const config = {
     headers: { Authorization: `bearer ${token}` }
   }
@@ -29,7 +33,7 @@ const createGroup = async (group, token) => {
   return res.data
 }
 
-const joinGroup = async (groupID, token) => {
+const joinGroup = async (groupID: string, token: string) => {
   const config = {
     headers: { Authorization: `bearer ${token}` }
   }
@@ -37,7 +41,10 @@ const joinGroup = async (groupID, token) => {
   return res.data
 }
 
-const setSchedule = async (weekObject, groupID, token) => {
+// weekObject is hard to type because it is pretty dynamic.
+// It has one key for each week, and the number will vary
+// depending on how many weeks the user chooses.
+const setSchedule = async (weekObject: any, groupID: string, token: string) => {
   const config = {
     headers: { Authorization: `bearer ${token}` }
   }
