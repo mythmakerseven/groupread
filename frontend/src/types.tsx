@@ -74,3 +74,11 @@ export interface Post {
   title: string | null,
   replies: Array<Post> | null
 }
+
+// The data that's sent to the server
+// when the user submits the post form
+export interface NewPostObject {
+  title?: string,
+  text: string,
+  parent: string | null
+}

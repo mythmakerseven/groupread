@@ -1,13 +1,13 @@
 import axios from 'axios'
 const baseUrl = '/api/posts'
 
-let token = null
+let token: string | null = null
 
-const setToken = newToken => {
+const setToken = (newToken: string) => {
   token = `bearer ${newToken}`
 }
 
-const sendNewPost = async (id, postObject) => {
+const sendNewPost = async (id: string, postObject) => {
   const config = {
     headers: { Authorization: token }
   }

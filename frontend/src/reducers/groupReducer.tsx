@@ -6,7 +6,8 @@ import postService from '../services/posts'
 import {
   Group,
   GroupCreationData,
-  Post
+  Post,
+  NewPostObject
 } from '../types'
 
 // The "group" state is actually an array of all group data from every visited group.
@@ -24,14 +25,6 @@ interface GroupCreationPayload {
 interface NewPostPayload {
   id: string,
   postObject: NewPostObject
-}
-
-interface NewPostObject {
-  title: string | null,
-  text: string,
-  GroupId: string,
-  UserId: string,
-  parent: string | null
 }
 
 interface JoinGroupPayload {

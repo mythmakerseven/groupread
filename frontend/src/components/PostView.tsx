@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
-import { ErrorMessage } from '@hookform/error-message'
-import { newPost } from '../reducers/groupReducer'
 import Reply from './Posts/Reply'
+import ReplyForm from './Posts/ReplyForm'
 import { getDisplayName } from '../lib/posts'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -17,16 +15,6 @@ import {
 
 const PostView: React.FC = () => {
   const dispatch = useAppDispatch()
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    setError,
-
-    formState: {
-      errors,
-    },
-  } = useForm()
   const { id, pid } = useParams<({ id: string, pid: string })>()
 
   useEffect(() => {
@@ -65,25 +53,6 @@ const PostView: React.FC = () => {
     )
   }
 
-  const handlePost = async (data: { title: string; text: string }) => {
-    const postObject = {
-      title: data.title,
-      text: data.text,
-      parent: pid
-    }
-
-    const res = await dispatch(newPost({
-      id: id,
-      postObject: postObject
-    }))
-
-    if (res.error) {
-      return setError('text', { message: `${res.error.message}` })
-    }
-
-    setValue('text', '')
-  }
-
   const displayReplies = () => {
     // Check if there are any replies first
     if (post.replies && post.replies.length > 0) {
@@ -107,21 +76,7 @@ const PostView: React.FC = () => {
       <br />
       <h1 className='title is-4'>Replies</h1>
       {displayReplies()}
-      <form onSubmit={handleSubmit(handlePost)}>
-        <ErrorMessage errors={errors} name='text' message='This can&apos;t be empty' />
-        <div className='field'>
-          <label className='label'>Reply</label>
-          <p className='has-text-weight-light is-size-7'>You can format your post with <a href="https://www.markdownguide.org/cheat-sheet/">Markdown</a></p>
-          <div className='control'>
-            <textarea
-              className='textarea'
-              {...register('text', { required: true })}
-              placeholder='Type something here'
-              rows={6} />
-          </div>
-        </div>
-        <button className='button is-primary' type='submit'>Submit</button>
-      </form>
+      <ReplyForm />
     </div>
   );
 }
