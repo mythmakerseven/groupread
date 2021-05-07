@@ -27,22 +27,27 @@ const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsb
     return queryString
   }
 
-  useEffect(async () => {
+  useEffect(() => {
+    const findResults = async (searchUrl: string) => {
+      const resultsObject = await axios.get(searchUrl)
+      return setResults(resultsObject.data.docs)
+    }
+
     if (open) {
       const searchUrl = queryOL(queryTitle, queryAuthor, queryIsbn)
       // avoid spamming OL's servers with empty searches
       if (searchUrl === 'https://openlibrary.org/search.json?') {
         return setResults([])
       }
-
-      const resultsObject = await axios.get(searchUrl)
-      return setResults(resultsObject.data.docs)
+      findResults(searchUrl)
     } else {
       return setResults([])
     }
   }, [open])
 
-  const updateForm = (title: string, author: string, year: number, isbn: string, olid: string) => {
+  // Not all books have every bit of metadata, but out of these I think only author is the one
+  // with possible empty fields.
+  const updateForm = (title: string, author: string | null, year: number, isbn: string, olid: string) => {
     dispatch(formUpdateTitle(titleCase(title)))
     dispatch(formUpdateAuthor(author))
     dispatch(formUpdateYear(year))
@@ -51,8 +56,11 @@ const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsb
     setOpen(false)
   }
 
-  // Would really prefer a proper author array in the DB, but this works as a band-aid.
-  const parseAuthors = authorList => {
+  // Look at the author_name field from OL, which may be empty or have 1+ authors,
+  // and generate the proper string to display them. This string is stored as the
+  // author name in the DB, for now. Would really prefer a proper author array in
+  // the DB, but this works as a band-aid.
+  const parseAuthors = (authorList: Array<string>): string | null => {
     if (!authorList || authorList.length === 0) {
       return null
     } else if (authorList.length === 1) {
