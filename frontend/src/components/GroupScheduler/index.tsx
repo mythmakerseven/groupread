@@ -17,6 +17,14 @@ const GroupScheduler: React.FC = () => {
   const group = groups.find(group => group.id === id)
   const user = useAppSelector(({ user }) => user)
 
+  if (!group) {
+    return <p>Group not found</p>
+  }
+
+  if (!user) {
+    return <p>Invalid user ID</p>
+  }
+
   const suggestWeeklyAmount = (pageCount: number) => {
     if (pageCount <= 500) {
       const weeklyPagesSuggestion = Math.floor(pageCount / 4)
@@ -33,14 +41,6 @@ const GroupScheduler: React.FC = () => {
         remainder: pageCount % 8
       })
     }
-  }
-
-  if (!group) {
-    return <p>Group not found</p>
-  }
-
-  if (!user) {
-    return <p>Invalid user ID</p>
   }
 
   return (

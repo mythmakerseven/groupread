@@ -40,7 +40,7 @@ const WeekNumberForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
               })}
               min='1'
               max='26'
-              defaultValue={weeks} />
+              defaultValue={initialWeeks} />
           </div>
         </div>
         </div>

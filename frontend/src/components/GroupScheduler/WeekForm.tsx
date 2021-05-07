@@ -12,7 +12,7 @@ interface Props {
 
 const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
   const user = useAppSelector(({ user }) => user)
-  const { groupID } = useParams<({ groupID: string })>()
+  const { id } = useParams<({ id: string })>()
 
   const dispatch = useAppDispatch()
   const history = useHistory()
@@ -20,6 +20,8 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
   const {
     handleSubmit,
     setError,
+    setValue,
+    register,
     formState: {
       errors,
     },
@@ -33,7 +35,7 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
     const weekData = data
     const res = await dispatch(setSchedule({
       weekObject: weekData,
-      groupID: groupID,
+      groupID: id,
       token: user.token
     }))
 
@@ -41,25 +43,28 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
       return setError('weeks', { message: `${res.error.message}` })
     }
 
-    history.push(`/groups/${groupID}`)
+    history.push(`/groups/${id}`)
   }
 
   // Find which page the current week should cover
   const calculatePage = (currentWeek: number): number => {
-    if (currentWeek === initialWeeks) {
+    if (currentWeek === parseInt(initialWeeks)) {
       return pageCount
     }
     const pagesPerWeek = Math.floor(pageCount / initialWeeks)
     return pagesPerWeek * currentWeek
   }
 
-  // const fillOutWeekValues = (newWeeks: number) => {
-  //   // cycle through each week input and update
-  //   for (let i = 1; i <= newWeeks; i++) {
-  //     setValue(`${i}`, calculatePage(i, newWeeks))
-  //     console.log(getValues(`${i}`))
-  //   }
-  // }
+  const fillOutWeekValues = () => {
+    // cycle through each week input and update
+    for (let i = 1; i <= initialWeeks; i++) {
+      setValue(`${i}`, calculatePage(i))
+    }
+  }
+
+  useEffect(() => {
+    fillOutWeekValues()
+  }, [initialWeeks, user, pageCount])
 
   // recalculate pages when the user changes the number of weeks
   // useEffect(() => {
@@ -85,6 +90,7 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
                   className='input'
                   type='number'
                   name={`${i}`}
+                  {...register(`${i}`)}
                   // make sure the last item is properly filled in
                   defaultValue={calculatePage(i)}
                 />
