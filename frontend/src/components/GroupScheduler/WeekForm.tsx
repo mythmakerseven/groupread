@@ -66,13 +66,6 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
     fillOutWeekValues()
   }, [initialWeeks, user, pageCount])
 
-  // recalculate pages when the user changes the number of weeks
-  // useEffect(() => {
-  //   const newWeeks = parseInt(watchWeeks)
-  //   setWeeks(newWeeks)
-  //   fillOutWeekValues(newWeeks)
-  // }, [watchWeeks])
-
   const handleScheduleForm = () => {
     // Not easy to type the weeklist object.
     // TODO: Find a better way to handle this that plays nicer with TypeScript.
