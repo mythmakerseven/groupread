@@ -52,7 +52,12 @@ const PostList: React.FC<Props> = ({ groupID, groupMembers }) => {
 
     const parentPosts = posts.filter(p => !p.parent)
 
-    return parentPosts.map(p => <PostCard key={p.id} groupID={groupID} post={p} groupMembers={groupMembers} />)
+    return parentPosts.map(p => <PostCard
+      key={p.id}
+      groupID={groupID}
+      post={p}
+      groupMembers={groupMembers}
+    />)
   }
 
   return (

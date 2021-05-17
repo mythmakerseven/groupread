@@ -16,7 +16,7 @@ interface Props {
 }
 
 const PostCard: React.FC<Props> = ({ groupID, post, groupMembers }) => (
-  <Link key={post.id} to={`/groups/${groupID}/${post.id}`}>
+  <Link className='hoverable-item' key={post.id} to={`/groups/${groupID}/${post.id}`}>
     <div className='card mt-4 mb-4'>
       <div className='card-content'>
         <div className='content'>

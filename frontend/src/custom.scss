@@ -49,3 +49,17 @@
 .group-hero {
   min-height: 430px;
 }
+
+.hoverable-item {
+  transition: filter ease-out 0.23s;
+}
+
+.hoverable-item:hover {
+  filter: brightness(0.935);
+}
+
+// Slightly darker for keyboard focus to improve legibility
+.hoverable-item:focus {
+  filter: brightness(0.9);
+  outline: none;
+}
