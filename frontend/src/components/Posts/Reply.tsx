@@ -62,7 +62,7 @@ const Reply: React.FC<Props> = ({ groupMembers, replyObject }) => {
     )
   } else {
     return (
-    <div key={replyObject.id} className='box has-background-light has-text-black p-3'>
+    <div key={replyObject.id} className='box box-with-border has-background-light has-text-black p-4'>
       <div className='content'>
         <p>
           <strong>{getDisplayName(replyObject.UserId, groupMembers)}</strong>
