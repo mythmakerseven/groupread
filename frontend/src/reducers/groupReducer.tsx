@@ -7,7 +7,8 @@ import {
   Group,
   GroupCreationData,
   Post,
-  NewPostObject
+  NewPostObject,
+  EditPostObject
 } from '../types'
 
 // The "group" state is actually an array of all group data from every visited group.
@@ -25,6 +26,11 @@ interface GroupCreationPayload {
 interface NewPostPayload {
   id: string,
   postObject: NewPostObject
+}
+
+interface EditPostPayload {
+  postID: string,
+  postObject: EditPostObject
 }
 
 interface JoinGroupPayload {
@@ -106,6 +112,18 @@ export const newPost = createAsyncThunk(
           data: res
         }        
       }
+    } catch(e) {
+      throw new Error(`${e.message}`)
+    }
+  }
+)
+
+export const editPost = createAsyncThunk(
+  '/group/editPostStatus',
+  async (payload: EditPostPayload, thunkAPI) => {
+    try {
+      const res = await postService.editPost(payload.postID, payload.postObject)
+      return res
     } catch(e) {
       throw new Error(`${e.message}`)
     }
@@ -195,6 +213,36 @@ const groupSlice = createSlice({
         const groupID = payload.data.groupID
         return state = state.map(g => g.id === groupID ? g = { ...g, posts: [ ...payload.data ] } : g)
       }
+    }),
+    builder.addCase(editPost.fulfilled, (state, { payload }) => {
+      const groupID = payload.GroupId
+      const parentID = payload.parent
+      const replyID = payload.id
+
+      console.log(payload)
+
+      // This is ugly! But pretty in a weird way too.
+      // Basically it finds the group, then the parent post,
+      // then the reply to edit.
+
+      // const group = state.find(g => g.id === groupID)
+      // const parent = group?.posts.find(p => p.id === parentID)
+      // const reply = parent?.replies?.find(r => r.id === replyID)
+      
+      // console.log(group?.id === groupID)
+      // console.log(parent?.id === parentID)
+      // console.log(reply?.id === replyID)
+
+      return state = state.map(g => g.id === groupID
+        ? g = { ...g, posts: g.posts.map(p => p.id === parentID && p.replies
+            ? {...p, replies: p.replies.map(r => r.id === replyID
+              ? payload
+              : r
+              )}
+            : p
+          )}
+        : g
+      )
     }),
     builder.addCase(joinGroup.fulfilled, (state, { payload }) => {
       const group = state.find(g => g.id === payload.groupID)

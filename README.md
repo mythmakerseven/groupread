@@ -72,7 +72,7 @@ Before submitting a pull request, make sure to lint your code with ``yarn lint``
 
 - ~~automated scheduling of discussion threads~~ ⭐⭐
 
-- editing functionality for posts and comments ⭐⭐
+- editing functionality for posts ~~and comments~~ ⭐⭐
 
 - ~~proper display of authors for books with multiple authors~~ ⭐
 

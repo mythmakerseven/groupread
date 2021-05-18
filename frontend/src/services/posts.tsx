@@ -2,7 +2,8 @@ import axios from 'axios'
 const baseUrl = '/api/posts'
 
 import {
-  NewPostObject
+  NewPostObject,
+  EditPostObject
 } from '../types'
 
 let token: string | null = null
@@ -20,4 +21,13 @@ const sendNewPost = async (id: string, postObject: NewPostObject) => {
   return res.data
 }
 
-export default { token, setToken, sendNewPost }
+const editPost = async (postID: string, postObject: EditPostObject) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+
+  const res = await axios.put(`${baseUrl}/edit/${postID}`, postObject, config)
+  return res.data
+}
+
+export default { token, setToken, sendNewPost, editPost }

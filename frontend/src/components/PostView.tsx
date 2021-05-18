@@ -13,6 +13,8 @@ import {
   Post
 } from '../types'
 
+import { ReplyPayloadType } from './Posts/ReplyForm'
+
 const PostView: React.FC = () => {
   const dispatch = useAppDispatch()
   const { id, pid } = useParams<({ id: string, pid: string })>()
@@ -76,7 +78,13 @@ const PostView: React.FC = () => {
       <br />
       <h1 className='title is-4'>Replies</h1>
       {displayReplies()}
-      <ReplyForm />
+      <h1 className='subtitle'>Reply</h1>
+      <ReplyForm
+        payloadType={ReplyPayloadType.New}
+        startingText={null}
+        replyID={null}
+        setActive={null}
+      />
     </div>
   );
 }
