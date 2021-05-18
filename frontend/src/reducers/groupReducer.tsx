@@ -219,20 +219,9 @@ const groupSlice = createSlice({
       const parentID = payload.parent
       const replyID = payload.id
 
-      console.log(payload)
-
       // This is ugly! But pretty in a weird way too.
       // Basically it finds the group, then the parent post,
       // then the reply to edit.
-
-      // const group = state.find(g => g.id === groupID)
-      // const parent = group?.posts.find(p => p.id === parentID)
-      // const reply = parent?.replies?.find(r => r.id === replyID)
-      
-      // console.log(group?.id === groupID)
-      // console.log(parent?.id === parentID)
-      // console.log(reply?.id === replyID)
-
       return state = state.map(g => g.id === groupID
         ? g = { ...g, posts: g.posts.map(p => p.id === parentID && p.replies
             ? {...p, replies: p.replies.map(r => r.id === replyID
