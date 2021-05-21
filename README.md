@@ -62,7 +62,7 @@ Before submitting a pull request, make sure to lint your code with ``yarn lint``
 
 ⭐ = priority level
 
-- migrate to TypeScript (see below) ⭐⭐⭐
+- convert backend to TypeScript (will need a build process, etc.) ⭐⭐⭐
 
 - moderation tools for group owners ⭐⭐⭐
 
@@ -70,9 +70,15 @@ Before submitting a pull request, make sure to lint your code with ``yarn lint``
 
 - ~~enhanced security (token expiration and validation, etc)~~ ⭐⭐⭐
 
+- fix all remaining TypeScript errors and add checks to the build process ⭐⭐
+
 - ~~automated scheduling of discussion threads~~ ⭐⭐
 
-- editing functionality for posts ~~and comments~~ ⭐⭐
+- basic user profile pages, nothing fancy ⭐⭐
+
+- list of groups the user is current in, preferably as a navbar dropdown ⭐⭐
+
+- editing functionality (mostly implemented, still missing for top-level posts) ⭐⭐
 
 - ~~proper display of authors for books with multiple authors~~ ⭐
 
@@ -83,24 +89,6 @@ Before submitting a pull request, make sure to lint your code with ``yarn lint``
 - Docker container for easier self-hosting ⭐
 
 - logo ⭐
-
-### TypeScript roadmap
-
-- ~~change frontend .js files to .tsx and make sure they build~~
-
-- set up build process for backend to prepare for TypeScript conversion
-
-  - rewrite validation code in ``/controllers`` to make full use of TypeScript
-
-- ~~create the most obvious types (e.g. group data, user data)~~
-
-  - share types across back- and frontend where appropriate
-
-  - restructure so the repo root contains ``backend``, ``frontend``, and ``types`` folders
-
-- ~~refactor Redux and React Hook Form code to satisfy TypeScript~~
-
-  - ~~migrate fully to Redux Toolkit~~
 
 ## Developer notes
 
