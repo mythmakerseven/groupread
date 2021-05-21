@@ -5,9 +5,9 @@ import { titleCase } from 'title-case'
 import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../reducers/groupCreationReducer'
 
 interface Props {
-  queryTitle: string,
-  queryAuthor: string,
-  queryIsbn: string,
+  queryTitle: string | null,
+  queryAuthor: string | null,
+  queryIsbn: string | null,
   open: boolean,
   setOpen: (event: boolean) => void
 }
@@ -17,7 +17,7 @@ const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsb
 
   const dispatch = useAppDispatch()
 
-  const queryOL = (title: string, author: string, isbn: string) => {
+  const queryOL = (title: string | null, author: string | null, isbn: string | null) => {
     const titleString = title ? `title=${title}` : null
     const authorString = author ? `author=${author}` : null
     const isbnString = isbn ? `isbn=${isbn}` : null

@@ -29,7 +29,20 @@ const createGroup = async (group: GroupCreationData, token: string) => {
   const config = {
     headers: { Authorization: `bearer ${token}` }
   }
-  const res = await axios.post(baseUrl, group, config)
+  const res = await axios({
+    url: baseUrl,
+    method: 'post',
+    data: group,
+    validateStatus: status => status < 500,
+    headers: config.headers
+  })
+
+  if (res.status === 400) {
+    console.log('error')
+    console.log(res)
+    throw new Error(`${res.data.error}`)
+  }
+
   return res.data
 }
 
