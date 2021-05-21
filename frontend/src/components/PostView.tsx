@@ -73,7 +73,7 @@ const PostView: React.FC = () => {
       <h1 className='title'>{post.title}</h1>
       <div className='box box-with-border has-background-light has-text-black p-4'>
         <p><strong>{getDisplayName(post.UserId, group.members)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small></p>
-        <p>{post.text}</p>
+        <p className='post-typography'>{post.text}</p>
       </div>
       <br />
       <h1 className='title is-4'>Replies</h1>

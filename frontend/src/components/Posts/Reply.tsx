@@ -71,7 +71,7 @@ const Reply: React.FC<Props> = ({ groupMembers, replyObject }) => {
           &nbsp;&nbsp;
           {handleEditButton(replyObject.UserId)}
         </p>
-        <div dangerouslySetInnerHTML={{ __html: text }} />
+        <div className='post-typography' dangerouslySetInnerHTML={{ __html: text }} />
       </div>
     </div>
     )
