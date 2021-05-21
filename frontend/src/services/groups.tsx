@@ -29,6 +29,11 @@ const createGroup = async (group: GroupCreationData, token: string) => {
   const config = {
     headers: { Authorization: `bearer ${token}` }
   }
+
+  // validateStatus sets the promise to resolve on error, so we can get the
+  // server's error message response to display on the frontend.
+  // For some reason, the axios requests in ./login.tsx return the proper error
+  // message without needing the validateStatus function. What's up with that?
   const res = await axios({
     url: baseUrl,
     method: 'post',
@@ -38,8 +43,6 @@ const createGroup = async (group: GroupCreationData, token: string) => {
   })
 
   if (res.status === 400) {
-    console.log('error')
-    console.log(res)
     throw new Error(`${res.data.error}`)
   }
 
