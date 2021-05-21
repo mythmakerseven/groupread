@@ -54,7 +54,7 @@ const CreateGroup: React.FC = () => {
       bookAuthor: data.bookAuthor,
       bookYear: data.bookYear,
       bookIsbn: data.bookIsbn,
-      bookPageCount: parseInt(data.bookPageCount),
+      bookPageCount: data.bookPageCount,
       bookOLID: groupFormData.bookOLID
     }
 
@@ -66,7 +66,9 @@ const CreateGroup: React.FC = () => {
     if (res.error) {
       return setError('bookTitle', { message: `${res.error.message}` })
     }
-
+    
+    // Even though the form is about to go out of view, we still need to reset
+    // in case the user opens it again later.
     dispatch(formUpdateTitle(null))
     dispatch(formUpdateAuthor(null))
     dispatch(formUpdateYear(null))
