@@ -20,8 +20,9 @@ jobs:
         run: yarn install
       - name: lint
         run: yarn lint
-      - name: build
+      - name: build backend
         run: yarn build:server
+      - name: build frontend
         run: yarn build:ui
       - name: jest testing
         env:
