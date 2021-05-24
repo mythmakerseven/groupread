@@ -21,7 +21,8 @@ jobs:
       - name: lint
         run: yarn lint
       - name: build
-        run: yarn build
+        run: yarn build:server
+        run: yarn build:ui
       - name: jest testing
         env:
           TEST_DB_URL: ${{ secrets.TEST_DB_URL }}
