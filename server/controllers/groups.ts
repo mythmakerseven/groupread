@@ -1,10 +1,10 @@
 const groupsRouter = require('express').Router()
-const Group = require('../models/group')
-const { v4: uuidv4 } = require('uuid')
-const User = require('../models/user')
-const logger = require('../utils/logger')
-const Post = require('../models/post')
-const { checkToken } = require('./utils')
+import Group from '../models/group'
+import { v4 as uuidv4 } from 'uuid'
+import User from '../models/user'
+import logger from '../utils/logger'
+import Post from '../models/post'
+import { checkToken, sanitizeUser } from './utils'
 
 // utility function for returning all posts, properly sorted by parent/child
 const sortPosts = posts => {
@@ -36,13 +36,14 @@ groupsRouter.get('/:id/members', async (req, res) => {
 
   if (!group) return res.status(400).json({ error: 'invalid group id' })
 
-  const users = await group.getUsers()
-  const dataValues = users.map(u => u.dataValues)
+  // Use the raw option to avoid Sequelize's goofy object format that makes it
+  // hard to run the sanitize function later.
+  // The nest option prevents the raw option from flattening the data, which breaks
+  // stuff on the frontend.
+  const users = await group.getUsers({ raw: true, nest: true })
 
-  // eslint-disable-next-line no-unused-vars
-  const sanitizedUsers = await dataValues.map(({ passwordHash, username, ...u }) => u)
-
-  return res.status(200).json(sanitizedUsers)
+  // Make sure to sanitize to remove password hash and email
+  return res.status(200).json(users.map(u => sanitizeUser(u)))
 })
 
 // Get posts from a group
@@ -56,7 +57,7 @@ groupsRouter.get('/:id/posts', async (req, res) => {
   const sortedPosts = await sortPosts(posts)
 
   // excluded scheduled posts which have future createdAt dates
-  const sortedPastPosts = sortedPosts.filter(p => Date.parse(p.createdAt) <= Date.parse(new Date()))
+  const sortedPastPosts = sortedPosts.filter(p => p.createdAt <= new Date())
   return res.status(200).json(sortedPastPosts)
 })
 
@@ -76,6 +77,8 @@ groupsRouter.post('/', async (req, res) => {
 
   const user = await User.findOne({ where: { id: tokenID } })
   if (!user) return res.status(401).json({ error: 'user does not exist' })
+
+  console.log(body)
 
   // ISBNs are comprised of numbers, except for the final digit which can be an X.
   // They are either 10 or 13 digits.
@@ -121,7 +124,7 @@ groupsRouter.post('/', async (req, res) => {
       .json({ error: 'Page count must be a number' })
   }
 
-  const group = await Group.build({
+  const group = await Group.create({
     id: uuidv4(),
     bookTitle: body.bookTitle,
     bookAuthor: body.bookAuthor ? body.bookAuthor : null,
@@ -132,10 +135,10 @@ groupsRouter.post('/', async (req, res) => {
     AdminId: user.id
   })
 
-  const savedGroup = await group.save()
-  await user.addGroup(savedGroup)
+  // Add user to group
+  await user.addGroup([ group.id ])
 
-  res.status(200).json(savedGroup)
+  res.status(200).json(group)
 })
 
 // Join a group
@@ -154,13 +157,11 @@ groupsRouter.post('/join/:group', async (req, res) => {
   const group = await Group.findOne({ where: { id: req.params.group } })
   if (!group) return res.status(400).json({ error: 'group not found' })
 
-  await user.addGroup(group)
+  await user.addGroup([ group.id ])
 
   // remove password info and username from public user list
-  // eslint-disable-next-line no-unused-vars
-  const sanitizeUser = (({ passwordHash, username, ...user }) => user)
 
-  res.status(200).json({ user: sanitizeUser(user.dataValues), groupID: group.id })
+  res.status(200).json({ user: sanitizeUser(user), groupID: group.id })
 })
 
 // Schedule posts for a group
@@ -228,7 +229,7 @@ groupsRouter.post('/schedule/:group', async (req, res) => {
     }
   }
 
-  if (parseInt(weeks[weekNumbers.length]) !== parseInt(group.bookPageCount)) {
+  if (parseInt(weeks[weekNumbers.length]) !== group.bookPageCount) {
     return res.status(400).json({ error: 'Schedule must end on the last page of the book' })
   }
 
@@ -255,4 +256,4 @@ groupsRouter.post('/schedule/:group', async (req, res) => {
   return res.status(200).json(sortedPosts)
 })
 
-module.exports = groupsRouter
+export default groupsRouter

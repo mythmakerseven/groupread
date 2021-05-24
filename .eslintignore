@@ -4,6 +4,7 @@
 
 # ignore cypress stuff
 **/cypress
+/build
 
 # ignore config files
 # these confuse eslint which expects node-style exports

@@ -1,10 +1,10 @@
 const postsRouter = require('express').Router()
-const Post = require('../models/post')
-const { v4: uuidv4 } = require('uuid')
-const User = require('../models/user')
-const logger = require('../utils/logger')
-const Group = require('../models/group')
-const { checkToken } = require('./utils')
+import Post from '../models/post'
+import { v4 as uuidv4 } from 'uuid'
+import User from '../models/user'
+import logger from '../utils/logger'
+import Group from '../models/group'
+import { checkToken } from './utils'
 
 // Create a post
 postsRouter.post('/:group', async (req, res) => {
@@ -34,7 +34,7 @@ postsRouter.post('/:group', async (req, res) => {
   if (!group) return res.status(400).json({ error: 'group does not exist' })
 
   const groupMemberData = await group.getUsers()
-  const memberIDs = groupMemberData.map(u => u.dataValues.id)
+  const memberIDs = groupMemberData.map(u => u.id)
 
   if (!memberIDs.includes(user.id)) {
     return res.status(401).json({ error: 'you are not a member of this group' })
@@ -47,9 +47,9 @@ postsRouter.post('/:group', async (req, res) => {
     if (!parent) return res.status(400).json({ error: 'parent post not found' })
   }
 
-  let post
+  let post: Post
   if (body.parent) {
-    post = await Post.build({
+    post = Post.build({
       id: uuidv4(),
       parent: body.parent,
       text: body.text,
@@ -59,7 +59,7 @@ postsRouter.post('/:group', async (req, res) => {
       UserId: user.id
     })
   } else {
-    post = await Post.build({
+    post = Post.build({
       id: uuidv4(),
       title: body.title,
       text: body.text,
@@ -70,6 +70,8 @@ postsRouter.post('/:group', async (req, res) => {
     })
   }
 
+  // post.setAuthor(user)
+  // post.addPost([ group ])
   await post.save()
 
   res.status(200).send(post)
@@ -102,7 +104,9 @@ postsRouter.put('/edit/:id', async (req, res) => {
   let post = await Post.findOne({ where: { id: req.params.id } })
   if (!post) return res.status(400).json({ error: 'post does not exist' })
 
-  if (user.id !== post.UserId) return res.status(401).json({ error: 'you do not have permission to edit this post' })
+  if (user.id !== post.UserId) {
+    return res.status(401).json({ error: 'you do not have permission to edit this post' })
+  }
 
   // Add the new stuff
   post.text = body.text
@@ -112,4 +116,4 @@ postsRouter.put('/edit/:id', async (req, res) => {
   res.status(200).send(post)
 })
 
-module.exports = postsRouter
+export default postsRouter

@@ -2,3 +2,9 @@ node_modules
 .env
 server/requests
 frontend/cypress/videos
+
+# Exclude everything in the build folder except for favicon and index.html
+# These files are needed for compilation and serving the subsequent webpage.
+build/*
+!build/favicon.ico
+!build/index.html

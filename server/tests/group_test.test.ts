@@ -1,12 +1,8 @@
-const supertest = require('supertest')
-const { getPool } = require('../utils/db')
+import supertest from 'supertest'
+import getPool from '../utils/db'
 const db = getPool()
-const app = require('../app')
-const {
-  exampleGroup,
-  exampleUser,
-  groupsInDb
-} = require('./test_helper')
+import app from '../app'
+import { exampleGroup, exampleUser, groupsInDb } from './test_helper'
 
 const api = supertest(app)
 

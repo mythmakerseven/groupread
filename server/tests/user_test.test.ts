@@ -1,13 +1,8 @@
-const supertest = require('supertest')
-const { getPool } = require('../utils/db')
+import supertest from 'supertest'
+import getPool from '../utils/db'
 const db = getPool()
-const app = require('../app')
-const {
-  exampleUser,
-  usersInDb,
-  searchUsers,
-  getRandomString
-} = require('./test_helper')
+import app from '../app'
+import { exampleUser, usersInDb, searchUsers, getRandomString } from './test_helper'
 
 const api = supertest(app)
 
@@ -170,9 +165,9 @@ describe('user accounts', () => {
       .expect(200)
 
     const users = await usersInDb()
-    const testUser = users.filter(u => u.username === newUser.username)
+    const testUser = users.find(u => u.username === newUser.username)
     expect(testUser.passwordHash).not.toEqual(exampleUser.password)
-    expect(testUser.password).toBeUndefined()
+    expect(testUser).not.toHaveProperty('password')
   })
 })
 

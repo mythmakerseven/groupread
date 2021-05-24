@@ -22,7 +22,7 @@ A demo server is available at [http://gr.camdenmecklem.com/](http://gr.camdenmec
 
 To self-host, you will need:
 
-- The Yarn package manager
+- [The Yarn package manager](https://yarnpkg.com/)
 
 - A database of any kind supported by [Sequelize](https://sequelize.org/)
 
@@ -30,7 +30,7 @@ For now, Groupread combines the backend and frontend into a single repository. T
 
 To begin, ``git clone`` the repo into your desired location.
 
-First, pick a database. Groupread uses the Sequelize ORM, which supports Postgres, MySQL, MariaDB, SQLite, and Microsoft SQL Server, but requires a driver package for the chosen database. By default, Groupread includes the ``pg`` and ``pg-hstore`` packages for Postgres support. If you wish to connect to another supported database, you must add the required driver ([detailed here](https://sequelize.org/master/manual/getting-started.html#installing)) to ``package.json``.
+First, pick a database. Groupread uses the Sequelize ORM, which supports Postgres, MySQL, MariaDB, SQLite, and Microsoft SQL Server, but requires a driver package for the chosen database. By default, Groupread includes the ``pg`` and ``pg-hstore`` packages for Postgres support. If you wish to connect to another database from the list, you must add the required driver ([detailed here](https://sequelize.org/master/manual/getting-started.html#installing)) to ``package.json``.
 
 Now you can run ``yarn install`` to install dependencies.
 
@@ -52,7 +52,7 @@ Now you can run ``yarn start:full`` to build and serve a production-ready app. T
 
 This project welcomes contributions.
 
-You can host a live server on your local machine to make development easier. After cloning the repo and running ``yarn install``, start the development backend server with ``yarn dev`` and the frontend development server with ``yarn dev:ui``. The frontend will be served at [http://localhost:3001/](http://localhost:3001/).
+You can host a live server on your local machine to make development easier. After cloning the repo and running ``yarn install``, start the development backend server with ``yarn dev:server`` and the frontend development server with ``yarn dev:ui``. The frontend will be served at [http://localhost:3001/](http://localhost:3001/).
 
 If you plan to work on new functionality, please file an issue first so no one duplicates your efforts.
 
@@ -62,11 +62,11 @@ Before submitting a pull request, make sure to lint your code with ``yarn lint``
 
 ⭐ = priority level
 
-- convert backend to TypeScript (will need a build process, etc.) ⭐⭐⭐
+- convert backend to TypeScript (current status: the backend uses .ts files and compiles as TypeScript but does not make use of many TypeScript features) ⭐⭐⭐
 
 - moderation tools for group owners ⭐⭐⭐
 
-- proper frontend testing with Cypress ⭐⭐⭐
+- proper frontend testing with Cypress (current status: cypress is fully set up, but only runs a few basic tests to verify that it works) ⭐⭐⭐
 
 - ~~enhanced security (token expiration and validation, etc)~~ ⭐⭐⭐
 
@@ -75,6 +75,8 @@ Before submitting a pull request, make sure to lint your code with ``yarn lint``
 - ~~automated scheduling of discussion threads~~ ⭐⭐
 
 - basic user profile pages, nothing fancy ⭐⭐
+
+- better looking group list, probably some flexbox with book covers ⭐⭐
 
 - list of groups the user is current in, preferably as a navbar dropdown ⭐⭐
 

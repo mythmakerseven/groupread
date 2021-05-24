@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "outDir": "../build/server",
+    "target": "es2020",
+    "lib": [
+      "es2020"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "noFallthroughCasesInSwitch": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "strictNullChecks": false,
+    "noEmitOnError": false
+  },
+  "include": [
+    "./"
+  ],
+  "exclude": [
+    "./tests",
+    "./eslintrc.js"
+  ]
+}

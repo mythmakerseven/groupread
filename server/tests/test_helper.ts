@@ -1,6 +1,6 @@
-const Group = require('../models/group')
-const Post = require('../models/post')
-const User = require('../models/user')
+import Group from '../models/group'
+import Post from '../models/post'
+import User from '../models/user'
 
 const groupsInDb = async () => {
   return await Group.findAll()
@@ -16,12 +16,12 @@ const postsInDb = async () => {
 
 const searchUsers = async (id) => {
   const res = await User.findOne({ where: { id: id } })
-  return res.dataValues
+  return res
 }
 
 const searchPosts = async (id) => {
   const res = await Post.findOne({ where: { id: id } })
-  return res.dataValues
+  return res
 }
 
 const exampleUser = {
@@ -56,7 +56,7 @@ const getRandomString = () => {
   return `${Math.random().toString().substr(2, 8)}${Math.random().toString().substr(2, 8)}`
 }
 
-module.exports = {
+export {
   groupsInDb,
   usersInDb,
   postsInDb,

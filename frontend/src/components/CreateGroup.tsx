@@ -54,7 +54,7 @@ const CreateGroup: React.FC = () => {
       bookAuthor: data.bookAuthor,
       bookYear: data.bookYear,
       bookIsbn: data.bookIsbn,
-      bookPageCount: data.bookPageCount,
+      bookPageCount: Number(data.bookPageCount),
       bookOLID: groupFormData.bookOLID
     }
 
@@ -62,6 +62,8 @@ const CreateGroup: React.FC = () => {
       groupObject: groupObject,
       token: user.token
     }))
+
+    console.log(groupObject)
 
     if (res.error) {
       return setError('bookTitle', { message: `${res.error.message}` })
@@ -181,7 +183,9 @@ const CreateGroup: React.FC = () => {
           <div className='control'>
             <input
               className='input'
-              type='text'
+              type='number'
+              min='1'
+              max='100000'
               placeholder='e.g. 776'
               {...register('bookPageCount', {
                 required: {

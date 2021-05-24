@@ -1,10 +1,10 @@
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 const usersRouter = require('express').Router()
-const User = require('../models/user')
-const config = require('../utils/config')
-const { v4: uuidv4 } = require('uuid')
-const { checkToken } = require('./utils')
+import User from '../models/user'
+import config from '../utils/config'
+import { v4 as uuidv4 } from 'uuid'
+import { checkToken } from './utils'
 
 // Create an account
 usersRouter.post('/', async (req, res) => {
@@ -60,6 +60,7 @@ usersRouter.post('/', async (req, res) => {
     username: body.username,
     displayName: handleDisplayName(body.username, body.displayName),
     email: body.email,
+    nameColor: '000000',
     passwordHash
   })
 
@@ -104,4 +105,4 @@ usersRouter.post('/validate', async (req, res) => {
   res.status(200).json({ success: 'token remains valid' })
 })
 
-module.exports = usersRouter
+export default usersRouter

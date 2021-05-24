@@ -1,15 +1,15 @@
-const config = require('./utils/config')
-const middleware = require('./utils/middleware')
-const express = require('express')
-const cors = require('cors')
+import config from './utils/config'
+import middleware from './utils/middleware'
+import express from 'express'
+import cors from 'cors'
 const app = express()
-const { getPool } = require('./utils/db')
-const logger = require('./utils/logger')
+import getPool from './utils/db'
+import logger from './utils/logger'
 
-const usersRouter = require('./controllers/users')
-const groupsRouter = require('./controllers/groups')
-const loginRouter = require('./controllers/login')
-const postsRouter = require('./controllers/posts')
+import usersRouter from './controllers/users'
+import groupsRouter from './controllers/groups'
+import loginRouter from './controllers/login'
+import postsRouter from './controllers/posts'
 
 app.use(express.json())
 app.use(cors())
@@ -27,7 +27,7 @@ db.sync()
   .then(() => {
     logger.info(`Connected to ${config.DB_URL}`)
   })
-  .catch((error) => {
+  .catch((error: { message: string }) => {
     logger.error(`Error connecting to PostgreSQL: ${error.message}`)
   })
 
@@ -38,4 +38,4 @@ app.get('/health', (req, res) => {
 app.use('/api*', middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
-module.exports = app
+export default app
