@@ -63,8 +63,6 @@ const CreateGroup: React.FC = () => {
       token: user.token
     }))
 
-    console.log(groupObject)
-
     if (res.error) {
       return setError('bookTitle', { message: `${res.error.message}` })
     }

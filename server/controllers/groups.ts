@@ -78,8 +78,6 @@ groupsRouter.post('/', async (req, res) => {
   const user = await User.findOne({ where: { id: tokenID } })
   if (!user) return res.status(401).json({ error: 'user does not exist' })
 
-  console.log(body)
-
   // ISBNs are comprised of numbers, except for the final digit which can be an X.
   // They are either 10 or 13 digits.
   if (body.bookIsbn) {
