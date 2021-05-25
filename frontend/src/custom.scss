@@ -41,6 +41,22 @@
   background: #757763 !important;
 }
 
+.group-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.group-list a {
+  width: 240px;
+}
+
+.group-card-image {
+  height: 320px;
+  width: 240px;
+}
+
 .cover-image {
   height: 270px;
   width: 180px;

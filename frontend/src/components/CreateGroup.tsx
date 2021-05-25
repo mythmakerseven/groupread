@@ -52,7 +52,7 @@ const CreateGroup: React.FC = () => {
     const groupObject = {
       bookTitle: data.bookTitle,
       bookAuthor: data.bookAuthor,
-      bookYear: data.bookYear,
+      bookYear: Number(data.bookYear),
       bookIsbn: data.bookIsbn,
       bookPageCount: Number(data.bookPageCount),
       bookOLID: groupFormData.bookOLID
