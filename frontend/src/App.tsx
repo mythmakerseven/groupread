@@ -26,28 +26,47 @@ const App: React.FC = () => {
   return (
     <div>
       <Navbar />
+      {/* mobile-container doesn't do anything unless the user on on a small screen,
+      in which case it provides side margins to all content, Unfortunately, it messes up
+      the homepage picture, so we have to wrap each individual component in this div
+      to avoid affecting the homepage. */}
+      
       <div className='navbar-offset'>
         <Switch>
           <Route path="/groups/create">
-            <CreateGroup />
+            <div className="mobile-container">
+              <CreateGroup />
+            </div>
           </Route>
           <Route path="/groups/:id/schedule">
-            <GroupScheduler />
+            <div className="mobile-container">
+              <GroupScheduler />
+            </div>
           </Route>
           <Route path="/groups/:id/submit">
-            <GroupNewPost />
+            <div className="mobile-container">
+              <GroupNewPost />
+            </div>
           </Route>
           <Route path="/groups/:id/:pid">
-            <PostView />
+            <div className="mobile-container">
+              <PostView />
+            </div>
           </Route>
           <Route path="/groups/:id">
-            <GroupView />
+            <div className="mobile-container">
+              <GroupView />
+            </div>
           </Route>
           <Route path="/groups">
-            <GroupList />
+            <div className="mobile-container">
+              <GroupList />
+            </div>
           </Route>
           <Route path="/compatibility">
-            <Compatibility />
+            <div className="mobile-container">
+              <Compatibility />
+            </div>
           </Route>
           <Route path="/">
             <HomePage />

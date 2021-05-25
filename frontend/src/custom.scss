@@ -71,3 +71,13 @@
 .post-typography {
   font-family: system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
+
+// 1023px is Bulma's breakpoint to make containers full-width.
+// By wrapping them all in this special div, we can provide margins
+// on mobile devices.
+@media screen and (max-width: 1023px) {
+  .mobile-container {
+    margin-left: 2vw;
+    margin-right: 2vw;
+  }
+}
