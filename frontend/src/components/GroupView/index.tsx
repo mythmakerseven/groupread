@@ -31,6 +31,10 @@ const GroupView: React.FC = () => {
   let memberIDs: Array<string> = []
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     dispatch(getGroupDetails(id))
   }, [id])
 

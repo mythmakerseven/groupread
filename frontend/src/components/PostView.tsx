@@ -20,6 +20,10 @@ const PostView: React.FC = () => {
   const { id, pid } = useParams<({ id: string, pid: string })>()
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     dispatch(getGroupDetails(id))
   }, [id])
 
