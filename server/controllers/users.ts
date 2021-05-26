@@ -2,9 +2,10 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 const usersRouter = require('express').Router()
 import User from '../models/user'
+import Group from '../models/group'
 import config from '../utils/config'
 import { v4 as uuidv4 } from 'uuid'
-import { checkToken } from './utils'
+import { checkToken, getCurrentUserInfo } from './utils'
 
 // Create an account
 usersRouter.post('/', async (req, res) => {
@@ -85,6 +86,34 @@ usersRouter.post('/', async (req, res) => {
       displayName: user.displayName,
       id: user.id
     })
+})
+
+// Get info about your own account
+usersRouter.get('/info/:id', async (req, res) => {
+  const token = req.token
+
+  let tokenID: string
+  try {
+    tokenID = checkToken(token)
+  } catch(e) {
+    return res.status(400).json({ error: `${e.message}` })
+  }
+
+  // Fetch the user's personal info including a list of groups they're part of
+
+  let user: User
+  try {
+    user = await getCurrentUserInfo(req.params.id, tokenID)
+  } catch(e) {
+    return res.status(e.status).json({ error: `${e.message}` })
+  }
+
+  // Less sanitization is needed here, but let's still avoid sending the password hash
+  const hashlessUser = { ...user, passwordHash: undefined }
+
+  // const userGroups = await user.getGroups()
+
+  res.status(200).json(hashlessUser)
 })
 
 // Check if the token is still valid for an existing user

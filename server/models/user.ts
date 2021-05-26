@@ -4,8 +4,7 @@ import {
   BelongsToManyGetAssociationsMixin,
   Optional,
   BelongsToManySetAssociationsMixin,
-  Association,
-  HasManySetAssociationsMixin
+  Association
   } from 'sequelize'
 import getPool from '../utils/db'
 import Group from './group'
@@ -44,7 +43,7 @@ class User extends Model<UserAttributes, UserCreationAttributes>
   public readonly posts?: Post[]
 
   public static associations: {
-    groups: Association<Group>,
+    groups: Association<User, Group>,
     posts: Association<User, Post>,
     // admin: Association<User>
   }

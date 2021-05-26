@@ -3,7 +3,8 @@ import {
   DataTypes,
   HasManyGetAssociationsMixin,
   Model,
-  Optional
+  Optional,
+  BelongsToManyGetAssociationsMixin
 } from 'sequelize'
 import User from './user'
 import Post from './post'
@@ -48,7 +49,7 @@ class Group extends Model<GroupAttributes, GroupCreationAttributes>
   public createdAt!: Date
   public updatedAt!: Date
 
-  public getUsers!: HasManyGetAssociationsMixin<User>
+  public getUsers!: BelongsToManyGetAssociationsMixin<User>
   // public setAdmin!: BelongsToSetAssociationMixin<User, string>
   public getPosts!: HasManyGetAssociationsMixin<Post>
 

@@ -14,4 +14,13 @@ const validateToken = async (token: string) => {
   return res.data
 }
 
-export default { getUsername, validateToken }
+const getPersonalInfo = async (id: string, token: string) => {
+  const config = {
+    headers: { Authorization: `bearer ${token}` }
+  }
+
+  const res = await axios.get(`${baseUrl}/info/${id}`, config)
+  return res.data
+}
+
+export default { getUsername, validateToken, getPersonalInfo }

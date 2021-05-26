@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/user'
+import Group from '../models/group'
 import config from '../utils/config'
-// import { SanitizedUser } from '../utils/types'
 
 export const checkToken = (token: string) => {
   if (!token) {
@@ -32,4 +32,35 @@ export const sanitizeUser = (user: User) => {
     email: undefined,
     ...user
   })
+}
+
+export const getCurrentUserInfo = async (id: string, tokenID: string) => {
+  const user = await User.findOne({
+    where: {
+      id
+    },
+    include: {
+      model: Group,
+      through: { attributes: [] }
+    }
+  })
+
+  // Parse the response as JSON because the Sequelize model includes a bunch of metadata junk
+  const userObject: User = user.toJSON() as User
+
+  if (!userObject) {
+    throw ({
+      status: 401,
+      message: 'user does not exist'
+    })
+  }
+
+  if (userObject.id !== tokenID) {
+    throw {
+      status: 400,
+      message: 'you do not have permission to this account\'s private info'
+    }
+  }
+
+  return userObject
 }

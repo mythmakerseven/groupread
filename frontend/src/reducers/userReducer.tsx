@@ -4,6 +4,7 @@ import login from '../services/login'
 import userService from '../services/users'
 import postService from '../services/posts'
 import { LoginData, RegisterData, UserObject } from '../types'
+import users from '../services/users'
 
 export type UserState = UserObject | null
 
@@ -59,6 +60,18 @@ export const registerUser = createAsyncThunk(
   }
 )
 
+export const getPersonalInfo = createAsyncThunk(
+  '/users/getPersonalInfo',
+  async (payload: { id: string, token: string }, thunkAPI) => {
+    try {
+      const userData = await users.getPersonalInfo(payload.id, payload.token)
+      return userData
+    } catch(error) {
+      throw new Error(`${error.response.data.error}`)
+    }
+  }
+)
+
 const userSlice = createSlice({
   name: 'userSlice',
   initialState,
@@ -99,6 +112,9 @@ const userSlice = createSlice({
     }),
     builder.addCase(registerUser.rejected, (state, { payload }) => {
       return state = initialState
+    }),
+    builder.addCase(getPersonalInfo.fulfilled, (state, { payload }) => {
+      return state = { ...state, ...payload }
     })
   }
 })

@@ -20,6 +20,7 @@ export interface GroupCreationData {
 }
 
 export interface UserObject {
+  Groups: Group[];
   username: string,
   displayName: string,
   id: string,

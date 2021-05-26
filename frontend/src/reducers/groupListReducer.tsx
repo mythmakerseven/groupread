@@ -6,7 +6,7 @@ import {
   Group
 } from '../types'
 
-type groupListState = Array<Group>
+type groupListState = Group[]
 const initialState = [] as groupListState
 
 export const getAllGroups = createAsyncThunk(
