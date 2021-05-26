@@ -58,6 +58,8 @@ If you plan to work on new functionality, please file an issue first so no one d
 
 Before submitting a pull request, make sure to lint your code with ``yarn lint`` and test with both ``yarn test:jest`` and ``yarn test:component``. Code style isn't very strict right now beyond the basic linting rules, although more stringency might be enforced in the future.
 
+All contributions are licensed under the [GNU Affero General Public License v3.0](https://github.com/mythmakerseven/groupread/blob/main/LICENSE).
+
 ## To do
 
 ⭐ = priority level
@@ -66,7 +68,7 @@ Before submitting a pull request, make sure to lint your code with ``yarn lint``
 
 - moderation tools for group owners ⭐⭐⭐
 
-- proper frontend testing with Cypress (current status: cypress is fully set up, but only runs a few basic tests to verify that it works) ⭐⭐⭐
+- proper frontend testing with Cypress (current status: cypress is fully set up for component testing, but only runs a few basic tests to verify that it works - end-to-end testing is not yet configured) ⭐⭐⭐
 
 - ~~enhanced security (token expiration and validation, etc)~~ ⭐⭐⭐
 
@@ -76,9 +78,9 @@ Before submitting a pull request, make sure to lint your code with ``yarn lint``
 
 - basic user profile pages, nothing fancy ⭐⭐
 
-- better looking group list, probably some flexbox with book covers ⭐⭐
+- ~~better looking group list, probably some flexbox with book covers~~ ⭐⭐
 
-- list of groups the user is current in, preferably as a navbar dropdown ⭐⭐
+- list of groups the user is currently a member of, preferably as a navbar dropdown (current status: the API call is implemented, just need to make the dropdown menu now) ⭐⭐
 
 - editing functionality (mostly implemented, still missing for top-level posts) ⭐⭐
 
