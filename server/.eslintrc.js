@@ -8,7 +8,9 @@ module.exports = {
   'extends': [
     'eslint:recommended',
     'plugin:react/recommended',
-    'plugin:jest/style'
+    'plugin:jest/style',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended'
   ],
   'parserOptions': {
     'ecmaVersion': 12
@@ -41,7 +43,8 @@ module.exports = {
     'no-console': 0
   },
   'plugins': [
-    'react', 'jest'
+    'jest',
+    '@typescript-eslint'
   ],
   'settings': {
     'react': {

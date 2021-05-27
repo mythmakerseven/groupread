@@ -1,13 +1,16 @@
-const postsRouter = require('express').Router()
+import express from 'express'
 import Post from '../models/post'
 import { v4 as uuidv4 } from 'uuid'
 import User from '../models/user'
 import logger from '../utils/logger'
 import Group from '../models/group'
 import { checkToken } from './utils'
+import { RequestWithToken } from '../utils/types'
+
+const postsRouter = express.Router()
 
 // Create a post
-postsRouter.post('/:group', async (req, res) => {
+postsRouter.post('/:group', async (req: RequestWithToken, res) => {
   const body = req.body
   logger.info(`Received POST request:\n ${body}`)
 
@@ -78,7 +81,7 @@ postsRouter.post('/:group', async (req, res) => {
 })
 
 // Edit a post
-postsRouter.put('/edit/:id', async (req, res) => {
+postsRouter.put('/edit/:id', async (req: RequestWithToken, res) => {
   // Body will include:
   // new post body = body.text
 
@@ -101,7 +104,7 @@ postsRouter.put('/edit/:id', async (req, res) => {
   const user = await User.findOne({ where: { id: tokenID } })
   if (!user) return res.status(400).json({ error: 'user does not exist' })
 
-  let post = await Post.findOne({ where: { id: req.params.id } })
+  const post = await Post.findOne({ where: { id: req.params.id } })
   if (!post) return res.status(400).json({ error: 'post does not exist' })
 
   if (user.id !== post.UserId) {

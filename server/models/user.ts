@@ -5,7 +5,7 @@ import {
   Optional,
   BelongsToManySetAssociationsMixin,
   Association
-  } from 'sequelize'
+} from 'sequelize'
 import getPool from '../utils/db'
 import Group from './group'
 import Post from './post'
@@ -21,7 +21,7 @@ interface UserAttributes {
   nameColor: string
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
+type UserCreationAttributes = Optional<UserAttributes, 'id'>
 
 class User extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes {
@@ -31,7 +31,7 @@ class User extends Model<UserAttributes, UserCreationAttributes>
   public passwordHash!: string
   public email!: string
   public nameColor!: string
-  
+
   public createdAt!: Date
   public updatedAt!: Date
 
@@ -79,7 +79,7 @@ User.init(
     }
   },
   {
-    tableName: "Users",
+    tableName: 'Users',
     sequelize: db,
   }
 )

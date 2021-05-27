@@ -33,7 +33,7 @@ interface GroupAttributes {
   AdminId: string
 }
 
-interface GroupCreationAttributes extends Optional<GroupAttributes, "id" | "bookAuthor" | "bookYear" | "bookIsbn" | "bookOLID"> {}
+type GroupCreationAttributes = Optional<GroupAttributes, 'id' | 'bookAuthor' | 'bookYear' | 'bookIsbn' | 'bookOLID'>
 
 class Group extends Model<GroupAttributes, GroupCreationAttributes>
   implements GroupAttributes {
@@ -101,7 +101,7 @@ Group.init(
     }
   },
   {
-    tableName: "Groups",
+    tableName: 'Groups',
     sequelize: db
   }
 )

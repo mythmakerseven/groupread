@@ -1,10 +1,13 @@
-const groupsRouter = require('express').Router()
+import express from 'express'
 import Group from '../models/group'
 import { v4 as uuidv4 } from 'uuid'
 import User from '../models/user'
 import logger from '../utils/logger'
 import Post from '../models/post'
 import { checkToken, sanitizeUser } from './utils'
+import { RequestWithToken } from '../utils/types'
+
+const groupsRouter = express.Router()
 
 // utility function for returning all posts, properly sorted by parent/child
 const sortPosts = posts => {
@@ -62,7 +65,7 @@ groupsRouter.get('/:id/posts', async (req, res) => {
 })
 
 // Create a group
-groupsRouter.post('/', async (req, res) => {
+groupsRouter.post('/', async (req: RequestWithToken, res) => {
   const token = req.token
   const body = req.body
 
@@ -140,7 +143,7 @@ groupsRouter.post('/', async (req, res) => {
 })
 
 // Join a group
-groupsRouter.post('/join/:group', async (req, res) => {
+groupsRouter.post('/join/:group', async (req: RequestWithToken, res) => {
   const token = req.token
 
   let tokenID
@@ -164,7 +167,7 @@ groupsRouter.post('/join/:group', async (req, res) => {
 
 // Schedule posts for a group
 // Auto-populates the list of posts with future weekly threads
-groupsRouter.post('/schedule/:group', async (req, res) => {
+groupsRouter.post('/schedule/:group', async (req: RequestWithToken, res) => {
   // request schema:
   // {
   //   1: 50

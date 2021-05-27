@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize'
-import { BelongsToManyAddAssociationsMixin, HasOneSetAssociationMixin, HasOneGetAssociationMixin, Model, Optional } from "sequelize"
+import { BelongsToManyAddAssociationsMixin, HasOneSetAssociationMixin, HasOneGetAssociationMixin, Model, Optional } from 'sequelize'
 import getPool from '../utils/db'
 import Group from './group'
 import User from './user'
@@ -17,7 +17,7 @@ interface PostAttributes {
   UserId: string
 }
 
-interface PostCreationAttributes extends Optional<PostAttributes, 'id' | 'title' | 'parent'> {}
+type PostCreationAttributes = Optional<PostAttributes, 'id' | 'title' | 'parent'>
 
 class Post extends Model<PostAttributes, PostCreationAttributes>
   implements PostAttributes {
@@ -27,7 +27,7 @@ class Post extends Model<PostAttributes, PostCreationAttributes>
   public text!: string
   public GroupId!: string
   public UserId!: string
-  
+
   public createdAt!: Date
   public updatedAt!: Date
 
@@ -40,7 +40,7 @@ class Post extends Model<PostAttributes, PostCreationAttributes>
   //   posts: Association<Group, Post>
   // }
 
-  }
+}
 
 Post.init(
   {
@@ -79,7 +79,7 @@ Post.init(
     }
   },
   {
-    tableName: "Posts",
+    tableName: 'Posts',
     sequelize: db
   }
 )

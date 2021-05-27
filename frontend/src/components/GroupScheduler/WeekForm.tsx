@@ -32,7 +32,6 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
   }
 
   const submitSchedule = async (data: unknown) => {
-    console.log('submitting schedule...')
     const res = await dispatch(setSchedule({
       weekObject: data,
       groupID: id,

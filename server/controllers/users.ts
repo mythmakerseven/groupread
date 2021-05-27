@@ -1,11 +1,13 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-const usersRouter = require('express').Router()
+import express from 'express'
 import User from '../models/user'
-import Group from '../models/group'
 import config from '../utils/config'
 import { v4 as uuidv4 } from 'uuid'
 import { checkToken, getCurrentUserInfo } from './utils'
+import { RequestWithToken } from '../utils/types'
+
+const usersRouter = express.Router()
 
 // Create an account
 usersRouter.post('/', async (req, res) => {
@@ -89,7 +91,7 @@ usersRouter.post('/', async (req, res) => {
 })
 
 // Get info about your own account
-usersRouter.get('/info/:id', async (req, res) => {
+usersRouter.get('/info/:id', async (req: RequestWithToken, res) => {
   const token = req.token
 
   let tokenID: string
@@ -118,7 +120,7 @@ usersRouter.get('/info/:id', async (req, res) => {
 
 // Check if the token is still valid for an existing user
 // The frontend hits this endpoint on first page load
-usersRouter.post('/validate', async (req, res) => {
+usersRouter.post('/validate', async (req: RequestWithToken, res) => {
   const token = req.token
 
   let tokenID

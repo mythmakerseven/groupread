@@ -3,7 +3,7 @@ import User from '../models/user'
 import Group from '../models/group'
 import config from '../utils/config'
 
-export const checkToken = (token: string) => {
+export const checkToken = (token: string): string => {
   if (!token) {
     throw new Error('Missing token')
   }
@@ -26,15 +26,26 @@ export const checkToken = (token: string) => {
   return decodedToken.data.id
 }
 
-export const sanitizeUser = (user: User) => {
+interface SanitizedUser {
+  id: string,
+  username: string,
+  displayName: string,
+  nameColor: string,
+  createdAt: Date,
+  updatedAt: Date,
+  passwordHash: undefined,
+  email: undefined
+}
+
+export const sanitizeUser = (user: User): SanitizedUser => {
   return ({
     passwordHash: undefined,
     email: undefined,
-    ...user
+    ...user as SanitizedUser
   })
 }
 
-export const getCurrentUserInfo = async (id: string, tokenID: string) => {
+export const getCurrentUserInfo = async (id: string, tokenID: string): Promise<User> => {
   const user = await User.findOne({
     where: {
       id

@@ -1,25 +1,26 @@
 import Group from '../models/group'
 import Post from '../models/post'
 import User from '../models/user'
+import { ReplyObject } from '../utils/types'
 
-const groupsInDb = async () => {
+const groupsInDb = async (): Promise<Group[]> => {
   return await Group.findAll()
 }
 
-const usersInDb = async () => {
+const usersInDb = async (): Promise<User[]> => {
   return await User.findAll()
 }
 
-const postsInDb = async () => {
+const postsInDb = async (): Promise<Post[]> => {
   return await Post.findAll()
 }
 
-const searchUsers = async (id) => {
+const searchUsers = async (id: string): Promise<User> => {
   const res = await User.findOne({ where: { id: id } })
   return res
 }
 
-const searchPosts = async (id) => {
+const searchPosts = async (id: string): Promise<Post> => {
   const res = await Post.findOne({ where: { id: id } })
   return res
 }
@@ -44,7 +45,7 @@ const exampleParentPost = {
   'text': 'This is the text of the post',
 }
 
-const exampleReply = (parentId) => (
+const exampleReply = (parentId: string): ReplyObject => (
   {
     'parent': parentId,
     'text': 'This is the text of the reply'
@@ -52,7 +53,7 @@ const exampleReply = (parentId) => (
 )
 
 // They will all be numbers, but it is a string
-const getRandomString = () => {
+const getRandomString = (): string => {
   return `${Math.random().toString().substr(2, 8)}${Math.random().toString().substr(2, 8)}`
 }
 

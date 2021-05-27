@@ -3,7 +3,7 @@ import config from './config'
 
 let sequelize: Sequelize
 
-const getPool = () => {
+const getPool = (): Sequelize => {
   if (sequelize) return sequelize
   sequelize = new Sequelize(config.DB_URL)
   return sequelize
