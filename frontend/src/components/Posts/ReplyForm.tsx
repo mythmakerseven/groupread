@@ -52,7 +52,7 @@ const ReplyForm: React.FC<Props> = ({ payloadType, startingText, replyID, setAct
       const postObject = {
         text: data.text
       }
-      
+
       // If the form is hidable, hide it
       if (setActive) {
         setActive(false)

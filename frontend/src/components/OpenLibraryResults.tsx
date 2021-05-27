@@ -13,7 +13,8 @@ interface Props {
 }
 
 const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen }) => {
-  const [results, setResults] = useState<Array<any>>([])
+  // OpenLibrary entries vary in which fields they include, so it's not useful to type them
+  const [results, setResults] = useState<OpenLibraryResults[]>([])
 
   const dispatch = useAppDispatch()
 
@@ -47,7 +48,7 @@ const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsb
 
   // Not all books have every bit of metadata, but out of these I think only author is the one
   // with possible empty fields.
-  const updateForm = (title: string, author: string | null, year: number, isbn: string, olid: string) => {
+  const updateForm = (title: string, author: string | null, year: number | null, isbn: string | null, olid: string) => {
     dispatch(formUpdateTitle(titleCase(title)))
     dispatch(formUpdateAuthor(author))
     dispatch(formUpdateYear(year))
@@ -60,7 +61,7 @@ const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsb
   // and generate the proper string to display them. This string is stored as the
   // author name in the DB, for now. Would really prefer a proper author array in
   // the DB, but this works as a band-aid.
-  const parseAuthors = (authorList: Array<string>): string | null => {
+  const parseAuthors = (authorList: Array<string> | null): string | null => {
     if (!authorList || authorList.length === 0) {
       return null
     } else if (authorList.length === 1) {
@@ -72,7 +73,16 @@ const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsb
     }
   }
 
-  const displayResults = (results: Array<any>) => {
+  interface OpenLibraryResults {
+    key: string,
+    title: string,
+    author_name: string[] | null,
+    publish_year: number[] | null,
+    isbn: string[] | null,
+    cover_edition_key: string
+  }
+
+  const displayResults = (results: OpenLibraryResults[]) => {
     if (!results) {
       return <p className='subtitle'>loading...</p>
     }

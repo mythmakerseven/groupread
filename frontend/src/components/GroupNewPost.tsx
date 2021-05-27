@@ -76,7 +76,7 @@ const GroupNewPost: React.FC = () => {
         <button className='button is-primary' type='submit'>Submit post</button>
       </form>
     </div>
-  );
+  )
 }
 
 export default GroupNewPost

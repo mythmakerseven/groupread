@@ -62,7 +62,7 @@ const PostView: React.FC = () => {
   const displayReplies = () => {
     // Check if there are any replies first
     if (post.replies && post.replies.length > 0) {
-      return post.replies.map(reply => 
+      return post.replies.map(reply =>
         <Reply key={reply.id} groupMembers={group.members} replyObject={reply} />
       )
     } else {
@@ -90,7 +90,7 @@ const PostView: React.FC = () => {
         setActive={null}
       />
     </div>
-  );
+  )
 }
 
 export default PostView

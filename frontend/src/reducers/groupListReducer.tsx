@@ -6,13 +6,13 @@ import {
   Group
 } from '../types'
 
-type groupListState = Group[]
-const initialState = [] as groupListState
+export type GroupListState = Group[]
+const initialState = [] as GroupListState
 
 export const getAllGroups = createAsyncThunk(
   '/groupList/getAllGroupsStatus',
-  async (thunkAPI) => {
-    let groups = await groupService.getAllGroups()
+  async () => {
+    const groups = await groupService.getAllGroups()
     return groups
   }
 )
@@ -31,4 +31,4 @@ const groupListSlice = createSlice({
 
 export default groupListSlice.reducer
 
-export const groupListSelector = (state: { groupListStore: groupListState }): groupListState => state.groupListStore
+export const groupListSelector = (state: { groupListStore: GroupListState }): GroupListState => state.groupListStore

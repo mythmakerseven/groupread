@@ -5,8 +5,11 @@ module.exports = {
   },
   'extends': [
     'eslint:recommended',
-    'plugin:react/recommended'
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended'
   ],
+  "parser": "@typescript-eslint/parser",
   'parserOptions': {
     'ecmaFeatures': {
       'jsx': true
@@ -39,10 +42,12 @@ module.exports = {
     'arrow-spacing': [
       'error', { 'before': true, 'after': true }
     ],
-    'no-console': 0
+    'no-console': 0,
+    "react/prop-types": 0
   },
   'plugins': [
-    'react'
+    'react',
+    '@typescript-eslint'
   ],
   'settings': {
     'react': {

@@ -30,7 +30,7 @@ const App: React.FC = () => {
       in which case it provides side margins to all content, Unfortunately, it messes up
       the homepage picture, so we have to wrap each individual component in this div
       to avoid affecting the homepage. */}
-      
+
       <div className='navbar-offset'>
         <Switch>
           <Route path="/groups/create">

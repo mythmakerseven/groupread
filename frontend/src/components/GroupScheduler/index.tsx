@@ -55,7 +55,7 @@ const GroupScheduler: React.FC = () => {
       </div>
       <WeekNumberForm initialWeeks={suggestWeeklyAmount(group.bookPageCount).weeks} pageCount={group.bookPageCount} />
     </div>
-  );
+  )
 }
 
 export default GroupScheduler

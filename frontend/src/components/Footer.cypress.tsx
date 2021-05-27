@@ -6,8 +6,8 @@ import Footer from './Footer'
 // simple one to make sure cypress is working
 it('Footer', () => {
   mount(
-  <Router>
-    <Footer />
-  </Router>)
+    <Router>
+      <Footer />
+    </Router>)
   cy.get('footer').contains('Book metadata provided by the')
 })

@@ -31,10 +31,10 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
     return <p>Missing/invalid user ID</p>
   }
 
-  const submitSchedule = async (data: any) => {
-    const weekData = data
+  const submitSchedule = async (data: unknown) => {
+    console.log('submitting schedule...')
     const res = await dispatch(setSchedule({
-      weekObject: weekData,
+      weekObject: data,
       groupID: id,
       token: user.token
     }))
@@ -48,7 +48,7 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
 
   // Find which page the current week should cover
   const calculatePage = (currentWeek: number): number => {
-    if (currentWeek === parseInt(initialWeeks)) {
+    if (currentWeek === initialWeeks) {
       return pageCount
     }
     const pagesPerWeek = Math.floor(pageCount / initialWeeks)
@@ -70,7 +70,7 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
     // Not easy to type the weeklist object.
     // TODO: Find a better way to handle this that plays nicer with TypeScript.
     // Would need to be updated & tested on the backend too.
-    let weekList: any[] = []
+    let weekList: unknown[] = []
 
     for (let i = 1; i <= initialWeeks; i++) {
       weekList = weekList.concat(
@@ -82,7 +82,6 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
                 <input
                   className='input'
                   type='number'
-                  name={`${i}`}
                   {...register(`${i}`)}
                   // make sure the last item is properly filled in
                   defaultValue={calculatePage(i)}

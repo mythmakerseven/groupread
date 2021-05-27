@@ -54,11 +54,11 @@ const GroupList: React.FC = () => {
           <div className='group-list is-5'>
             {groupsToShow.map(group =>
               <Link className='hoverable-item' key={group.id} to={`/groups/${group.id}`}>
-                  <GroupCard
-                    bookTitle={group.bookTitle}
-                    bookAuthor={group.bookAuthor}
-                    bookOLID={group.bookOLID}
-                  />
+                <GroupCard
+                  bookTitle={group.bookTitle}
+                  bookAuthor={group.bookAuthor}
+                  bookOLID={group.bookOLID}
+                />
               </Link>
             )}
           </div>
@@ -73,7 +73,7 @@ const GroupList: React.FC = () => {
         {displayGroups(getUserGroups(), true)}
       </div>
       <div className='columns is-centered'>
-          {displayGroups(getNonMemberGroups(), false)}
+        {displayGroups(getNonMemberGroups(), false)}
       </div>
     </div>
   )

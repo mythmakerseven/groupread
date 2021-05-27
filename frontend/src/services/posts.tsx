@@ -3,16 +3,17 @@ const baseUrl = '/api/posts'
 
 import {
   NewPostObject,
-  EditPostObject
+  EditPostObject,
+  Post
 } from '../types'
 
 let token: string | null = null
 
-const setToken = (newToken: string) => {
+const setToken = (newToken: string): void => {
   token = `bearer ${newToken}`
 }
 
-const sendNewPost = async (id: string, postObject: NewPostObject) => {
+const sendNewPost = async (id: string, postObject: NewPostObject): Promise<Post> => {
   const config = {
     headers: { Authorization: token }
   }
@@ -21,7 +22,7 @@ const sendNewPost = async (id: string, postObject: NewPostObject) => {
   return res.data
 }
 
-const editPost = async (postID: string, postObject: EditPostObject) => {
+const editPost = async (postID: string, postObject: EditPostObject): Promise<Post> => {
   const config = {
     headers: { Authorization: token }
   }

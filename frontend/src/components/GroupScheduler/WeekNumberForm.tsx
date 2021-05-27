@@ -25,24 +25,24 @@ const WeekNumberForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
     <div>
       <form className='pb-4' onSubmit={handleSubmit(() => null)}>
         <div className='level has-text-centered'>
-        <div className='field level-item is-block'>
-          <label className='field-label'>Weeks</label>
-          <div className='control'>
-            <input
-              style={{ maxWidth: '100px' }}
-              className='input is-medium'
-              type='number'
-              {...register('weeks', {
-                required: {
-                  value: true,
-                  message: 'Number of weeks is required'
-                }
-              })}
-              min='1'
-              max='26'
-              defaultValue={initialWeeks} />
+          <div className='field level-item is-block'>
+            <label className='field-label'>Weeks</label>
+            <div className='control'>
+              <input
+                style={{ maxWidth: '100px' }}
+                className='input is-medium'
+                type='number'
+                {...register('weeks', {
+                  required: {
+                    value: true,
+                    message: 'Number of weeks is required'
+                  }
+                })}
+                min='1'
+                max='26'
+                defaultValue={initialWeeks} />
+            </div>
           </div>
-        </div>
         </div>
       </form>
       <WeekForm initialWeeks={weeks} pageCount={pageCount} />

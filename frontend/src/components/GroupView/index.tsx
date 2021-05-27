@@ -48,7 +48,7 @@ const GroupView: React.FC = () => {
     return <p>Group not found</p>
   }
   const group: Group = groupQuery
-  
+
   // Fill in the members list
   members = group.members ? group.members : []
   memberIDs = members.map(m => m.id)

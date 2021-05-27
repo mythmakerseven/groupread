@@ -3,13 +3,13 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { parseMarkdown, getDisplayName } from '../../lib/posts'
 dayjs.extend(relativeTime)
-import { Post } from '../../types'
+import { Post, User } from '../../types'
 import { useAppSelector } from '../../hooks'
 import ReplyForm from './ReplyForm'
 import { ReplyPayloadType } from './ReplyForm'
 
 interface Props {
-  groupMembers: Array<any>,
+  groupMembers: Array<User>,
   replyObject: Post
 }
 
@@ -33,7 +33,7 @@ const Reply: React.FC<Props> = ({ groupMembers, replyObject }) => {
     getHTML(replyObject.text)
   }, [replyObject])
 
-  
+
   if (!user) return <p>Loading...</p>
 
   const handleEditButton = (authorID: string) => {
@@ -62,18 +62,18 @@ const Reply: React.FC<Props> = ({ groupMembers, replyObject }) => {
     )
   } else {
     return (
-    <div key={replyObject.id} className='box box-with-border has-background-light has-text-black p-4'>
-      <div className='content'>
-        <p>
-          <strong>{getDisplayName(replyObject.UserId, groupMembers)}</strong>
-          &nbsp;&nbsp;
-          <small>{dayjs().to(dayjs(replyObject.createdAt))}</small>
-          &nbsp;&nbsp;
-          {handleEditButton(replyObject.UserId)}
-        </p>
-        <div className='post-typography' dangerouslySetInnerHTML={{ __html: text }} />
+      <div key={replyObject.id} className='box box-with-border has-background-light has-text-black p-4'>
+        <div className='content'>
+          <p>
+            <strong>{getDisplayName(replyObject.UserId, groupMembers)}</strong>
+            &nbsp;&nbsp;
+            <small>{dayjs().to(dayjs(replyObject.createdAt))}</small>
+            &nbsp;&nbsp;
+            {handleEditButton(replyObject.UserId)}
+          </p>
+          <div className='post-typography' dangerouslySetInnerHTML={{ __html: text }} />
+        </div>
       </div>
-    </div>
     )
   }
 }

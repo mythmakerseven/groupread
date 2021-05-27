@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import login from '../services/login'
 import userService from '../services/users'
@@ -16,29 +16,29 @@ export const initialState = null as UserState
 // to make sure 1) the user account still exists and 2) the token is still valid
 export const initializeUser = createAsyncThunk(
   '/users/initializeUserStatus',
-  async (thunkAPI) => {
+  async () => {
     let res
     const userObject = await JSON.parse(window.localStorage.getItem('loggedInGroupreader') || '{}')
     try {
       // This '{}' thing is an annoying hack to fix a TS quirk, as JSON.parse
       // can only accept a string and not a null value
       if (JSON.stringify(userObject) === '{}') {
-        throw new Error("No user found")
+        throw new Error('No user found')
       }
       res = await userService.validateToken(userObject.token)
       if (!res.success) {
-        throw new Error("Invalid token")
+        throw new Error('Invalid token')
       }
       return userObject
     } catch(e) {
-      throw new Error("Invalid token")
+      throw new Error('Invalid token')
     }
   }
 )
 
 export const logInUser = createAsyncThunk(
   '/users/logInUserStatus',
-  async (loginCredentials: LoginData, thunkAPI) => {
+  async (loginCredentials: LoginData) => {
     try {
       const user = await login.login(loginCredentials)
       return user
@@ -50,7 +50,7 @@ export const logInUser = createAsyncThunk(
 
 export const registerUser = createAsyncThunk(
   '/users/registerUserStatus',
-  async (registerCredentials: RegisterData, thunkAPI) => {
+  async (registerCredentials: RegisterData) => {
     try {
       const user = await login.register(registerCredentials)
       return user
@@ -62,7 +62,7 @@ export const registerUser = createAsyncThunk(
 
 export const getPersonalInfo = createAsyncThunk(
   '/users/getPersonalInfo',
-  async (payload: { id: string, token: string }, thunkAPI) => {
+  async (payload: { id: string, token: string }) => {
     try {
       const userData = await users.getPersonalInfo(payload.id, payload.token)
       return userData
@@ -76,9 +76,9 @@ const userSlice = createSlice({
   name: 'userSlice',
   initialState,
   reducers: {
-    logOutUser(state, action: PayloadAction) {
+    logOutUser() {
       window.localStorage.removeItem('loggedInGroupreader')
-      return state = initialState
+      return initialState
     }
   },
   extraReducers: (builder) => {
@@ -91,27 +91,34 @@ const userSlice = createSlice({
         return state = user
       }
     }),
-    builder.addCase(initializeUser.rejected, (state, { payload }) => {
+    builder.addCase(initializeUser.rejected, () => {
       window.localStorage.removeItem('loggedInGroupreader')
-      return state = initialState
+      return initialState
     }),
     builder.addCase(logInUser.fulfilled, (state, { payload }) => {
-      const user = payload
-      window.localStorage.setItem('loggedInGroupreader', JSON.stringify(user))
-      postService.setToken(user.token)
-      return state = user
+      window.localStorage.setItem('loggedInGroupreader', JSON.stringify(payload))
+      postService.setToken(payload.token)
+
+      // The type expects a Groups field, so set it here as an empty array to be populated later.
+      return state = {
+        Groups: [],
+        ...payload
+      }
     }),
-    builder.addCase(logInUser.rejected, (state, { payload }) => {
-      return state = initialState
+    builder.addCase(logInUser.rejected, () => {
+      return initialState
     }),
     builder.addCase(registerUser.fulfilled, (state, { payload }) => {
       const user = payload
       window.localStorage.setItem('loggedInGroupreader', JSON.stringify(user))
       postService.setToken(user.token)
-      return state = user
+      return state = {
+        Groups: [],
+        ...user
+      }
     }),
-    builder.addCase(registerUser.rejected, (state, { payload }) => {
-      return state = initialState
+    builder.addCase(registerUser.rejected, () => {
+      return initialState
     }),
     builder.addCase(getPersonalInfo.fulfilled, (state, { payload }) => {
       return state = { ...state, ...payload }

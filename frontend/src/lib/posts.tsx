@@ -9,7 +9,7 @@ export const parseMarkdown = async (text: string): Promise<string> => {
   const parsedText = await remark()
     .use(html)
     .process(text)
-  
+
   return parsedText.toString()
 }
 
@@ -17,13 +17,13 @@ export const parseMarkdown = async (text: string): Promise<string> => {
 // so getting a list of users adds them to the list, so this function would
 // then be able to look up names through that instead of needing the
 // groupMembers argument
-export const getDisplayName = (userID: string, groupMembers: Array<User>) => {
+export const getDisplayName = (userID: string, groupMembers: Array<User>): string => {
   const userMatch = groupMembers.find(m => m.id === userID)
   if (!userMatch) return 'unknown'
   return userMatch.displayName
 }
 
-export const truncate = (text: string) => {
+export const truncate = (text: string): string => {
   return (text.length > 80)
     ? `${text.substring(0, 80)}...`
     : text

@@ -17,14 +17,14 @@ const GroupBanner: React.FC<Props> = ({ group }) => {
   const dispatch = useAppDispatch()
 
   const user: UserObject | null = useAppSelector(({ user }) => user)
-  
+
   const handleGroupMembership = (id: string, token: string) => {
     dispatch(joinGroup({
       id: id,
       token: token
     }))
   }
-  
+
   if (!group || !group.members) {
     return null
   }

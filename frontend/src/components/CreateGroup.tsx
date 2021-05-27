@@ -66,7 +66,7 @@ const CreateGroup: React.FC = () => {
     if (res.error) {
       return setError('bookTitle', { message: `${res.error.message}` })
     }
-    
+
     // Even though the form is about to go out of view, we still need to reset
     // in case the user opens it again later.
     dispatch(formUpdateTitle(null))
@@ -104,8 +104,8 @@ const CreateGroup: React.FC = () => {
               })}
               defaultValue={
                 groupFormData.bookTitle
-                ? groupFormData.bookTitle
-                : undefined
+                  ? groupFormData.bookTitle
+                  : undefined
               }
             />
           </div>
@@ -120,8 +120,8 @@ const CreateGroup: React.FC = () => {
               {...register('bookAuthor')}
               defaultValue={
                 groupFormData.bookAuthor
-                ? groupFormData.bookAuthor
-                : undefined
+                  ? groupFormData.bookAuthor
+                  : undefined
               }
             />
           </div>
@@ -142,10 +142,10 @@ const CreateGroup: React.FC = () => {
               })}
               defaultValue={
                 groupFormData.bookYear
-                ? groupFormData.bookYear
-                : undefined
+                  ? groupFormData.bookYear
+                  : undefined
               }
-              />
+            />
           </div>
         </div>
         <div className='field'>
@@ -169,8 +169,8 @@ const CreateGroup: React.FC = () => {
               })}
               defaultValue={
                 groupFormData.bookIsbn
-                ? groupFormData.bookIsbn
-                : undefined
+                  ? groupFormData.bookIsbn
+                  : undefined
               }
             />
           </div>
@@ -210,7 +210,7 @@ const CreateGroup: React.FC = () => {
         />
       </form>
     </div>
-  );
+  )
 }
 
 export default CreateGroup

@@ -14,15 +14,15 @@ interface Props {
 const MembersList: React.FC<Props> = ({ adminID, groupMembers }) => {
   return (
     <>
-    <h1 className='title'>Members</h1>
-    <div className='box'>
-      {groupMembers.map((m: User) => (
-        <p key={m.id}><strong>{m.displayName}</strong> {adminID === m.id ? <span className='has-text-danger'>(admin)</span> : null}
+      <h1 className='title'>Members</h1>
+      <div className='box'>
+        {groupMembers.map((m: User) => (
+          <p key={m.id}><strong>{m.displayName}</strong> {adminID === m.id ? <span className='has-text-danger'>(admin)</span> : null}
            - joined {dayjs().to(dayjs(m.UserGroups.createdAt))}
-        </p>
-      ))}
-    </div>
-  </>
+          </p>
+        ))}
+      </div>
+    </>
   )
 }
 

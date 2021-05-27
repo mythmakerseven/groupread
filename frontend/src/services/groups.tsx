@@ -1,31 +1,34 @@
 import axios from 'axios'
 import {
-  GroupCreationData
+  Group,
+  GroupCreationData,
+  Post,
+  User
 } from '../types'
 
 const baseUrl = '/api/groups'
 
-const getAllGroups = async () => {
-  const res = await axios.get(`${baseUrl}/all`)
+const getAllGroups = async (): Promise<Group[]> => {
+  const res = await axios.get<Group[]>(`${baseUrl}/all`)
   return res.data
 }
 
-const getGroupDetails = async (id: string) => {
-  const res = await axios.get(`${baseUrl}/${id}`)
+const getGroupDetails = async (id: string): Promise<Group> => {
+  const res = await axios.get<Group>(`${baseUrl}/${id}`)
   return res.data
 }
 
-const getGroupPosts = async (id: string) => {
-  const res = await axios.get(`${baseUrl}/${id}/posts`)
+const getGroupPosts = async (id: string): Promise<Post[]> => {
+  const res = await axios.get<Post[]>(`${baseUrl}/${id}/posts`)
   return res.data
 }
 
-const getGroupMembers = async (id: string) => {
-  const res = await axios.get(`${baseUrl}/${id}/members`)
+const getGroupMembers = async (id: string): Promise<User[]> => {
+  const res = await axios.get<User[]>(`${baseUrl}/${id}/members`)
   return res.data
 }
 
-const createGroup = async (group: GroupCreationData, token: string) => {
+const createGroup = async (group: GroupCreationData, token: string): Promise<Group> => {
   const config = {
     headers: { Authorization: `bearer ${token}` }
   }
@@ -49,7 +52,12 @@ const createGroup = async (group: GroupCreationData, token: string) => {
   return res.data
 }
 
-const joinGroup = async (groupID: string, token: string) => {
+interface JoinGroupResponse {
+  user: User,
+  groupID: string
+}
+
+const joinGroup = async (groupID: string, token: string): Promise<JoinGroupResponse> => {
   const config = {
     headers: { Authorization: `bearer ${token}` }
   }
@@ -60,7 +68,7 @@ const joinGroup = async (groupID: string, token: string) => {
 // weekObject is hard to type because it is pretty dynamic.
 // It has one key for each week, and the number will vary
 // depending on how many weeks the user chooses.
-const setSchedule = async (weekObject: any, groupID: string, token: string) => {
+const setSchedule = async (weekObject: unknown, groupID: string, token: string): Promise<Post[]> => {
   const config = {
     headers: { Authorization: `bearer ${token}` }
   }

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import groupService from '../services/groups'
 import postService from '../services/posts'
@@ -14,7 +14,7 @@ import {
 // The "group" state is actually an array of all group data from every visited group.
 // This way, we cache some data so the user can visit an already-visited group
 // without having to wait for loading.
-type GroupState = Array<Group>
+export type GroupState = Array<Group>
 
 const initialState = [] as GroupState
 
@@ -38,15 +38,16 @@ interface JoinGroupPayload {
   token: string
 }
 
+// See comment in ../services/groups.tsx for info about weekObject typing
 interface SetSchedulePayload {
-  weekObject: object,
+  weekObject: unknown,
   groupID: string,
   token: string
 }
 
 export const getGroupDetails = createAsyncThunk(
   '/group/groupDetailsStatus',
-  async (id: string, thunkAPI) => {
+  async (id: string) => {
     const group = await groupService.getGroupDetails(id)
     return group
   }
@@ -54,7 +55,7 @@ export const getGroupDetails = createAsyncThunk(
 
 export const getGroupPosts = createAsyncThunk(
   '/group/groupPostsStatus',
-  async (id: string, thunkAPI) => {
+  async (id: string) => {
     try {
       const posts = await groupService.getGroupPosts(id)
       return {
@@ -69,13 +70,13 @@ export const getGroupPosts = createAsyncThunk(
 
 export const getGroupMembers = createAsyncThunk(
   '/group/groupMembersStatus',
-  async (id: string, thunkAPI) => {
+  async (id: string) => {
     try {
       const members = await groupService.getGroupMembers(id)
       return {
         members: members,
         id: id
-        }
+      }
     } catch(e) {
       throw new Error(`${e.message}`)
     }
@@ -84,7 +85,7 @@ export const getGroupMembers = createAsyncThunk(
 
 export const createGroup = createAsyncThunk(
   '/group/createGroupStatus',
-  async (payload: GroupCreationPayload, thunkAPI) => {
+  async (payload: GroupCreationPayload) => {
     try {
       const response = await groupService.createGroup(payload.groupObject, payload.token)
       return response
@@ -96,7 +97,7 @@ export const createGroup = createAsyncThunk(
 
 export const newPost = createAsyncThunk(
   '/group/newPostStatus',
-  async (payload: NewPostPayload, thunkAPI) => {
+  async (payload: NewPostPayload) => {
     try {
       const res = await postService.sendNewPost(payload.id, payload.postObject)
       if (payload.postObject.parent) {
@@ -110,7 +111,7 @@ export const newPost = createAsyncThunk(
         return {
           type: 'reply',
           data: res
-        }        
+        }
       }
     } catch(e) {
       throw new Error(`${e.message}`)
@@ -120,7 +121,7 @@ export const newPost = createAsyncThunk(
 
 export const editPost = createAsyncThunk(
   '/group/editPostStatus',
-  async (payload: EditPostPayload, thunkAPI) => {
+  async (payload: EditPostPayload) => {
     try {
       const res = await postService.editPost(payload.postID, payload.postObject)
       return res
@@ -132,7 +133,7 @@ export const editPost = createAsyncThunk(
 
 export const joinGroup = createAsyncThunk(
   '/group/joinGroupStatus',
-  async (payload: JoinGroupPayload, thunkAPI) => {
+  async (payload: JoinGroupPayload) => {
     try {
       await groupService.joinGroup(payload.id, payload.token)
       const newMemberList = await groupService.getGroupMembers(payload.id)
@@ -148,7 +149,7 @@ export const joinGroup = createAsyncThunk(
 
 export const setSchedule = createAsyncThunk(
   '/groups/setScheduleStatus',
-  async (payload: SetSchedulePayload, thunkAPI) => {
+  async (payload: SetSchedulePayload): Promise<{ groupID: string, posts: Post[] }> => {
     try {
       const res = await groupService.setSchedule(payload.weekObject, payload.groupID, payload.token)
       return {
@@ -167,11 +168,10 @@ const groupSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getGroupDetails.fulfilled, (state, { payload }) => {
-      const group = payload
-      if (state.find(g => g.id === group.id)) {
-        return state = state
+      if (state.find(g => g.id === payload.id)) {
+        return state
       }
-      return state = [ ...state, group ]
+      return state = [ ...state, payload ]
     }),
     builder.addCase(getGroupPosts.fulfilled, (state, { payload }) => {
       const posts = payload.posts
@@ -210,8 +210,8 @@ const groupSlice = createSlice({
         })
       } else {
         // New top-level post
-        const groupID = payload.data.groupID
-        return state = state.map(g => g.id === groupID ? g = { ...g, posts: [ ...payload.data ] } : g)
+        const groupID = payload.data.GroupId
+        return state = state.map(g => g.id === groupID ? g = { ...g, posts: [ ...g.posts, payload.data ] } : g)
       }
     }),
     builder.addCase(editPost.fulfilled, (state, { payload }) => {
@@ -222,28 +222,30 @@ const groupSlice = createSlice({
       // This is ugly! But pretty in a weird way too.
       // Basically it finds the group, then the parent post,
       // then the reply to edit.
-      return state = state.map(g => g.id === groupID
+      return state = state.map((g: Group) => g.id === groupID
         ? g = { ...g, posts: g.posts.map(p => p.id === parentID && p.replies
-            ? {...p, replies: p.replies.map(r => r.id === replyID
-              ? payload
-              : r
-              )}
-            : p
-          )}
+          ? { ...p, replies: p.replies.map(r => r.id === replyID
+            ? payload
+            : r
+          ) }
+          : p
+        ) }
         : g
       )
     }),
     builder.addCase(joinGroup.fulfilled, (state, { payload }) => {
       const group = state.find(g => g.id === payload.groupID)
       if (!group) {
-        return state = state
+        return state
       }
       return state = state.map(g => g.id === payload.groupID ? g = { ...g, members: payload.members } : g)
     }),
     builder.addCase(setSchedule.fulfilled, (state, { payload }) => {
       const groupID = payload.groupID
-      const posts = payload.posts
-      return state = state.map(g => g.id === groupID ? g = { ...g, posts: [ ...posts ] } : g)
+      const newPosts = payload.posts
+
+      // The backend responds with a complete list of the group's posts, so we can just overwrite the post array
+      return state = state.map(g => g.id === groupID ? g = { ...g, posts: newPosts } : g)
     })
   }
 })
