@@ -72,17 +72,17 @@ All contributions are licensed under the [GNU Affero General Public License v3.0
 
 - ~~enhanced security (token expiration and validation, etc)~~ ⭐⭐⭐
 
-- fix all remaining TypeScript errors and add checks to the build process ⭐⭐
+- fix all remaining TypeScript errors and add strict checks to the build process (current status: frontend just has a few type issues, backend still needs strict mode and strict null checks switched on) ⭐⭐
 
 - ~~automated scheduling of discussion threads~~ ⭐⭐
 
-- basic user profile pages, nothing fancy ⭐⭐
+- basic user profile pages, nothing fancy (current status: an API call to fetch your own info is implemented, it should be simple to write another one for getting other users' info with some personal data removed) ⭐⭐
 
 - ~~better looking group list, probably some flexbox with book covers~~ ⭐⭐
 
-- list of groups the user is currently a member of, preferably as a navbar dropdown (current status: the API call is implemented, just need to make the dropdown menu now) ⭐⭐
+- list of groups the current user has joined, preferably as a navbar dropdown (current status: the API call mentioned above returns a group list, just need to make the dropdown menu now) ⭐⭐
 
-- editing functionality (mostly implemented, still missing for top-level posts) ⭐⭐
+- editing functionality (mostly implemented, still missing on the front-end for top-level posts) ⭐⭐
 
 - ~~proper display of authors for books with multiple authors~~ ⭐
 
