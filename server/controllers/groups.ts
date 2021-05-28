@@ -1,20 +1,25 @@
 import express from 'express'
+import { Response } from 'express'
 import Group from '../models/group'
 import { v4 as uuidv4 } from 'uuid'
 import User from '../models/user'
 import logger from '../utils/logger'
 import Post from '../models/post'
 import { checkToken, sanitizeUser } from './utils'
-import { RequestWithToken } from '../utils/types'
+import { RequestWithToken, NewScheduledPost } from '../utils/types'
 
 const groupsRouter = express.Router()
 
+interface PostWithReplies extends Post {
+  replies: Post[]
+}
+
 // utility function for returning all posts, properly sorted by parent/child
-const sortPosts = posts => {
+const sortPosts = (posts) => {
   const parentPosts = posts.filter(post => !post.parent)
 
   // Sort the posts into a hierarchical object with replies as children, etc
-  const sortedPosts = parentPosts.map(post => post = { ...post.dataValues, replies: posts.filter(childPost => childPost.parent === post.id) } )
+  const sortedPosts = parentPosts.map(post => post = { ...post.toJSON() as PostWithReplies, replies: posts.filter(childPost => childPost.parent === post.id) } )
   return sortedPosts
 }
 
@@ -65,7 +70,7 @@ groupsRouter.get('/:id/posts', async (req, res) => {
 })
 
 // Create a group
-groupsRouter.post('/', async (req: RequestWithToken, res) => {
+groupsRouter.post('/', async (req: RequestWithToken, res: Response) => {
   const token = req.token
   const body = req.body
 
@@ -167,7 +172,7 @@ groupsRouter.post('/join/:group', async (req: RequestWithToken, res) => {
 
 // Schedule posts for a group
 // Auto-populates the list of posts with future weekly threads
-groupsRouter.post('/schedule/:group', async (req: RequestWithToken, res) => {
+groupsRouter.post('/schedule/:group', async (req: RequestWithToken, res: express.Response) => {
   // request schema:
   // {
   //   1: 50
@@ -193,7 +198,7 @@ groupsRouter.post('/schedule/:group', async (req: RequestWithToken, res) => {
     return res.status(400).json({ error: 'user not found' })
   }
 
-  const calculateDate = weekNumber => {
+  const calculateDate = (weekNumber: number) => {
     const currentDate = new Date()
     // decrease weekNumber by one so Week 1 starts immediately
     currentDate.setDate(currentDate.getDate() + ((weekNumber - 1) * 7) )
@@ -210,8 +215,9 @@ groupsRouter.post('/schedule/:group', async (req: RequestWithToken, res) => {
     return res.status(400).json({ error: 'Schedule must have between 1 and 26 weeks' })
   }
 
-  const findLastWeeksPage = week => {
-    if (parseInt(week) === 1) {
+  // Since the weeks are object keys, they are strings that must be parsed as ints
+  const findLastWeeksPage = (week: number) => {
+    if (week === 1) {
       return 1
     }
     const page = parseInt(weeks[week - 1]) + 1
@@ -225,7 +231,7 @@ groupsRouter.post('/schedule/:group', async (req: RequestWithToken, res) => {
       return res.status(400).json({ error: 'Schedule is in improper format' })
     }
     // make sure page numbers are sequential
-    if ((weeks[i] - findLastWeeksPage(weekNumbers[i-1])) < 0) {
+    if ((weeks[i] - findLastWeeksPage(parseInt(weekNumbers[i-1]))) < 0) {
       return res.status(400).json({ error: 'Page numbers are not in order' })
     }
   }
@@ -234,15 +240,17 @@ groupsRouter.post('/schedule/:group', async (req: RequestWithToken, res) => {
     return res.status(400).json({ error: 'Schedule must end on the last page of the book' })
   }
 
-  const postsToSchedule = []
+  const postsToSchedule: NewScheduledPost[] = []
 
   Object.keys(weeks).forEach(week => {
-    const weekPost = {
+    const weekInt = parseInt(week)
+
+    const weekPost: NewScheduledPost = {
       id: uuidv4(),
-      title: `Weekly post for pages ${findLastWeeksPage(week)}-${parseInt(weeks[week])}`,
-      text: `This is the auto-generated weekly discussion thread for week ${week}, covering pages ${findLastWeeksPage(week)}-${weeks[week]}.`,
-      createdAt: calculateDate(parseInt(week)),
-      updatedAt: calculateDate(parseInt(week)),
+      title: `Weekly post for pages ${findLastWeeksPage(weekInt)}-${parseInt(weeks[weekInt])}`,
+      text: `This is the auto-generated weekly discussion thread for week ${weekInt}, covering pages ${findLastWeeksPage(weekInt)}-${weeks[weekInt]}.`,
+      createdAt: calculateDate(weekInt),
+      updatedAt: calculateDate(weekInt),
       UserId: user.id,
       GroupId: group.id
     }

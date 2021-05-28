@@ -1,4 +1,5 @@
 import express from 'express'
+import { Response, NextFunction } from 'express'
 import logger from './logger'
 import { RequestWithToken } from './types'
 
@@ -13,7 +14,7 @@ interface ErrorMessage {
   message: string
 }
 
-const requestLogger = (req: LoggerObject, _res: express.Response, next: () => void): void => {
+const requestLogger = (req: LoggerObject, _res: Response, next: NextFunction): void => {
   logger.info(`Method: ${req.method}`)
   logger.info(`Path: ${req.path}`)
   logger.info(`Body: ${req.body}`)
@@ -21,7 +22,7 @@ const requestLogger = (req: LoggerObject, _res: express.Response, next: () => vo
   next()
 }
 
-const tokenExtractor = (req: RequestWithToken, _res: express.Response, next: () => void): void => {
+const tokenExtractor = (req: RequestWithToken, _res: Response, next: NextFunction): void => {
   const authorization = req.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     req.token = authorization.substring(7)
@@ -31,11 +32,11 @@ const tokenExtractor = (req: RequestWithToken, _res: express.Response, next: () 
   next()
 }
 
-const unknownEndpoint = (_req: express.Request, res: express.Response): void => {
+const unknownEndpoint = (_req: express.Request, res: Response): void => {
   res.status(404).send({ error: 'unknown endpoint' })
 }
 
-const errorHandler = (error: ErrorMessage, _req: express.Request, res: express.Response, next: (arg0: ErrorMessage) => void): express.Response | void => {
+const errorHandler = (error: ErrorMessage, _req: express.Request, res: Response, next: NextFunction): Response | NextFunction => {
   logger.error(error.message)
 
   if (error.name === 'CastError') {
