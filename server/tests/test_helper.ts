@@ -17,11 +17,21 @@ const postsInDb = async (): Promise<Post[]> => {
 
 const searchUsers = async (id: string): Promise<User> => {
   const res = await User.findOne({ where: { id: id } })
+
+  if (!res) {
+    throw new Error('User not found')
+  }
+
   return res
 }
 
 const searchPosts = async (id: string): Promise<Post> => {
   const res = await Post.findOne({ where: { id: id } })
+
+  if (!res) {
+    throw new Error('Post not found')
+  }
+
   return res
 }
 

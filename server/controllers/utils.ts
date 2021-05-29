@@ -2,8 +2,9 @@ import jwt from 'jsonwebtoken'
 import User from '../models/user'
 import Group from '../models/group'
 import config from '../utils/config'
+import { SanitizedUser } from '../utils/types'
 
-export const checkToken = (token: string): string => {
+export const checkToken = (token: string | null): string => {
   if (!token) {
     throw new Error('Missing token')
   }
@@ -26,22 +27,13 @@ export const checkToken = (token: string): string => {
   return decodedToken.data.id
 }
 
-interface SanitizedUser {
-  id: string,
-  username: string,
-  displayName: string,
-  nameColor: string,
-  createdAt: Date,
-  updatedAt: Date,
-  passwordHash: undefined,
-  email: undefined
-}
-
 export const sanitizeUser = (user: User): SanitizedUser => {
   return ({
-    passwordHash: undefined,
-    email: undefined,
-    ...user as SanitizedUser
+    id: user.id,
+    username: user.username,
+    displayName: user.displayName,
+    nameColor: user.nameColor,
+    createdAt: user.createdAt,
   })
 }
 
@@ -56,15 +48,15 @@ export const getCurrentUserInfo = async (id: string, tokenID: string): Promise<U
     }
   })
 
-  // Parse the response as JSON because the Sequelize model includes a bunch of metadata junk
-  const userObject: User = user.toJSON() as User
-
-  if (!userObject) {
+  if (!user) {
     throw ({
       status: 401,
       message: 'user does not exist'
     })
   }
+
+  // Parse the response as JSON because the Sequelize model includes a bunch of metadata junk
+  const userObject: User = user.toJSON() as User
 
   if (userObject.id !== tokenID) {
     throw {

@@ -14,14 +14,13 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "noEmitOnError": false
   },
   "include": [
     "./"
   ],
   "exclude": [
-    "./tests",
     "./eslintrc.js"
   ]
 }

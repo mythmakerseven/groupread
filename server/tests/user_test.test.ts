@@ -20,7 +20,7 @@ describe('user accounts', () => {
 
     const users = await usersInDb()
     const testUser = users.find(u => u.username === exampleUser.username)
-    expect(testUser.email).toEqual(exampleUser.email)
+    expect(testUser?.email).toEqual(exampleUser.email)
   })
 
   test('cannot be created with missing username', async () => {
@@ -166,7 +166,8 @@ describe('user accounts', () => {
 
     const users = await usersInDb()
     const testUser = users.find(u => u.username === newUser.username)
-    expect(testUser.passwordHash).not.toEqual(exampleUser.password)
+    expect(testUser?.passwordHash).not.toBeUndefined
+    expect(testUser?.passwordHash).not.toEqual(exampleUser.password)
     expect(testUser).not.toHaveProperty('password')
   })
 })

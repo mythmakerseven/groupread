@@ -36,7 +36,7 @@ const unknownEndpoint = (_req: express.Request, res: Response): void => {
   res.status(404).send({ error: 'unknown endpoint' })
 }
 
-const errorHandler = (error: ErrorMessage, _req: express.Request, res: Response, next: NextFunction): Response | NextFunction => {
+const errorHandler = (error: ErrorMessage, _req: express.Request, res: Response, next: NextFunction): Response | void => {
   logger.error(error.message)
 
   if (error.name === 'CastError') {

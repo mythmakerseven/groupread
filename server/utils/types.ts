@@ -18,3 +18,13 @@ export interface NewScheduledPost {
   UserId: string,
   GroupId: string
 }
+
+// Missing the passwordHash and email properties so the
+// frontend can safely request the info of other users
+export interface SanitizedUser {
+  id: string,
+  username: string,
+  displayName: string,
+  createdAt: Date,
+  nameColor: string
+}

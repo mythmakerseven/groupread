@@ -134,7 +134,7 @@ groupsRouter.post('/', async (req: RequestWithToken, res: Response) => {
     id: uuidv4(),
     bookTitle: body.bookTitle,
     bookAuthor: body.bookAuthor ? body.bookAuthor : null,
-    bookYear: body.bookYear ? Number(body.bookYear) : null,
+    bookYear: body.bookYear ? Number(body.bookYear) : undefined,
     bookIsbn: body.bookIsbn,
     bookOLID: body.bookOLID ? body.bookOLID : null,
     bookPageCount: Number(body.bookPageCount),
