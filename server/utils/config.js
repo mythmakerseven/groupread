@@ -5,6 +5,8 @@
 
 require('dotenv').config()
 
+const PORT = process.env.PORT
+
 if (!process.env.DB_URL) {
   throw new Error('Missing database URL, please add to env')
 }
@@ -20,8 +22,6 @@ if (!process.env.SECRET) {
 }
 
 const SECRET_TOKEN_KEY = process.env.SECRET
-
-const PORT = process.env.PORT
 
 module.exports = {
   DB_URL,
