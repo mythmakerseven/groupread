@@ -6,20 +6,17 @@ import User from '../models/user'
 import logger from '../utils/logger'
 import Post from '../models/post'
 import { checkToken, sanitizeUser } from './utils'
-import { RequestWithToken, NewScheduledPost } from '../utils/types'
+import { RequestWithToken, NewScheduledPost, PostObject, UserObject } from '../utils/types'
 
 const groupsRouter = express.Router()
 
-interface PostWithReplies extends Post {
-  replies: Post[]
-}
-
 // utility function for returning all posts, properly sorted by parent/child
-const sortPosts = (posts) => {
-  const parentPosts = posts.filter(post => !post.parent)
+const sortPosts = (posts: Post[]) => {
+  const postsArray = posts.map(p => p.toJSON() as PostObject)
+  const parentPosts = postsArray.filter((post) => !post.parent)
 
   // Sort the posts into a hierarchical object with replies as children, etc
-  const sortedPosts = parentPosts.map(post => post = { ...post.toJSON() as PostWithReplies, replies: posts.filter(childPost => childPost.parent === post.id) } )
+  const sortedPosts = parentPosts.map((post: PostObject) => post = { replies: posts.filter((childPost) => childPost.parent === post.id), ...post } )
   return sortedPosts
 }
 
@@ -48,10 +45,11 @@ groupsRouter.get('/:id/members', async (req, res) => {
   // hard to run the sanitize function later.
   // The nest option prevents the raw option from flattening the data, which breaks
   // stuff on the frontend.
-  const users = await group.getUsers({ raw: true, nest: true })
+  const users = await group.getUsers()
+  const userObjects = users.map(u => u.toJSON())
 
   // Make sure to sanitize to remove password hash and email
-  return res.status(200).json(users.map(u => sanitizeUser(u)))
+  return res.status(200).json(userObjects.map(u => sanitizeUser(u as UserObject)))
 })
 
 // Get posts from a group
@@ -144,7 +142,7 @@ groupsRouter.post('/', async (req: RequestWithToken, res: Response) => {
   // Add user to group
   await user.addGroup([ group.id ])
 
-  res.status(200).json(group)
+  return res.status(200).json(group)
 })
 
 // Join a group
@@ -166,8 +164,7 @@ groupsRouter.post('/join/:group', async (req: RequestWithToken, res) => {
   await user.addGroup([ group.id ])
 
   // remove password info and username from public user list
-
-  res.status(200).json({ user: sanitizeUser(user), groupID: group.id })
+  return res.status(200).json({ user: sanitizeUser(user), groupID: group.id })
 })
 
 // Schedule posts for a group

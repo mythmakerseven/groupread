@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import User from '../models/user'
 import Group from '../models/group'
 import config from '../utils/config'
-import { SanitizedUser } from '../utils/types'
+import { SanitizedUser, UserObject } from '../utils/types'
 
 export const checkToken = (token: string | null): string => {
   if (!token) {
@@ -27,14 +27,9 @@ export const checkToken = (token: string | null): string => {
   return decodedToken.data.id
 }
 
-export const sanitizeUser = (user: User): SanitizedUser => {
-  return ({
-    id: user.id,
-    username: user.username,
-    displayName: user.displayName,
-    nameColor: user.nameColor,
-    createdAt: user.createdAt,
-  })
+export const sanitizeUser = (user: UserObject): SanitizedUser => {
+  const sanitizedUser = { ...user, passwordHash: undefined, email: undefined }
+  return sanitizedUser
 }
 
 export const getCurrentUserInfo = async (id: string, tokenID: string): Promise<User> => {

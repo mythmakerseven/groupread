@@ -6,8 +6,8 @@ import { exampleUser, exampleGroup, exampleParentPost, exampleReply, searchPosts
 
 const api = supertest(app)
 
-let token
-let groupId
+let token: string
+let groupId: string
 const badToken = 'when_the_token_is_sus!!!'
 beforeAll(async () => {
   await db.sync({ force: true })
@@ -110,7 +110,7 @@ describe('creating a parent post', () => {
 // we can skip over the checks that have already been covered
 // such as 'fails with missing token', etc.
 describe('creating a reply', () => {
-  let parentId
+  let parentId: string
   beforeAll(async () => {
     const res = await api
       .post(`/api/posts/${groupId}`)
@@ -147,7 +147,7 @@ describe('creating a reply', () => {
 })
 
 describe('editing a post', () => {
-  let postID
+  let postID: string
   beforeAll(async () => {
     const res = await api
       .post(`/api/posts/${groupId}`)

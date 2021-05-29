@@ -6,7 +6,7 @@ import { exampleGroup, exampleUser, groupsInDb } from './test_helper'
 
 const api = supertest(app)
 
-let token
+let token: string
 beforeAll(async () => {
   await db.sync({ force: true })
 
