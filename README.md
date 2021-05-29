@@ -72,7 +72,7 @@ All contributions are licensed under the [GNU Affero General Public License v3.0
 
 - ~~enhanced security (token expiration and validation, etc)~~ ⭐⭐⭐
 
-- fix all remaining TypeScript errors and add strict checks to the build process (current status: frontend just has a few type issues, backend still needs strict mode and strict null checks switched on) ⭐⭐
+- fix all remaining TypeScript errors and add strict checks to the build process (current status: frontend only has a few remaining type issues, backend still needs strict mode) ⭐⭐
 
 - ~~automated scheduling of discussion threads~~ ⭐⭐
 
