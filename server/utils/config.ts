@@ -1,25 +1,27 @@
 // All env variables are read in this file and then imported by any module that needs them
 
-// This file should only use standard JS features, because Webpack fetches some stuff from it
-// and it doesn't understand TypeScript
+import dotenv from 'dotenv'
 
-require('dotenv').config()
+dotenv.config()
 
+// TypeScript complains about the possibility of this being undefined.
+// If no DB URL is provided, the empty string will be returned and
+// Sequelize will error out. Manually writing null-checking here caused
+// problems for tests.
 let DB_URL = process.env.DB_URL || ''
 
 if (process.env.NODE_ENV === 'test') {
-  DB_URL = process.env.TEST_DB_URL
+  DB_URL = process.env.TEST_DB_URL || ''
 }
 
 if (!process.env.SECRET) {
   throw new Error('Missing secret token key, please add to env')
 }
-
 const SECRET_TOKEN_KEY = process.env.SECRET
 
 const PORT = process.env.PORT
 
-module.exports = {
+export default {
   DB_URL,
   SECRET_TOKEN_KEY,
   PORT
