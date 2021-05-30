@@ -64,7 +64,7 @@ All contributions are licensed under the [GNU Affero General Public License v3.0
 
 ⭐ = priority level
 
-- convert backend to TypeScript (current status: the backend uses .ts files and compiles as TypeScript but does not make use of many TypeScript features) ⭐⭐⭐
+- ~~convert backend to TypeScript~~ ⭐⭐⭐
 
 - moderation tools for group owners ⭐⭐⭐
 
