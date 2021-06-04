@@ -1,5 +1,7 @@
 import path from 'path'
-import envConfig from './server/utils/config'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const config = {
   entry: './frontend/src/index.tsx',
@@ -45,7 +47,7 @@ const config = {
   },
   devServer: {
     proxy: {
-      '/api': `http://localhost:${envConfig.PORT}`
+      '/api': `http://localhost:${process.env.PORT}`
     },
     contentBase: path.resolve(__dirname, 'build'),
     compress: true,
