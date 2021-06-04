@@ -41,6 +41,12 @@
   background: #757763 !important;
 }
 
+.dropdown-list {
+  position: absolute;
+  top: 40px;
+  width: 33vw;
+}
+
 .group-list {
   display: flex;
   flex-wrap: wrap;
@@ -95,5 +101,11 @@
   .mobile-container {
     margin-left: 2vw;
     margin-right: 2vw;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .dropdown-list {
+    width: 100%;
   }
 }
