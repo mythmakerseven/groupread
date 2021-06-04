@@ -10,12 +10,12 @@ on:
 
 jobs:
   simple_deploymnt_pipeline:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '15'
+          node-version: '16'
       - name: yarn install
         run: yarn install
       - name: lint
