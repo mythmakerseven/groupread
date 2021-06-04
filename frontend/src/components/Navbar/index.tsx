@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import LoginButton from './LoginButton'
+import NavGroupList from './NavGroupList'
 
 const Navbar: React.FC = () => {
   const [menuVisible, setMenuVisible] = useState(false)
@@ -21,6 +22,7 @@ const Navbar: React.FC = () => {
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
           </a>
+          <NavGroupList />
         </div>
         <div className={checkIfActive('navbar-menu')} id='navMenu'>
           <div className='navbar-end'>

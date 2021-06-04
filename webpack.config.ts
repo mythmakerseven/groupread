@@ -1,4 +1,5 @@
-const path = require('path')
+import path from 'path'
+import envConfig from './server/utils/config'
 
 const config = {
   entry: './frontend/src/index.tsx',
@@ -44,7 +45,7 @@ const config = {
   },
   devServer: {
     proxy: {
-      '/api': `http://localhost:${process.env.PORT}`
+      '/api': `http://localhost:${envConfig.PORT}`
     },
     contentBase: path.resolve(__dirname, 'build'),
     compress: true,
@@ -57,4 +58,4 @@ const config = {
   node: { __dirname: true },
 }
 
-module.exports = config
+export default config
