@@ -19,8 +19,5 @@
   },
   "include": [
     "./"
-  ],
-  "exclude": [
-    "./eslintrc.js"
   ]
 }
