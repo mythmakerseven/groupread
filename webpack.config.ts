@@ -58,4 +58,5 @@ const config = {
   node: { __dirname: true },
 }
 
-export default config
+// This needs to stay an old-fashioned module export because cypress relies on it
+module.exports = config

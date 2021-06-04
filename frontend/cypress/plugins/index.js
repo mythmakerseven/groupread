@@ -4,7 +4,7 @@ module.exports = (on, config) => {
 
     // No need to import a plugin here because we're using plain Webpack
     // Hahahahaha!!
-    const webpackConfig = require('../../../webpack.config.js')
+    const webpackConfig = require('../../../webpack.config.ts')
 
     on('dev-server:start', (options) =>
       startDevServer({ options, webpackConfig })
