@@ -2,6 +2,10 @@ import axios from 'axios'
 const baseUrl = '/api/login'
 import { LoginData, RegisterData } from '../types'
 
+// fix "regeneratorRuntime is not defined" error
+// This appeared after a routine dependency upgrade, not sure what caused it
+import 'regenerator-runtime/runtime'
+
 interface UserResponse {
   token: string,
   username: string,
