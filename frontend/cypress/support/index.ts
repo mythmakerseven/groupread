@@ -18,3 +18,6 @@ import './commands.ts'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// Fixes "regeneratorRuntime is not defined" error
+import 'regenerator-runtime/runtime'
