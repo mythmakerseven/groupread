@@ -1,3 +1,6 @@
+/**
+ * @type {Cypress.PluginConfig}
+ */
 module.exports = (on, config) => {
   if (config.testingType === 'component') {
     const { startDevServer } = require('@cypress/webpack-dev-server')
