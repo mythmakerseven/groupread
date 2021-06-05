@@ -9,11 +9,13 @@
       "es5",
       "dom"
     ],
+    "allowJs": true,
     "strict": false,
     "strictNullChecks": false,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noEmit": true
   },
   "include": [
-    "**/*.ts"
-, "support/commands.js"  ]
+    "./**/*.ts"
+  ]
 }

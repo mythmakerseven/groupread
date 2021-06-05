@@ -8,7 +8,7 @@
     "dev:server": "yarn tsc-watch --project server/tsconfig.json --onSuccess \"yarn start\"",
     "dev:ui": "webpack serve --mode=development",
     "test:jest": "NODE_ENV=test jest --config ./server/jest.config.ts --verbose --runInBand",
-    "test:component": "DEBUG=cypress:* npx cypress run-ct",
+    "test:component": "npx cypress run-ct",
     "lint": "eslint .",
     "build:server": "yarn tsc --build server/tsconfig.json",
     "build:ui": "webpack --mode=production",
