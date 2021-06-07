@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 interface Props {
   label: string,
-  content: JSX.Element[]
+  content: JSX.Element
 }
 
 const Dropdown: React.FC<Props> = ({ label, content }) => {
@@ -16,7 +16,7 @@ const Dropdown: React.FC<Props> = ({ label, content }) => {
 
   const list = () => (
     <div className='box dropdown-list' onClick={() => setDropdownVisible(false)}>
-      {content.map(e => <>{e}</>)}
+      {content}
     </div>
   )
 

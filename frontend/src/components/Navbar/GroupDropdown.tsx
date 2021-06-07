@@ -19,10 +19,23 @@ const GroupDropdown: React.FC = () => {
     return null
   }
 
+  const dropdownContent = (): JSX.Element => (
+    <ul>
+      {user.Groups.map(g =>
+        <Link to={`/groups/${g.id}`} key={g.id}>
+          <li className='dropdown-group-item' >
+            <img src={`https://covers.openlibrary.org/b/olid/${g.bookOLID}-S.jpg`} alt='' />
+            {g.bookTitle}
+          </li>
+        </Link>
+      )}
+    </ul>
+  )
+
   return (
     <Dropdown
       label={'My Groups'}
-      content={user.Groups.map(g => <p key={g.id}><Link to={`/groups/${g.id}`}>{g.bookTitle}</Link></p>)}
+      content={dropdownContent()}
     />
   )
 }
