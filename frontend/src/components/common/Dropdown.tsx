@@ -5,7 +5,7 @@ interface Props {
   content: JSX.Element[]
 }
 
-const NavGroupList: React.FC<Props> = ({ label, content }) => {
+const Dropdown: React.FC<Props> = ({ label, content }) => {
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false)
 
   const handleArrow = () => (
@@ -34,4 +34,4 @@ const NavGroupList: React.FC<Props> = ({ label, content }) => {
   )
 }
 
-export default NavGroupList
+export default Dropdown
