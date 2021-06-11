@@ -80,7 +80,7 @@ All contributions are licensed under the [GNU Affero General Public License v3.0
 
 - ~~better looking group list, probably some flexbox with book covers~~ ⭐⭐
 
-- list of groups the current user has joined, preferably as a navbar dropdown (current status: the API call mentioned above returns a group list, just need to make the dropdown menu now) ⭐⭐
+- ~~list of groups the current user has joined, preferably as a navbar dropdown~~ ⭐⭐
 
 - editing functionality (mostly implemented, still missing on the front-end for top-level posts) ⭐⭐
 
