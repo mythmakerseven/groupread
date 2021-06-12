@@ -14,7 +14,7 @@ interface Props {
 
 const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsbn, open, setOpen }) => {
   // OpenLibrary entries vary in which fields they include, so it's not useful to type them
-  const [results, setResults] = useState<OpenLibraryResults[]>([])
+  const [results, setResults] = useState<OpenLibraryResults[] | null>(null)
 
   const dispatch = useAppDispatch()
 
@@ -38,11 +38,11 @@ const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsb
       const searchUrl = queryOL(queryTitle, queryAuthor, queryIsbn)
       // avoid spamming OL's servers with empty searches
       if (searchUrl === 'https://openlibrary.org/search.json?') {
-        return setResults([])
+        return setResults(null)
       }
       findResults(searchUrl)
     } else {
-      return setResults([])
+      return setResults(null)
     }
   }, [open])
 
@@ -82,7 +82,7 @@ const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsb
     cover_edition_key: string
   }
 
-  const displayResults = (results: OpenLibraryResults[]) => {
+  const displayResults = (results: OpenLibraryResults[] | null) => {
     if (!results) {
       return <p className='subtitle'>loading...</p>
     }
