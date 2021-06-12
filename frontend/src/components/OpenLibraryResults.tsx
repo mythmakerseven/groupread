@@ -38,7 +38,7 @@ const OpenLibraryResults: React.FC<Props> = ({ queryTitle, queryAuthor, queryIsb
       const searchUrl = queryOL(queryTitle, queryAuthor, queryIsbn)
       // avoid spamming OL's servers with empty searches
       if (searchUrl === 'https://openlibrary.org/search.json?') {
-        return setResults(null)
+        return setResults([])
       }
       findResults(searchUrl)
     } else {
