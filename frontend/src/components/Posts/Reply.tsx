@@ -51,31 +51,35 @@ const Reply: React.FC<Props> = ({ groupMembers, replyObject }) => {
     }
   }
 
-  if (isEditing) {
-    return (
-      <ReplyForm
-        payloadType={ReplyPayloadType.Edit}
-        startingText={replyObject.text}
-        replyID={replyObject.id}
-        setActive={setIsEditing}
-      />
-    )
-  } else {
-    return (
-      <div key={replyObject.id} className='box box-with-border has-background-light has-text-black p-4'>
-        <div className='content'>
-          <p>
-            <strong>{getDisplayName(replyObject.UserId, groupMembers)}</strong>
-            &nbsp;&nbsp;
-            <small>{dayjs().to(dayjs(replyObject.createdAt))}</small>
-            &nbsp;&nbsp;
-            {handleEditButton(replyObject.UserId)}
-          </p>
-          <div className='post-typography' dangerouslySetInnerHTML={{ __html: text }} />
-        </div>
-      </div>
-    )
+  const handleEditing = () => {
+    if (isEditing) {
+      return (
+        <ReplyForm
+          payloadType={ReplyPayloadType.Edit}
+          startingText={replyObject.text}
+          replyID={replyObject.id}
+          setActive={setIsEditing}
+        />
+      )
+    } else {
+      return <div className='post-typography' dangerouslySetInnerHTML={{ __html: text }} />
+    }
   }
+
+  return (
+    <div key={replyObject.id} className='box box-with-border has-background-light has-text-black p-4'>
+      <div className='content'>
+        <p>
+          <strong>{getDisplayName(replyObject.UserId, groupMembers)}</strong>
+          &nbsp;&nbsp;
+          <small>{dayjs().to(dayjs(replyObject.createdAt))}</small>
+          &nbsp;&nbsp;
+          {handleEditButton(replyObject.UserId)}
+        </p>
+        {handleEditing()}
+      </div>
+    </div>
+  )
 }
 
 export default Reply
