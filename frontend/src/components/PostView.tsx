@@ -10,10 +10,12 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
 import {
+  ErrorTypes,
   Post
 } from '../types'
 
 import { ReplyPayloadType } from './Posts/ReplyForm'
+import ErrorPage from './ErrorPage'
 
 const PostView: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -41,7 +43,7 @@ const PostView: React.FC = () => {
 
   if (!user) {
     return (
-      <p>You are not authorized to view this page.</p>
+      <ErrorPage errorType={ErrorTypes.Unauthorized} />
     )
   }
 

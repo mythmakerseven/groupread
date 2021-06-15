@@ -88,3 +88,8 @@ export interface NewPostObject {
 export interface EditPostObject {
   text: string
 }
+
+export enum ErrorTypes {
+  Unauthorized,
+  NotFound
+}

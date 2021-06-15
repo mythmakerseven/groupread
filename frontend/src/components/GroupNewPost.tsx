@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { newPost } from '../reducers/groupReducer'
 import { ErrorMessage } from '@hookform/error-message'
+import ErrorPage from './ErrorPage'
+import { ErrorTypes } from '../types'
 
 const GroupNewPost: React.FC = () => {
   const { id } = useParams<{ id: string }>()
@@ -24,7 +26,7 @@ const GroupNewPost: React.FC = () => {
 
   if (!user) {
     return (
-      <p>You are not authorized to view this page.</p>
+      <ErrorPage errorType={ErrorTypes.Unauthorized} />
     )
   }
 

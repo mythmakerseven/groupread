@@ -7,9 +7,11 @@ import OpenLibraryResults from './OpenLibraryResults'
 import { useHistory } from 'react-router-dom'
 import { initialState as initialFormState } from '../reducers/groupCreationReducer'
 import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../reducers/groupCreationReducer'
-import { GroupCreationData } from '../types'
+import { ErrorTypes, GroupCreationData } from '../types'
+import ErrorPage from './ErrorPage'
 
 const CreateGroup: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
 
   const dispatch = useAppDispatch()
@@ -42,9 +44,28 @@ const CreateGroup: React.FC = () => {
     }
   }, [modalOpen])
 
-  if (!user) {
+  useEffect(() => {
+    // There are two possible "paths" to this component.
+    // 1) Check for the loading property in user state if the user is still being initialized
+    //     (e.g. if the user directly accesses this component and clientside cookies are still being read)
+    // 2) Check for a token if the user is already initialized
+    //     (if the user navigates here from another component with user state already initialized)
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (user?.hasOwnProperty('loading') || user?.hasOwnProperty('token')) {
+      setIsLoading(false)
+    }
+  }, [user])
+
+  if (isLoading) {
+    return <p>loading...</p>
+  }
+
+  if (!user && !isLoading) {
     return (
-      <p>You are not authorized to view this page. Please sign in first.</p>
+      <ErrorPage
+        errorType={ErrorTypes.Unauthorized}
+      />
     )
   }
 
@@ -77,8 +98,6 @@ const CreateGroup: React.FC = () => {
 
     history.push(`/groups/${res.payload.id}/schedule`)
   }
-
-  if (!user) return null
 
   // TODO: more client-side validation to match serverside
   // can likely be done easily with react-hook-form params
@@ -157,7 +176,7 @@ const CreateGroup: React.FC = () => {
               type='text'
               placeholder='e.g. 9780374528379'
               {...register('bookIsbn', {
-                // TODO: replace with regex pattern
+                // TODO: replace with regex pattern to more specifically enforce length
                 minLength: {
                   value: 10,
                   message: 'ISBN must be either 10 or 13 characters'

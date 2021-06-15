@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useParams } from 'react-router-dom'
 import { getGroupDetails } from '../../reducers/groupReducer'
 import WeekNumberForm from './WeekNumberForm'
+import ErrorPage from '../ErrorPage'
+import { ErrorTypes } from '../../types'
 
 const GroupScheduler: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -18,11 +20,11 @@ const GroupScheduler: React.FC = () => {
   const user = useAppSelector(({ user }) => user)
 
   if (!group) {
-    return <p>Group not found</p>
+    return <ErrorPage errorType={ErrorTypes.NotFound} />
   }
 
   if (!user) {
-    return <p>Invalid user ID</p>
+    return <ErrorPage errorType={ErrorTypes.Unauthorized} />
   }
 
   const suggestWeeklyAmount = (pageCount: number) => {

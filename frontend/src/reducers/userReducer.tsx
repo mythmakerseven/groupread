@@ -6,7 +6,11 @@ import postService from '../services/posts'
 import { LoginData, RegisterData, UserObject } from '../types'
 import users from '../services/users'
 
-export type UserState = UserObject | null
+interface UserLoading {
+  loading: boolean
+}
+
+export type UserState = UserObject | UserLoading | null
 
 export const initialState = null as UserState
 
@@ -23,7 +27,7 @@ export const initializeUser = createAsyncThunk(
       // This '{}' thing is an annoying hack to fix a TS quirk, as JSON.parse
       // can only accept a string and not a null value
       if (JSON.stringify(userObject) === '{}') {
-        throw new Error('No user found')
+        return null
       }
       res = await userService.validateToken(userObject.token)
       if (!res.success) {
@@ -90,6 +94,9 @@ const userSlice = createSlice({
         postService.setToken(user.token)
         return state = user
       }
+    }),
+    builder.addCase(initializeUser.pending, (state) => {
+      return state = { loading: true }
     }),
     builder.addCase(initializeUser.rejected, () => {
       window.localStorage.removeItem('loggedInGroupreader')
