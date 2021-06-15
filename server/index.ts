@@ -26,6 +26,10 @@ app.get('/f571d6d590cf815f2a7587588bf80987.webp', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'f571d6d590cf815f2a7587588bf80987.webp'))
 })
 
+app.get('/8c747e1ec6b0a8e1464fb53a4202aa62.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '8c747e1ec6b0a8e1464fb53a4202aa62.png'))
+})
+
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'))
 })
