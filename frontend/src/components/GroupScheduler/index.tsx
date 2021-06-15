@@ -15,7 +15,7 @@ const GroupScheduler: React.FC = () => {
     dispatch(getGroupDetails(id))
   }, [id])
 
-  const groups = useAppSelector(({ group }) => group)
+  const groups = useAppSelector(({ group }) => group.groups)
   const group = groups.find(group => group.id === id)
   const user = useAppSelector(({ user }) => user)
 

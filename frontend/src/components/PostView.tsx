@@ -38,7 +38,7 @@ const PostView: React.FC = () => {
   }, [id])
 
   const user = useAppSelector(({ user }) => user)
-  const groups = useAppSelector(({ group }) => group)
+  const groups = useAppSelector(({ group }) => group.groups)
   const group = groups.find(group => group.id === id)
 
   if (!user) {

@@ -21,7 +21,7 @@ const PostList: React.FC<Props> = ({ groupID, groupMembers }) => {
 
   const user: UserObject | null = useAppSelector(({ user }) => user)
 
-  const groups: Array<Group> = useAppSelector(({ group }) => group)
+  const groups: Array<Group> = useAppSelector(({ group }) => group.groups)
   const groupQuery: undefined | Group = groups.find(group => group.id === groupID)
 
   if (!groupQuery) {

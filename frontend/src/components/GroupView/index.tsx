@@ -21,7 +21,7 @@ const GroupView: React.FC = () => {
   const history = useHistory()
 
   const user: UserObject | null = useAppSelector(({ user }) => user)
-  const groups: Array<Group> = useAppSelector(({ group }) => group)
+  const groups: Array<Group> = useAppSelector(({ group }) => group.groups)
 
   // See if the group exists in the cache
   const groupQuery: undefined | Group = groups.find(group => group.id === id)

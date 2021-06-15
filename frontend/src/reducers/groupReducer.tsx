@@ -11,12 +11,20 @@ import {
   EditPostObject
 } from '../types'
 
+interface GroupState {
+  groups: Array<Group>,
+  pending: boolean
+}
+
 // The "group" state is actually an array of all group data from every visited group.
 // This way, we cache some data so the user can visit an already-visited group
 // without having to wait for loading.
-export type GroupState = Array<Group>
+// export type GroupState = Array<Group>
 
-const initialState = [] as GroupState
+const initialState = {
+  pending: false,
+  groups: []
+} as GroupState
 
 interface GroupCreationPayload {
   groupObject: GroupCreationData,
@@ -168,24 +176,36 @@ const groupSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getGroupDetails.fulfilled, (state, { payload }) => {
-      if (state.find(g => g.id === payload.id)) {
+      if (state.groups.find(g => g.id === payload.id)) {
         return state
       }
-      return state = [ ...state, payload ]
+      return state = {
+        pending: false,
+        groups: [ ...state.groups, payload ]
+      }
     }),
     builder.addCase(getGroupPosts.fulfilled, (state, { payload }) => {
       const posts = payload.posts
       const id = payload.id
-      return state = state.map(g => g.id === id ? g = { ...g, posts: posts } : g)
+      return state = {
+        pending: false,
+        groups: state.groups.map(g => g.id === id ? g = { ...g, posts: posts } : g)
+      }
     }),
     builder.addCase(getGroupMembers.fulfilled, (state, { payload }) => {
       const members = payload.members
       const id = payload.id
-      return state = state.map(g => g.id === id ? g = { ...g, members: members } : g)
+      return state = {
+        pending: false,
+        groups: state.groups.map(g => g.id === id ? g = { ...g, members: members } : g)
+      }
     }),
     builder.addCase(createGroup.fulfilled, (state, { payload }) => {
       const group = payload
-      return state = [...state, group]
+      return state = {
+        pending: false,
+        groups: [ ...state.groups, group ]
+      }
     }),
     builder.addCase(newPost.fulfilled, (state, { payload }) => {
       if (payload.type === 'reply') {
@@ -193,25 +213,31 @@ const groupSlice = createSlice({
         // The frontend uses nested objects for this
         const groupID = payload.data.GroupId
         const parentID = payload.data.parent
-        return state = state.map((g: Group) => {
-          if (g.id === groupID) {
-            const posts = g.posts.map((p: Post) => {
-              if (p.id === parentID) {
-                const replies = p.replies ? [ ...p.replies, payload.data ] : [payload.data]
-                return { ...p, replies: replies }
-              } else {
-                return p
-              }
-            })
-            return { ...g, posts: posts }
-          } else {
-            return g
-          }
-        })
+        return state = {
+          pending: false,
+          groups: state.groups.map((g: Group) => {
+            if (g.id === groupID) {
+              const posts = g.posts.map((p: Post) => {
+                if (p.id === parentID) {
+                  const replies = p.replies ? [ ...p.replies, payload.data ] : [payload.data]
+                  return { ...p, replies: replies }
+                } else {
+                  return p
+                }
+              })
+              return { ...g, posts: posts }
+            } else {
+              return g
+            }
+          })
+        }
       } else {
         // New top-level post
         const groupID = payload.data.GroupId
-        return state = state.map(g => g.id === groupID ? g = { ...g, posts: [ ...g.posts, payload.data ] } : g)
+        return state = {
+          pending: false,
+          groups: state.groups.map(g => g.id === groupID ? g = { ...g, posts: [ ...g.posts, payload.data ] } : g)
+        }
       }
     }),
     builder.addCase(editPost.fulfilled, (state, { payload }) => {
@@ -222,30 +248,39 @@ const groupSlice = createSlice({
       // This is ugly! But pretty in a weird way too.
       // Basically it finds the group, then the parent post,
       // then the reply to edit.
-      return state = state.map((g: Group) => g.id === groupID
-        ? g = { ...g, posts: g.posts.map(p => p.id === parentID && p.replies
-          ? { ...p, replies: p.replies.map(r => r.id === replyID
-            ? payload
-            : r
+      return state = {
+        pending: false,
+        groups: state.groups.map((g: Group) => g.id === groupID
+          ? g = { ...g, posts: g.posts.map(p => p.id === parentID && p.replies
+            ? { ...p, replies: p.replies.map(r => r.id === replyID
+              ? payload
+              : r
+            ) }
+            : p
           ) }
-          : p
-        ) }
-        : g
-      )
+          : g
+        )
+      }
     }),
     builder.addCase(joinGroup.fulfilled, (state, { payload }) => {
-      const group = state.find(g => g.id === payload.groupID)
+      const group = state.groups.find(g => g.id === payload.groupID)
       if (!group) {
         return state
       }
-      return state = state.map(g => g.id === payload.groupID ? g = { ...g, members: payload.members } : g)
+      return state = {
+        pending: false,
+        groups: state.groups.map(g => g.id === payload.groupID ? g = { ...g, members: payload.members } : g)
+      }
     }),
     builder.addCase(setSchedule.fulfilled, (state, { payload }) => {
       const groupID = payload.groupID
       const newPosts = payload.posts
 
       // The backend responds with a complete list of the group's posts, so we can just overwrite the post array
-      return state = state.map(g => g.id === groupID ? g = { ...g, posts: newPosts } : g)
+      return state = {
+        pending: false,
+        groups: state.groups.map(g => g.id === groupID ? g = { ...g, posts: newPosts } : g)
+      }
     })
   }
 })
