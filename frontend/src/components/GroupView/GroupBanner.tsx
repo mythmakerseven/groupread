@@ -2,12 +2,13 @@ import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { joinGroup } from '../../reducers/groupReducer'
 import { getDisplayName } from '../../lib/posts'
+import BookCover from '../common/BookCover'
+import { CoverSize } from '../common/BookCover'
 import {
   Group,
   User,
   UserObject
 } from '../../types'
-import unknownCover from '../../images/unknown_cover.webp'
 
 interface Props {
   group: Group
@@ -83,22 +84,14 @@ const GroupBanner: React.FC<Props> = ({ group }) => {
     )
   }
 
-  // eventually there should be alternate cover sources for books without an OLID
-  const handleBookImage = (olid: string) => {
-    if (!olid) {
-      return <img className='image cover-image is-inline-block' src={unknownCover} />
-    } else {
-      return (
-        <img className='image cover-image is-inline-block' src={`https://covers.openlibrary.org/b/olid/${olid}-M.jpg`} />
-      )
-    }
-  }
-
   return (
     <>
       {displayNonMemberHero()}
       <div className='box has-text-centered group-hero'>
-        {handleBookImage(group.bookOLID)}
+        <BookCover
+          size={CoverSize.Medium}
+          olid={group.bookOLID}
+        />
         <h1 className='title'>{group.bookTitle}</h1>
         <h1 className='subtitle'>by {group.bookAuthor}</h1>
         <h4>Hosted by {getDisplayName(group.AdminId, group.members)}</h4>
