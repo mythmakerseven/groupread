@@ -19,18 +19,26 @@ const GroupDropdown: React.FC = () => {
     return null
   }
 
-  const dropdownContent = (): JSX.Element => (
-    <ul>
-      {user.Groups.map(g =>
-        <Link to={`/groups/${g.id}`} key={g.id}>
-          <li className='dropdown-group-item' >
-            <img src={`https://covers.openlibrary.org/b/olid/${g.bookOLID}-S.jpg`} alt='' />
-            {g.bookTitle}
-          </li>
-        </Link>
-      )}
-    </ul>
-  )
+  const dropdownContent = (): JSX.Element => {
+    if (user.Groups.length === 0) {
+      return (
+        <p className='has-text-centered'>Nothing here yet. <Link to='/groups'>Go join some groups!</Link></p>
+      )
+    } else {
+      return (
+        <ul>
+          {user.Groups.map(g =>
+            <Link to={`/groups/${g.id}`} key={g.id}>
+              <li className='dropdown-group-item' >
+                <img src={`https://covers.openlibrary.org/b/olid/${g.bookOLID}-S.jpg`} alt='' />
+                {g.bookTitle}
+              </li>
+            </Link>
+          )}
+        </ul>
+      )
+    }
+  }
 
   return (
     <Dropdown
