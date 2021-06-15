@@ -16,7 +16,7 @@ interface Props {
 const Reply: React.FC<Props> = ({ groupMembers, replyObject }) => {
   // Remark is async, so we have to do some state management
   // to wait for it to do its thing
-  const [text, setText] = useState<string>('loading...')
+  const [text, setText] = useState<string>('')
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const user = useAppSelector(({ user }) => user)
