@@ -175,13 +175,29 @@ const groupSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(getGroupDetails.pending, (state) => {
+      console.log('pending!!')
+      return state = {
+        pending: true,
+        groups: state.groups
+      }
+    }),
     builder.addCase(getGroupDetails.fulfilled, (state, { payload }) => {
       if (state.groups.find(g => g.id === payload.id)) {
-        return state
+        return {
+          pending: false,
+          groups: state.groups
+        }
       }
       return state = {
         pending: false,
         groups: [ ...state.groups, payload ]
+      }
+    }),
+    builder.addCase(getGroupPosts.pending, (state) => {
+      return state = {
+        pending: true,
+        groups: state.groups
       }
     }),
     builder.addCase(getGroupPosts.fulfilled, (state, { payload }) => {
@@ -192,6 +208,12 @@ const groupSlice = createSlice({
         groups: state.groups.map(g => g.id === id ? g = { ...g, posts: posts } : g)
       }
     }),
+    builder.addCase(getGroupMembers.pending, (state) => {
+      return state = {
+        pending: true,
+        groups: state.groups
+      }
+    }),
     builder.addCase(getGroupMembers.fulfilled, (state, { payload }) => {
       const members = payload.members
       const id = payload.id
@@ -200,11 +222,23 @@ const groupSlice = createSlice({
         groups: state.groups.map(g => g.id === id ? g = { ...g, members: members } : g)
       }
     }),
+    builder.addCase(createGroup.pending, (state) => {
+      return state = {
+        pending: true,
+        groups: state.groups
+      }
+    }),
     builder.addCase(createGroup.fulfilled, (state, { payload }) => {
       const group = payload
       return state = {
         pending: false,
         groups: [ ...state.groups, group ]
+      }
+    }),
+    builder.addCase(newPost.pending, (state) => {
+      return state = {
+        pending: true,
+        groups: state.groups
       }
     }),
     builder.addCase(newPost.fulfilled, (state, { payload }) => {
@@ -240,6 +274,12 @@ const groupSlice = createSlice({
         }
       }
     }),
+    builder.addCase(editPost.pending, (state) => {
+      return state = {
+        pending: true,
+        groups: state.groups
+      }
+    }),
     builder.addCase(editPost.fulfilled, (state, { payload }) => {
       const groupID = payload.GroupId
       const parentID = payload.parent
@@ -262,6 +302,12 @@ const groupSlice = createSlice({
         )
       }
     }),
+    builder.addCase(joinGroup.pending, (state) => {
+      return state = {
+        pending: true,
+        groups: state.groups
+      }
+    }),
     builder.addCase(joinGroup.fulfilled, (state, { payload }) => {
       const group = state.groups.find(g => g.id === payload.groupID)
       if (!group) {
@@ -270,6 +316,12 @@ const groupSlice = createSlice({
       return state = {
         pending: false,
         groups: state.groups.map(g => g.id === payload.groupID ? g = { ...g, members: payload.members } : g)
+      }
+    }),
+    builder.addCase(setSchedule.pending, (state) => {
+      return state = {
+        pending: true,
+        groups: state.groups
       }
     }),
     builder.addCase(setSchedule.fulfilled, (state, { payload }) => {
