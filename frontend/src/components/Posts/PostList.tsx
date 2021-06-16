@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getGroupPosts } from '../../reducers/groupReducer'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import PostCard from './PostCard'
+import PostCard from './PostListItem'
 import {
   Post,
   UserObject,
