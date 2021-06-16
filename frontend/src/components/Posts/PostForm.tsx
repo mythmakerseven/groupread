@@ -5,13 +5,13 @@ import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import { editPost, newPost } from '../../reducers/groupReducer'
 
-export enum ReplyPayloadType {
+export enum PostPayloadType {
   New,
   Edit
 }
 
 interface Props {
-  payloadType: ReplyPayloadType,
+  payloadType: PostPayloadType,
   startingText: string | null,
   replyID: string | null,
   setActive: ((arg0: boolean) => void) | null
@@ -36,7 +36,7 @@ const ReplyForm: React.FC<Props> = ({ payloadType, startingText, replyID, setAct
   const handlePost = async (data: { text: string }) => {
     let res
 
-    if (payloadType === ReplyPayloadType.New) {
+    if (payloadType === PostPayloadType.New) {
       const postObject = {
         text: data.text,
         parent: pid
@@ -48,7 +48,7 @@ const ReplyForm: React.FC<Props> = ({ payloadType, startingText, replyID, setAct
       }))
     }
 
-    if (payloadType === ReplyPayloadType.Edit && replyID) {
+    if (payloadType === PostPayloadType.Edit && replyID) {
       const postObject = {
         text: data.text
       }
@@ -91,7 +91,7 @@ const ReplyForm: React.FC<Props> = ({ payloadType, startingText, replyID, setAct
         </div>
       </div>
       <button className='button is-primary' type='submit'>Submit</button>
-      {payloadType === ReplyPayloadType.Edit && setActive
+      {payloadType === PostPayloadType.Edit && setActive
         ? <button className='button is-secondary' type='button' onClick={() => setActive(false)}>Cancel</button>
         : null
       }

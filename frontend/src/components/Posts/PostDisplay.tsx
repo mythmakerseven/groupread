@@ -5,15 +5,15 @@ import { parseMarkdown, getDisplayName } from '../../lib/posts'
 dayjs.extend(relativeTime)
 import { Post, User } from '../../types'
 import { useAppSelector } from '../../hooks'
-import ReplyForm from './ReplyForm'
-import { ReplyPayloadType } from './ReplyForm'
+import ReplyForm from './PostForm'
+import { PostPayloadType } from './PostForm'
 
 interface Props {
   groupMembers: Array<User>,
-  replyObject: Post
+  postObject: Post
 }
 
-const Reply: React.FC<Props> = ({ groupMembers, replyObject }) => {
+const Reply: React.FC<Props> = ({ groupMembers, postObject }) => {
   // Remark is async, so we have to do some state management
   // to wait for it to do its thing
   const [text, setText] = useState<string>('')
@@ -30,8 +30,8 @@ const Reply: React.FC<Props> = ({ groupMembers, replyObject }) => {
       setText(formattedText)
     }
 
-    getHTML(replyObject.text)
-  }, [replyObject])
+    getHTML(postObject.text)
+  }, [postObject])
 
 
   if (!user) return <p>Loading...</p>
@@ -55,9 +55,9 @@ const Reply: React.FC<Props> = ({ groupMembers, replyObject }) => {
     if (isEditing) {
       return (
         <ReplyForm
-          payloadType={ReplyPayloadType.Edit}
-          startingText={replyObject.text}
-          replyID={replyObject.id}
+          payloadType={PostPayloadType.Edit}
+          startingText={postObject.text}
+          replyID={postObject.id}
           setActive={setIsEditing}
         />
       )
@@ -67,14 +67,14 @@ const Reply: React.FC<Props> = ({ groupMembers, replyObject }) => {
   }
 
   return (
-    <div key={replyObject.id} className='box box-with-border has-background-light has-text-black p-4'>
+    <div key={postObject.id} className='box box-with-border has-background-light has-text-black p-4'>
       <div className='content'>
         <p>
-          <strong>{getDisplayName(replyObject.UserId, groupMembers)}</strong>
+          <strong>{getDisplayName(postObject.UserId, groupMembers)}</strong>
           &nbsp;&nbsp;
-          <small>{dayjs().to(dayjs(replyObject.createdAt))}</small>
+          <small>{dayjs().to(dayjs(postObject.createdAt))}</small>
           &nbsp;&nbsp;
-          {handleEditButton(replyObject.UserId)}
+          {handleEditButton(postObject.UserId)}
         </p>
         {handleEditing()}
       </div>
