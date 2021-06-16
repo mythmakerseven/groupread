@@ -14,8 +14,6 @@ A demo server is available at [http://gr.camdenmecklem.com/](http://gr.camdenmec
 
 - [To do](#to-do)
 
-  - [TypeScript roadmap](#typescript-roadmap)
-
 - [Developer notes](#developer-notes)
 
 ## Self-hosting
@@ -68,6 +66,8 @@ All contributions are licensed under the [GNU Affero General Public License v3.0
 
 - moderation tools for group owners ⭐⭐⭐
 
+- migrate to the Google Books API for metadata ⭐⭐⭐
+
 - proper frontend testing with Cypress (current status: cypress is fully set up for component testing, but only runs a few basic tests to verify that it works - end-to-end testing is not yet configured) ⭐⭐⭐
 
 - ~~enhanced security (token expiration and validation, etc)~~ ⭐⭐⭐
@@ -82,11 +82,9 @@ All contributions are licensed under the [GNU Affero General Public License v3.0
 
 - ~~list of groups the current user has joined, preferably as a navbar dropdown~~ ⭐⭐
 
-- editing functionality (mostly implemented, still missing on the front-end for top-level posts) ⭐⭐
+- ~~editing functionality~~ ⭐⭐
 
 - ~~proper display of authors for books with multiple authors~~ ⭐
-
-- custom URL support for book covers (OL has spotty coverage) ⭐
 
 - address webpack warning about bundle size to improve loading performance ⭐
 
@@ -98,7 +96,7 @@ All contributions are licensed under the [GNU Affero General Public License v3.0
 
 This has been my largest project by far, not least because I have challenged myself with new tools and techniques compared to previous projects. All my previous database work involved MongoDB, but for Groupread I branched out into Postgres, which led to replacing Mongoose with Sequelize. Sequelize is definitely more complex than Mongoose, and its docs are pretty bad. Particularly in the early stages of development, I had a lot of issues caused by poor documentation of basic functionality. I managed to hack it together with the help of random blog posts and StackOverflow pages, and now it's not too hard to work with.
 
-On the frontend, I tried out the up-and-coming Bulma CSS framework, which I've found more visually pleasant and performant than Material or Semantic UI. This has also been my first significant experience with modals, which are used for the login/register form as well as the book metadata search popup. Bulma requires more manual coding to make modals work compared to other UI libraries, but I liked the increased customization it provides.
+On the frontend, I tried out the up-and-coming Bulma CSS framework, which I've found more visually pleasant and performant than Material or Semantic UI. This has also been my first significant experience with modals, which are used for the login/register form as well as the book metadata search popup. Bulma requires more manual coding to make modals work compared to other UI libraries, but I like the increased customization it provides.
 
 I also chose not to use create-react-app, if only to learn more about the internal workings of packaging web applications. This move had surprisingly few drawbacks - maybe five or six hours of total time configuring and troubleshooting with webpack and eslint. In the future I'll probably go with create-react-app again, because there also hasn't been much benefit in dropping it. It has been good to learn more about what create-react-app is doing in the background, anyway.
 
