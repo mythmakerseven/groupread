@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { useParams } from 'react-router-dom'
 import { getGroupDetails, getGroupMembers, getGroupPosts } from '../reducers/groupReducer'
@@ -18,6 +18,8 @@ import { ReplyPayloadType } from './Posts/ReplyForm'
 import ErrorPage from './ErrorPage'
 
 const PostView: React.FC = () => {
+  const [isEditing, setIsEditing] = useState(false)
+
   const dispatch = useAppDispatch()
   const { id, pid } = useParams<({ id: string, pid: string })>()
 
@@ -74,12 +76,47 @@ const PostView: React.FC = () => {
     }
   }
 
+  const handleEditButton = (authorID: string) => {
+    if (authorID === user.id) {
+      return (
+        <button
+          className='button is-small'
+          onClick={() => setIsEditing(true)}
+        >
+          Edit
+        </button>
+      )
+    } else {
+      return null
+    }
+  }
+
+  const handleOP = () => {
+    if (isEditing) {
+      return (
+        <ReplyForm
+          payloadType={ReplyPayloadType.Edit}
+          startingText={post.text}
+          replyID={post.id}
+          setActive={setIsEditing}
+        />
+      )
+    } else {
+      return (
+        <>
+          <p><strong>{getDisplayName(post.UserId, group.members)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small></p>
+          <p className='post-typography'>{post.text}</p>
+        </>
+      )
+    }
+  }
+
   return (
     <div className='container pt-4 pb-4'>
       <h1 className='title'>{post.title}</h1>
       <div className='box box-with-border has-background-light has-text-black p-4'>
-        <p><strong>{getDisplayName(post.UserId, group.members)}</strong> <small>{dayjs().to(dayjs(post.createdAt))}</small></p>
-        <p className='post-typography'>{post.text}</p>
+        { handleEditButton(user.id) }
+        { handleOP() }
       </div>
       <br />
       <h1 className='title is-4'>Replies</h1>

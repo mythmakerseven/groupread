@@ -73,7 +73,7 @@ export interface Post {
   UserId: string,
   parent: string | null,
   title: string | null,
-  replies: Array<Post> | null
+  replies: Array<Post>
 }
 
 // The data that's sent to the server

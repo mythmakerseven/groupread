@@ -176,7 +176,6 @@ const groupSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getGroupDetails.pending, (state) => {
-      console.log('pending!!')
       return state = {
         pending: true,
         groups: state.groups
@@ -283,24 +282,47 @@ const groupSlice = createSlice({
     builder.addCase(editPost.fulfilled, (state, { payload }) => {
       const groupID = payload.GroupId
       const parentID = payload.parent
-      const replyID = payload.id
+      const postToEditID = payload.id
 
-      // This is ugly! But pretty in a weird way too.
-      // Basically it finds the group, then the parent post,
-      // then the reply to edit.
-      return state = {
-        pending: false,
-        groups: state.groups.map((g: Group) => g.id === groupID
-          ? g = { ...g, posts: g.posts.map(p => p.id === parentID && p.replies
-            ? { ...p, replies: p.replies.map(r => r.id === replyID
-              ? payload
-              : r
-            ) }
+      const changeParentPost = (groups: Group[]) => {
+        return groups.map((g: Group) => g.id === groupID
+          ? g = { ...g, posts: g.posts.map(p => p.id === postToEditID
+            ? { ...p, text: payload.text }
             : p
           ) }
           : g
         )
       }
+
+      const changeReplyPost = (groups: Group[]) => {
+        return groups.map((g: Group) => g.id === groupID
+          ? g = {
+            ...g, posts: g.posts.map(p => p.id === parentID
+              ? {
+                ...p, replies: p.replies.map(r => r.id === postToEditID
+                  ? payload
+                  : r
+                )
+              }
+              : p
+            )
+          }
+          : g
+        )
+      }
+
+      // If there's no parent property, then it's a parent post itself.
+      // If editing a reply, the request will include a parent property.
+      if (!payload.parent) {
+        return state = {
+          pending: false,
+          groups: changeParentPost(state.groups)
+        }
+      } else {
+        return state = {
+          pending: false,
+          groups: changeReplyPost(state.groups)
+        }}
     }),
     builder.addCase(joinGroup.pending, (state) => {
       return state = {
