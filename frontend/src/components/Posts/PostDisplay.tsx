@@ -13,7 +13,7 @@ interface Props {
   postObject: Post
 }
 
-const Reply: React.FC<Props> = ({ groupMembers, postObject }) => {
+const PostDisplay: React.FC<Props> = ({ groupMembers, postObject }) => {
   // Remark is async, so we have to do some state management
   // to wait for it to do its thing
   const [text, setText] = useState<string>('')
@@ -66,6 +66,19 @@ const Reply: React.FC<Props> = ({ groupMembers, postObject }) => {
     }
   }
 
+  // Show a notice if the post is edited, but provide a two-minute grace period after creating a post
+  // to make edits without the notice showing up
+  const handleUpdatedDate = () => {
+    if (
+      postObject.createdAt !== postObject.updatedAt &&
+      new Date(postObject.updatedAt).getTime() - new Date(postObject.createdAt).getTime() > 120000
+    ) {
+      return <small> (edited {dayjs().to(dayjs(postObject.updatedAt))})</small>
+    } else {
+      return null
+    }
+  }
+
   return (
     <div key={postObject.id} className='box box-with-border has-background-light has-text-black p-4'>
       <div className='content'>
@@ -73,6 +86,7 @@ const Reply: React.FC<Props> = ({ groupMembers, postObject }) => {
           <strong>{getDisplayName(postObject.UserId, groupMembers)}</strong>
           &nbsp;&nbsp;
           <small>{dayjs().to(dayjs(postObject.createdAt))}</small>
+          {handleUpdatedDate()}
           &nbsp;&nbsp;
           {handleEditButton(postObject.UserId)}
         </p>
@@ -82,4 +96,4 @@ const Reply: React.FC<Props> = ({ groupMembers, postObject }) => {
   )
 }
 
-export default Reply
+export default PostDisplay
