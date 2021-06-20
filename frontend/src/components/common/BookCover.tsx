@@ -1,5 +1,5 @@
 import React from 'react'
-import unknownCover from '../../images/unknown_cover.webp'
+import unknownCover from '../../images/unknown_cover.png'
 
 export enum CoverSize {
   Small = 'S',
