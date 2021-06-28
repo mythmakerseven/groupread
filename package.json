@@ -40,7 +40,7 @@
     "redux-thunk": "^2.3.0",
     "remark": "^13.0.0",
     "remark-html": "^13.0.1",
-    "sequelize": "^6.5.0",
+    "sequelize": "^6.6.4",
     "title-case": "^3.0.3",
     "url-loader": "^4.1.1",
     "uuid": "^8.3.2"
