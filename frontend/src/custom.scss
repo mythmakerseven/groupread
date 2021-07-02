@@ -1,5 +1,9 @@
 @import 'App.scss';
 
+body {
+  font-family: $family-sans-serif, sans-serif;
+}
+
 ::selection {
   background: rgba(137, 207, 240, 0.5);
 }
