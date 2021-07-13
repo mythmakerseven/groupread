@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { parseMarkdown, getDisplayName } from '../../lib/posts'
+import { parseMarkdown } from '../../lib/posts'
 dayjs.extend(relativeTime)
-import { Post, User } from '../../types'
+import { Post } from '../../types'
 import { useAppSelector } from '../../hooks'
 import ReplyForm from './PostForm'
 import { PostPayloadType } from './PostForm'
 
 interface Props {
-  groupMembers: Array<User>,
   postObject: Post
 }
 
-const PostDisplay: React.FC<Props> = ({ groupMembers, postObject }) => {
+const PostDisplay: React.FC<Props> = ({ postObject }) => {
   // Remark is async, so we have to do some state management
   // to wait for it to do its thing
   const [text, setText] = useState<string>('')
@@ -83,7 +82,7 @@ const PostDisplay: React.FC<Props> = ({ groupMembers, postObject }) => {
     <div key={postObject.id} className='box box-with-border has-background-light has-text-black p-4'>
       <div className='content'>
         <p>
-          <strong>{getDisplayName(postObject.UserId, groupMembers)}</strong>
+          <strong>{postObject.User.displayName}</strong>
           &nbsp;&nbsp;
           <small>{dayjs().to(dayjs(postObject.createdAt))}</small>
           {handleUpdatedDate()}

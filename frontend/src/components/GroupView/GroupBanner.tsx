@@ -94,6 +94,7 @@ const GroupBanner: React.FC<Props> = ({ group }) => {
         />
         <h1 className='title'>{group.bookTitle}</h1>
         <h1 className='subtitle'>by {group.bookAuthor}</h1>
+        {/* TODO: add admin info to group object from server so we can finally dump this helper function */}
         <h4>Hosted by {getDisplayName(group.AdminId, group.members)}</h4>
       </div>
     </>

@@ -64,7 +64,7 @@ const PostView: React.FC = () => {
     // Check if there are any replies first
     if (post.replies && post.replies.length > 0) {
       return post.replies.map(reply =>
-        <PostDisplay key={reply.id} groupMembers={group.members} postObject={reply} />
+        <PostDisplay key={reply.id} postObject={reply} />
       )
     } else {
       return (
@@ -77,7 +77,6 @@ const PostView: React.FC = () => {
     <div className='container pt-4 pb-4'>
       <h1 className='title'>{post.title}</h1>
       <PostDisplay
-        groupMembers={group.members}
         postObject={post}
       />
       <br />

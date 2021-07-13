@@ -84,7 +84,7 @@ const GroupView: React.FC = () => {
             {handlePostButton()}
           </div>
         </div>
-        <PostList groupID={id} groupMembers={members}/>
+        <PostList groupID={id} />
       </>
     )
   }

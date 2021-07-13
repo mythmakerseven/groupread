@@ -5,16 +5,14 @@ import PostCard from './PostListItem'
 import {
   Post,
   UserObject,
-  User,
   Group
 } from '../../types'
 
 interface Props {
-  groupID: string,
-  groupMembers: Array<User>
+  groupID: string
 }
 
-const PostList: React.FC<Props> = ({ groupID, groupMembers }) => {
+const PostList: React.FC<Props> = ({ groupID }) => {
   const [posts, setPosts] = useState<Array<Post>>([])
 
   const dispatch = useAppDispatch()
@@ -56,7 +54,6 @@ const PostList: React.FC<Props> = ({ groupID, groupMembers }) => {
       key={p.id}
       groupID={groupID}
       post={p}
-      groupMembers={groupMembers}
     />)
   }
 

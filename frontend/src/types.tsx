@@ -35,7 +35,7 @@ export interface User {
   nameColor: string,
   createdAt: Date,
   updatedAt: Date,
-  UserGroups: UserGroups
+  UserGroups?: UserGroups
 }
 
 export interface Group {
@@ -73,7 +73,8 @@ export interface Post {
   UserId: string,
   parent: string | null,
   title: string | null,
-  replies: Array<Post>
+  replies: Array<Post>,
+  User: UserObject
 }
 
 // The data that's sent to the server
