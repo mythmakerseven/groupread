@@ -21,6 +21,14 @@ export interface PostObject {
   replies: PostObject[] | null
 }
 
+export interface PostWithUser extends PostObject {
+  User: UserObject
+}
+
+export interface SanitizedPostWithUser extends PostObject {
+  User: SanitizedUser
+}
+
 export interface ReplyObject {
   parent: string,
   text: string

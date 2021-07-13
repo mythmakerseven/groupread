@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import User from '../models/user'
 import Group from '../models/group'
 import config from '../utils/config'
-import { SanitizedUser, UserObject } from '../utils/types'
+import { SanitizedUser, UserObject, PostObject } from '../utils/types'
 
 export const checkToken = (token: string | null): string => {
   if (!token) {
@@ -61,4 +61,31 @@ export const getCurrentUserInfo = async (id: string, tokenID: string): Promise<U
   }
 
   return userObject
+}
+
+// ascending order means oldest posts on top
+const sortByDate = (posts: PostObject[], ascending: boolean): PostObject[] => {
+  return posts.sort((a, b) => {
+    if (a.createdAt > b.createdAt) {
+      return ascending ? 1 : -1
+    } else if (a.createdAt < b.createdAt) {
+      return ascending ? -1 : 1
+    } else {
+      return 0
+    }
+  })
+}
+
+// organize posts by parent/child
+export const organizePosts = (posts: PostObject[]): PostObject[] => {
+  const parentPosts = posts.filter((post) => !post.parent)
+
+  const sortedParents = sortByDate(parentPosts, false)
+
+  // Sort the posts into a hierarchical object with replies as children, etc
+  const parentsWithReplies = sortedParents.map((post: PostObject) => post = {
+    replies: sortByDate(posts.filter((childPost) => childPost.parent === post.id), true),
+    ...post
+  })
+  return parentsWithReplies
 }

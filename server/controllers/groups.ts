@@ -5,20 +5,10 @@ import { v4 as uuidv4 } from 'uuid'
 import User from '../models/user'
 import logger from '../utils/logger'
 import Post from '../models/post'
-import { checkToken, sanitizeUser } from './utils'
-import { RequestWithToken, NewScheduledPost, PostObject, UserObject } from '../utils/types'
+import { checkToken, sanitizeUser, organizePosts } from './utils'
+import { RequestWithToken, NewScheduledPost, UserObject, PostWithUser, PostObject } from '../utils/types'
 
 const groupsRouter = express.Router()
-
-// utility function for returning all posts, properly sorted by parent/child
-const sortPosts = (posts: Post[]) => {
-  const postsArray = posts.map(p => p.toJSON() as PostObject)
-  const parentPosts = postsArray.filter((post) => !post.parent)
-
-  // Sort the posts into a hierarchical object with replies as children, etc
-  const sortedPosts = parentPosts.map((post: PostObject) => post = { replies: posts.filter((childPost) => childPost.parent === post.id), ...post } )
-  return sortedPosts
-}
 
 // Get list of groups
 groupsRouter.get('/all', async (req, res) => {
@@ -54,16 +44,37 @@ groupsRouter.get('/:id/members', async (req, res) => {
 
 // Get posts from a group
 groupsRouter.get('/:id/posts', async (req, res) => {
-  const group = await Group.findOne({ where: { id: req.params.id } })
+  const posts = await Post.findAll({
+    where: { GroupId: req.params.id },
+    include: [
+      {
+        model: User,
+        required: true,
+      }
+    ]
+  })
 
-  if (!group) return res.status(400).json({ error: 'invalid group id' })
+  if (!posts || posts.length === 0) {
+    // avoid giving an error when the group actually exists and posts are empty
+    const group = await Group.findOne({ where: { id: req.params.id } })
+    if (!group) {
+      // nonexistent group
+      return res.status(400).json({ error: 'invalid group ID' })
+    } else {
+      // existing group with no posts, no reason to do all the operations below on an empty array
+      return res.status(200).json([])
+    }
+  }
 
-  const posts = await group.getPosts()
+  const jsonPosts = posts.map(p => p.toJSON() as PostWithUser)
 
-  const sortedPosts = await sortPosts(posts)
+  const sanitizedPosts = jsonPosts.map((p: PostWithUser) => p = { ...p, User: sanitizeUser(p.User) as UserObject })
+
+  const sortedPosts = organizePosts(sanitizedPosts)
 
   // excluded scheduled posts which have future createdAt dates
   const sortedPastPosts = sortedPosts.filter(p => p.createdAt <= new Date())
+
   return res.status(200).json(sortedPastPosts)
 })
 
@@ -258,7 +269,8 @@ groupsRouter.post('/schedule/:group', async (req: RequestWithToken, res: express
   await Post.bulkCreate(postsToSchedule)
 
   const posts = await group.getPosts()
-  const sortedPosts = await sortPosts(posts)
+  const jsonPosts = posts.map(p => p.toJSON() as PostObject)
+  const sortedPosts = organizePosts(jsonPosts)
   return res.status(200).json(sortedPosts)
 })
 
