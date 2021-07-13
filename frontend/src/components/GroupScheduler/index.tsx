@@ -23,7 +23,7 @@ const GroupScheduler: React.FC = () => {
     return <ErrorPage errorType={ErrorTypes.NotFound} />
   }
 
-  if (!user) {
+  if (!user.data) {
     return <ErrorPage errorType={ErrorTypes.Unauthorized} />
   }
 

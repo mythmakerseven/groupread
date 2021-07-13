@@ -16,17 +16,17 @@ const GroupList: React.FC = () => {
   }, [dispatch])
 
   useEffect(() => {
-    if (user) {
-      dispatch(getPersonalInfo({ id: user.id, token: user.token }))
+    if (user && user.data) {
+      dispatch(getPersonalInfo({ id: user.data.id, token: user.data.token }))
     }
-  }, [user?.id])
+  }, [user?.data?.id])
 
   const groups = useAppSelector(({ groupList }) => groupList)
 
   // Identify groups that the user is a member of
   const getUserGroups = (): Group[] => {
-    if (user && user.Groups) {
-      const userGroupIDs = user.Groups.map(g => g.id)
+    if (user && user.data?.Groups) {
+      const userGroupIDs = user.data.Groups.map(g => g.id)
       const userGroups = groups.filter(g => userGroupIDs.includes(g.id))
       return userGroups
     } else {
@@ -35,8 +35,8 @@ const GroupList: React.FC = () => {
   }
 
   const getNonMemberGroups = (): Group[] => {
-    if (user && user.Groups) {
-      const userGroupIDs = user.Groups.map(g => g.id)
+    if (user && user.data?.Groups) {
+      const userGroupIDs = user.data.Groups.map(g => g.id)
       const nonMemberGroups = groups.filter(g => !userGroupIDs.includes(g.id))
       return nonMemberGroups
     } else {

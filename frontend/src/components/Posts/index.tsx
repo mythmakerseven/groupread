@@ -9,8 +9,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
 import {
-  ErrorTypes,
-  Post
+  ErrorTypes
 } from '../../types'
 
 import { PostPayloadType } from './PostForm'
@@ -40,7 +39,7 @@ const PostView: React.FC = () => {
   const groups = useAppSelector(({ group }) => group.groups)
   const group = groups.find(group => group.id === id)
 
-  if (!user) {
+  if (!user.data && !user.loading) {
     return (
       <ErrorPage errorType={ErrorTypes.Unauthorized} />
     )
@@ -52,7 +51,7 @@ const PostView: React.FC = () => {
     )
   }
 
-  const post: Post | undefined = group.posts.find(post => post.id === pid)
+  const post = group.posts.find(post => post.id === pid)
 
   if (!post) {
     return (

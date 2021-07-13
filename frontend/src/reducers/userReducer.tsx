@@ -3,16 +3,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import login from '../services/login'
 import userService from '../services/users'
 import postService from '../services/posts'
-import { LoginData, RegisterData, UserObject } from '../types'
+import { LoginData, RegisterData, UserState } from '../types'
 import users from '../services/users'
 
-interface UserLoading {
-  loading: boolean
-}
-
-export type UserState = UserObject | UserLoading | null
-
-export const initialState = null as UserState
+export const initialState: UserState = { loading: false, data: null }
 
 // Thunks
 
@@ -92,11 +86,21 @@ const userSlice = createSlice({
       } else {
         const user = payload
         postService.setToken(user.token)
-        return state = user
+        return state = {
+          loading: false,
+          data: {
+            Groups: [],
+            ...user,
+          }
+        }
       }
     }),
     builder.addCase(initializeUser.pending, (state) => {
-      return state = { loading: true }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      return state = {
+        loading: true,
+        data: null
+      }
     }),
     builder.addCase(initializeUser.rejected, () => {
       window.localStorage.removeItem('loggedInGroupreader')
@@ -108,8 +112,11 @@ const userSlice = createSlice({
 
       // The type expects a Groups field, so set it here as an empty array to be populated later.
       return state = {
-        Groups: [],
-        ...payload
+        loading: false,
+        data: {
+          Groups: [],
+          ...payload
+        }
       }
     }),
     builder.addCase(logInUser.rejected, () => {
@@ -120,15 +127,24 @@ const userSlice = createSlice({
       window.localStorage.setItem('loggedInGroupreader', JSON.stringify(user))
       postService.setToken(user.token)
       return state = {
-        Groups: [],
-        ...user
+        loading: false,
+        data: {
+          Groups: [],
+          ...user
+        }
       }
     }),
     builder.addCase(registerUser.rejected, () => {
       return initialState
     }),
     builder.addCase(getPersonalInfo.fulfilled, (state, { payload }) => {
-      return state = { ...state, ...payload }
+      return state = {
+        loading: false,
+        data: {
+          ...state.data,
+          ...payload
+        }
+      }
     })
   }
 })

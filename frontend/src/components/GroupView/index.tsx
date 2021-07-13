@@ -20,7 +20,7 @@ const GroupView: React.FC = () => {
   const dispatch = useAppDispatch()
   const history = useHistory()
 
-  const user: UserObject | null = useAppSelector(({ user }) => user)
+  const user: UserObject | null = useAppSelector(({ user }) => user.data)
   const groups: Array<Group> = useAppSelector(({ group }) => group.groups)
 
   // See if the group exists in the cache

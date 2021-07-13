@@ -6,8 +6,7 @@ import BookCover from '../common/BookCover'
 import { CoverSize } from '../common/BookCover'
 import {
   Group,
-  User,
-  UserObject
+  User
 } from '../../types'
 
 interface Props {
@@ -17,7 +16,7 @@ interface Props {
 const GroupBanner: React.FC<Props> = ({ group }) => {
   const dispatch = useAppDispatch()
 
-  const user: UserObject | null = useAppSelector(({ user }) => user)
+  const user = useAppSelector(({ user }) => user.data)
 
   const handleGroupMembership = (id: string, token: string) => {
     dispatch(joinGroup({
@@ -56,7 +55,7 @@ const GroupBanner: React.FC<Props> = ({ group }) => {
       </>
     )
 
-    if (!memberIDs.includes(userID)) {
+    if (user && !memberIDs.includes(userID)) {
       return (
         <>
           <p className='title is-5'>You&apos;ve been invited to join.</p>

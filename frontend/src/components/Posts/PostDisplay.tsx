@@ -18,7 +18,7 @@ const PostDisplay: React.FC<Props> = ({ postObject }) => {
   const [text, setText] = useState<string>('')
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
-  const user = useAppSelector(({ user }) => user)
+  const user = useAppSelector(({ user }) => user.data)
 
   // Call the remark function on component load
   // Also re-run it if replyObject changes (e.g.

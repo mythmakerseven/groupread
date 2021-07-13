@@ -17,7 +17,7 @@ const PostList: React.FC<Props> = ({ groupID }) => {
 
   const dispatch = useAppDispatch()
 
-  const user: UserObject | null = useAppSelector(({ user }) => user)
+  const user: UserObject | null = useAppSelector(({ user }) => user.data)
 
   const groups: Array<Group> = useAppSelector(({ group }) => group.groups)
   const groupQuery: undefined | Group = groups.find(group => group.id === groupID)

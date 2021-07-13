@@ -27,6 +27,11 @@ export interface UserObject {
   token: string
 }
 
+export interface UserState {
+  loading: boolean,
+  data: UserObject | null
+}
+
 // What the API returns for other users' info
 export interface User {
   id: string,

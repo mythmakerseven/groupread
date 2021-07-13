@@ -22,7 +22,7 @@ const GroupNewPost: React.FC = () => {
     },
   } = useForm()
 
-  const user = useAppSelector(({ user }) => user)
+  const user = useAppSelector(({ user }) => user.data)
 
   if (!user) {
     return (

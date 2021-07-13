@@ -7,7 +7,7 @@ import LoginModal from '../LoginModal'
 const LoginButton: React.FC = () => {
   const [openModal, setOpenModal] = useState(false)
 
-  const user = useAppSelector(({ user }) => user)
+  const user = useAppSelector(({ user }) => user.data)
   const dispatch = useAppDispatch()
 
   const handleLoginModal = () => {

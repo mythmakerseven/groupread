@@ -5,7 +5,7 @@ import { getPersonalInfo } from '../../reducers/userReducer'
 import Dropdown from '../common/Dropdown'
 
 const GroupDropdown: React.FC = () => {
-  const user = useAppSelector(({ user }) => user)
+  const user = useAppSelector(({ user }) => user.data)
 
   const dispatch = useAppDispatch()
 

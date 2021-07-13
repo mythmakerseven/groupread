@@ -27,15 +27,19 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
     },
   } = useForm()
 
-  if (!user) {
+  if (!user.data) {
     return <p>Missing/invalid user ID</p>
   }
 
   const submitSchedule = async (data: unknown) => {
+    if (!user.data?.token) {
+      return setError('bookTitle', { message: 'Authentication error. Are you signed in?' })
+    }
+
     const res = await dispatch(setSchedule({
       weekObject: data,
       groupID: id,
-      token: user.token
+      token: user.data.token
     }))
 
     if (res.error) {

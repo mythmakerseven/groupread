@@ -51,22 +51,21 @@ const CreateGroup: React.FC = () => {
     // 2) Check for a token if the user is already initialized
     //     (if the user navigates here from another component with user state already initialized)
 
-    // eslint-disable-next-line no-prototype-builtins
-    if (user?.hasOwnProperty('loading') || user?.hasOwnProperty('token')) {
+    if (user.loading === false || user.data?.token) {
       setIsLoading(false)
     }
   }, [user])
 
-  if (isLoading) {
-    return <p>loading...</p>
-  }
-
-  if (!user && !isLoading) {
-    return (
-      <ErrorPage
-        errorType={ErrorTypes.Unauthorized}
-      />
-    )
+  if (!user || !user.data) {
+    if (isLoading) {
+      return <p>loading...</p>
+    } else {
+      return (
+        <ErrorPage
+          errorType={ErrorTypes.Unauthorized}
+        />
+      )
+    }
   }
 
   const handleGroup = async (data: GroupCreationData) => {
@@ -79,9 +78,15 @@ const CreateGroup: React.FC = () => {
       bookOLID: groupFormData.bookOLID
     }
 
+    // I don't know why TS thinks data is possibly null because there's null-checking above.
+    // But this line makes it happy.
+    if (!user.data?.token) {
+      return setError('bookTitle', { message: 'Authentication error. Are you signed in?' })
+    }
+
     const res = await dispatch(createGroup({
       groupObject: groupObject,
-      token: user.token
+      token: user.data.token
     }))
 
     if (res.error) {
