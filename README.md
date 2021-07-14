@@ -24,11 +24,9 @@ To self-host, you will need:
 
 - A database of any kind supported by [Sequelize](https://sequelize.org/)
 
-For now, Groupread combines the backend and frontend into a single repository. This may change in the future.
+To begin, ``git clone`` the repo into your desired location. This repository includes both the frontend and the backend.
 
-To begin, ``git clone`` the repo into your desired location.
-
-First, pick a database. Groupread uses the Sequelize ORM, which supports Postgres, MySQL, MariaDB, SQLite, and Microsoft SQL Server, but requires a driver package for the chosen database. By default, Groupread includes the ``pg`` and ``pg-hstore`` packages for Postgres support. If you wish to connect to another database from the list, you must add the required driver ([detailed here](https://sequelize.org/master/manual/getting-started.html#installing)) to ``package.json``.
+Groupread uses the Sequelize ORM, which supports Postgres, MySQL, MariaDB, SQLite, and Microsoft SQL Server, but requires a driver package for the chosen database. By default, Groupread includes the ``pg`` and ``pg-hstore`` packages for Postgres support. If you wish to connect to another database from the list, you must add the required driver ([detailed here](https://sequelize.org/master/manual/getting-started.html#installing)) to ``package.json``.
 
 Now you can run ``yarn install`` to install dependencies.
 
@@ -42,7 +40,11 @@ The server expects the following environment variables:
 
 - **PORT**: the port on which the server will run.
 
-Before launching, you might want to run the test suite to make sure everything works. ``yarn test:jest`` will run the backend unit tests, and ``yarn test:component`` will run frontend component tests. Note that test coverage is not great right now, with the frontend tests in particular being a work in progress.
+Before launching, you might want to run the test suite to make sure everything works. ``yarn test:jest`` will run the backend unit tests, and ``yarn test:component`` will run frontend component tests.
+
+To run end-to-end tests, first make sure the server and backend are built with `yarn build:server` and `yarn build:ui`. Then start a test version of Groupread with `yarn start:cypress`. In another terminal, use `yarn test:e2e` to run the end-to-end tests.
+
+Note that test coverage is not great right now, with the frontend tests in particular being a work in progress.
 
 Now you can run ``yarn start:full`` to build and serve a production-ready app. The site will be hosted locally, e.g. at [http://localhost:3000/](http://localhost:3000/) if you set ``PORT`` to 3000.
 
@@ -54,7 +56,7 @@ You can host a live server on your local machine to make development easier. Aft
 
 If you plan to work on new functionality, please file an issue first so no one duplicates your efforts.
 
-Before submitting a pull request, make sure to lint your code with ``yarn lint`` and test with both ``yarn test:jest`` and ``yarn test:component``. Code style isn't very strict right now beyond the basic linting rules, although more stringency might be enforced in the future.
+Before submitting a pull request, make sure to lint your code with ``yarn lint`` and test with the relevant testing commands. Code style isn't very strict right now beyond the basic linting rules, although more stringency might be enforced in the future.
 
 All contributions are licensed under the [GNU Affero General Public License v3.0](https://github.com/mythmakerseven/groupread/blob/main/LICENSE).
 
@@ -68,7 +70,7 @@ All contributions are licensed under the [GNU Affero General Public License v3.0
 
 - migrate to the Google Books API for metadata ⭐⭐⭐
 
-- proper frontend testing with Cypress (current status: cypress is fully set up for component testing, but only runs a few basic tests to verify that it works - end-to-end testing is not yet configured) ⭐⭐⭐
+- proper frontend testing with Cypress (current status: cypress is fully set up for component testing and end-to-end testing, and is just waiting for tests to be written) ⭐⭐⭐
 
 - ~~enhanced security (token expiration and validation, etc)~~ ⭐⭐⭐
 
