@@ -5,11 +5,3 @@
 # ignore cypress stuff
 **/cypress
 /build
-
-# ignore config files
-# these confuse eslint which expects node-style exports
-.eslintrc.js
-webpack.config.js
-server/utils/config.js
-server/eslint.js
-server/jest.config.js
