@@ -33,6 +33,7 @@ jobs:
       - name: component testing
         run: yarn test:component
       - name: end-to-end testing
+        uses: cypress-io/github-action@v2
         command: yarn test:e2e
         start: yarn start:cypress
         wait-on: http://localhost:3001
