@@ -248,9 +248,9 @@ const groupSlice = createSlice({
         const parentID = payload.data.parent
         return state = {
           pending: false,
-          groups: state.groups.map((g: Group) => {
+          groups: state.groups.map(g => {
             if (g.id === groupID) {
-              const posts = g.posts.map((p: Post) => {
+              const posts = g.posts.map(p => {
                 if (p.id === parentID) {
                   const replies = p.replies ? [ ...p.replies, payload.data ] : [payload.data]
                   return { ...p, replies: replies }

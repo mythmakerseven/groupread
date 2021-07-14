@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from 'uuid'
 import User from '../models/user'
 import logger from '../utils/logger'
 import Group from '../models/group'
-import { checkToken } from './utils'
-import { RequestWithToken } from '../utils/types'
+import { checkToken, sanitizeUser } from './utils'
+import { GroupWithMembers, RequestWithToken, UserObject } from '../utils/types'
 
 const postsRouter = express.Router()
 
@@ -27,21 +27,28 @@ postsRouter.post('/:group', async (req: RequestWithToken, res) => {
     return res.status(400).json({ error: `${e.message}` })
   }
 
-  // Three queries here - maybe these could be refactored as one,
-  // e.g. by querying for the user-group relationship.
-  // This would make the errors more generic, which may be a downside.
-  const user = await User.findOne({ where: { id: tokenID } })
-  if (!user) return res.status(401).json({ error: 'user does not exist' })
+  const group = await Group.findOne({
+    where: {
+      id: req.params.group
+    },
+    include: [{
+      model: User
+    }]
+  })
 
-  const group = await Group.findOne({ where: { id: req.params.group } })
-  if (!group) return res.status(400).json({ error: 'group does not exist' })
-
-  const groupMemberData = await group.getUsers()
-  const memberIDs = groupMemberData.map(u => u.id)
-
-  if (!memberIDs.includes(user.id)) {
-    return res.status(401).json({ error: 'you are not a member of this group' })
+  if (!group) {
+    return res.status(404).json({ error: 'group not found' })
   }
+
+  const jsonGroup = group.toJSON() as GroupWithMembers
+
+  const userObject = jsonGroup.Users.find(u => u.id === tokenID)
+
+  if (!userObject) {
+    return res.status(401).json('you are not a member of this group')
+  }
+
+  const sanitizedUser = sanitizeUser(userObject as UserObject)
 
   if (!body.parent && !body.title) {
     return res.status(400).json({ error: 'parent posts require a title' })
@@ -59,7 +66,7 @@ postsRouter.post('/:group', async (req: RequestWithToken, res) => {
       createdAt: new Date(),
       updatedAt: new Date(),
       GroupId: group.id,
-      UserId: user.id
+      UserId: sanitizedUser.id
     })
   } else {
     post = Post.build({
@@ -69,7 +76,7 @@ postsRouter.post('/:group', async (req: RequestWithToken, res) => {
       createdAt: new Date(),
       updatedAt: new Date(),
       GroupId: group.id,
-      UserId: user.id
+      UserId: sanitizedUser.id
     })
   }
 
@@ -77,7 +84,12 @@ postsRouter.post('/:group', async (req: RequestWithToken, res) => {
   // post.addPost([ group ])
   await post.save()
 
-  res.status(200).send(post)
+  const jsonPost = post.toJSON()
+
+  res.status(200).json({
+    ...jsonPost,
+    User: sanitizedUser
+  })
 })
 
 // Edit a post
@@ -88,15 +100,13 @@ postsRouter.put('/edit/:id', async (req: RequestWithToken, res) => {
   const body = req.body
   logger.info(`Received PUT request:\n ${body}`)
 
-  const token = req.token
-
   if (!body.text) {
     return res.status(400).json({ error: 'Post content cannot be empty' })
   }
 
   let tokenID
   try {
-    tokenID = checkToken(token)
+    tokenID = checkToken(req.token)
   } catch(e) {
     return res.status(400).json({ error: `${e.message}` })
   }
@@ -116,7 +126,14 @@ postsRouter.put('/edit/:id', async (req: RequestWithToken, res) => {
   post.updatedAt = new Date()
 
   await post.save()
-  res.status(200).send(post)
+
+  const jsonPost = post.toJSON()
+  const jsonUser = user.toJSON() as UserObject
+
+  return res.status(200).json({
+    ...jsonPost,
+    User: sanitizeUser(jsonUser)
+  })
 })
 
 export default postsRouter

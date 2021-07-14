@@ -21,12 +21,29 @@ export interface PostObject {
   replies: PostObject[] | null
 }
 
+export interface GroupObject {
+  id: string,
+  bookTitle: string,
+  bookAuthor: string,
+  bookYear: number,
+  bookIsbn: string,
+  bookOLID: string,
+  bookPageCount: string,
+  AdminId: string,
+  createdAt: Date,
+  updatedAt: Date
+}
+
 export interface PostWithUser extends PostObject {
   User: UserObject
 }
 
 export interface SanitizedPostWithUser extends PostObject {
   User: SanitizedUser
+}
+
+export interface GroupWithMembers extends GroupObject {
+  Users: SanitizedUser[]
 }
 
 export interface ReplyObject {

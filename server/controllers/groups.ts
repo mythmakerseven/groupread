@@ -68,7 +68,7 @@ groupsRouter.get('/:id/posts', async (req, res) => {
 
   const jsonPosts = posts.map(p => p.toJSON() as PostWithUser)
 
-  const sanitizedPosts = jsonPosts.map((p: PostWithUser) => p = { ...p, User: sanitizeUser(p.User) as UserObject })
+  const sanitizedPosts = jsonPosts.map(p => p = { ...p, User: sanitizeUser(p.User) as UserObject })
 
   const sortedPosts = organizePosts(sanitizedPosts)
 
