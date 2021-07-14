@@ -1,12 +1,10 @@
 {
-  "component": {
-    "componentFolder": "frontend/src",
-    "testFiles": "**/*cypress.{ts,tsx}",
-    "fixturesFolder": "frontend/cypress/fixtures",
-    "integrationFolder": "frontend/cypress/integration",
-    "pluginsFile": "frontend/cypress/plugins/index.ts",
-    "screenshotsFolder": "frontend/cypress/screenshots",
-    "videosFolder": "frontend/cypress/videos",
-    "supportFile": "frontend/cypress/support/index.ts"
-  }
+  "componentFolder": "frontend/src",
+  "testFiles": "**/*cypress.{ts,tsx}",
+  "fixturesFolder": "frontend/cypress/fixtures",
+  "integrationFolder": "frontend/cypress/integration",
+  "pluginsFile": "frontend/cypress/plugins/index.ts",
+  "screenshotsFolder": "frontend/cypress/screenshots",
+  "videosFolder": "frontend/cypress/videos",
+  "supportFile": "frontend/cypress/support/index.ts"
 }

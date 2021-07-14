@@ -32,3 +32,7 @@ jobs:
         run: yarn test:jest
       - name: component testing
         run: yarn test:component
+      - name: end-to-end testing
+        command: yarn test:e2e
+        start: yarn start:cypress
+        wait-on: http://localhost:3001

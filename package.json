@@ -9,6 +9,8 @@
     "dev:ui": "webpack serve --mode=development",
     "test:jest": "NODE_ENV=test jest --config ./server/jest.config.ts --verbose --runInBand",
     "test:component": "npx cypress run-ct",
+    "start:cypress": "yarn build:server && yarn build:ui && NODE_ENV=test yarn start",
+    "test:e2e": "cypress run",
     "lint": "eslint .",
     "build:server": "yarn tsc --build server/tsconfig.json",
     "build:ui": "webpack --mode=production",
