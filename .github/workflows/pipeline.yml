@@ -34,7 +34,12 @@ jobs:
         run: yarn test:component
       - name: end-to-end testing
         uses: cypress-io/github-action@v2
+        env:
+          TEST_DB_URL: ${{ secrets.TEST_DB_URL }}
+          SECRET: ${{ secrets.SECRET }}
+          PORT: ${{ secrets.PORT }}
         with:
+          env: true
           command: yarn test:e2e
           start: yarn start:cypress
           wait-on: http://localhost:3001
