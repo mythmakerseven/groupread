@@ -42,4 +42,4 @@ jobs:
           env: true
           command: yarn test:e2e
           start: yarn start:cypress
-          wait-on: http://localhost:3001
+          wait-on: http://localhost:3000
