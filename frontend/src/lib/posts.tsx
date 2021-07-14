@@ -13,10 +13,7 @@ export const parseMarkdown = async (text: string): Promise<string> => {
   return parsedText.toString()
 }
 
-// TODO: How about an array called knownUsers stored in the redux state,
-// so getting a list of users adds them to the list, so this function would
-// then be able to look up names through that instead of needing the
-// groupMembers argument
+// TODO: deprecated function, do not use for new stuff
 export const getDisplayName = (userID: string, groupMembers: Array<User>): string => {
   const userMatch = groupMembers.find(m => m.id === userID)
 
