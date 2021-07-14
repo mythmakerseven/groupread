@@ -1,6 +1,7 @@
 // All env variables are read in this file and then imported by any module that needs them
 
 import dotenv from 'dotenv'
+import logger from './logger'
 
 dotenv.config()
 
@@ -11,6 +12,7 @@ dotenv.config()
 let DB_URL = process.env.DB_URL || ''
 
 if (process.env.NODE_ENV === 'test') {
+  logger.info('Running in test mode')
   DB_URL = process.env.TEST_DB_URL || ''
 }
 
