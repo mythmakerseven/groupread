@@ -4,7 +4,7 @@ import Group from '../models/group'
 import config from '../utils/config'
 import { SanitizedUser, UserObject, PostObject } from '../utils/types'
 
-export const checkToken = (token: string | null): string => {
+export const checkToken = (token: string | undefined): string => {
   if (!token) {
     throw new Error('Missing token')
   }
@@ -20,8 +20,8 @@ export const checkToken = (token: string | null): string => {
     }
   }
 
-  if (!decodedToken.data.id) {
-    throw new Error('Missing token')
+  if (typeof decodedToken === 'string' || !decodedToken.data.id) {
+    throw new Error('Missing or invalid token')
   }
 
   return decodedToken.data.id

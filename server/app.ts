@@ -1,6 +1,6 @@
 import config from './utils/config'
 import middleware from './utils/middleware'
-import express from 'express'
+import express, { RequestHandler } from 'express'
 import cors from 'cors'
 const app = express()
 import getPool from './utils/db'
@@ -14,7 +14,7 @@ import postsRouter from './controllers/posts'
 app.use(express.json())
 app.use(cors())
 app.use(middleware.requestLogger)
-app.use(middleware.tokenExtractor)
+app.use(middleware.tokenExtractor as RequestHandler)
 
 app.use('/api/users', usersRouter)
 app.use('/api/groups', groupsRouter)

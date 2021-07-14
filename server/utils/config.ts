@@ -7,8 +7,8 @@ dotenv.config()
 
 // TypeScript complains about the possibility of this being undefined.
 // If no DB URL is provided, the empty string will be returned and
-// Sequelize will error out. Manually writing null-checking here caused
-// problems for tests.
+// Sequelize will error out on its own. Manually writing null-checking
+// here caused problems for tests.
 let DB_URL = process.env.DB_URL || ''
 
 if (process.env.NODE_ENV === 'test') {

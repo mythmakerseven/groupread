@@ -48,7 +48,7 @@ usersRouter.post('/', async (req, res) => {
   const existingUser = await User.findOne({ where: { username: body.username } })
   if (existingUser) return res.status(400).json({ error: 'Username already taken' })
 
-  const handleDisplayName = (username, displayName) => {
+  const handleDisplayName = (username: string, displayName?: string) => {
     if (!displayName) {
       return username
     }

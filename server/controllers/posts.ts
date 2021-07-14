@@ -20,7 +20,7 @@ postsRouter.post('/:group', async (req: RequestWithToken, res) => {
     return res.status(400).json({ error: 'Posts cannot be empty' })
   }
 
-  let tokenID
+  let tokenID: string
   try {
     tokenID = checkToken(token)
   } catch(e) {

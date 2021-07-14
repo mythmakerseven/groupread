@@ -27,7 +27,7 @@ const tokenExtractor = (req: RequestWithToken, _res: Response, next: NextFunctio
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     req.token = authorization.substring(7)
   } else {
-    req.token = null
+    req.token = undefined
   }
   next()
 }

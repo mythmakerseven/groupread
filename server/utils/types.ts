@@ -51,8 +51,8 @@ export interface ReplyObject {
   text: string
 }
 
-export interface RequestWithToken extends Request {
-  token: string | null
+export type RequestWithToken = Request & {
+  token?: string
 }
 
 export interface NewScheduledPost {
