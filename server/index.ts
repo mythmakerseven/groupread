@@ -3,38 +3,29 @@ import http from 'http'
 import config from './utils/config'
 import logger from './utils/logger'
 import path from 'path'
+import fs from 'fs'
 
 // backend handles all requests starting with /api
 const server = http.createServer(app)
+// now let's handle everything else
 
-// other requests are routed to the /build folder
-// in which the compiled frontend resides
-app.get('/main.js', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'main.js'))
+// get a list of files in /build
+const staticFolder = path.join(__dirname, '..')
+const staticFiles = fs.readdirSync(staticFolder)
+
+app.get('/:path', (req, res) => {
+  if (staticFiles.includes(req.params.path)) {
+    return res.sendFile(path.join(staticFolder, req.params.path))
+  } else {
+    return res.sendFile(path.join(staticFolder, 'index.html'))
+  }
 })
 
-app.get('/main.css', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'main.css'))
-})
-
-app.get('/favicon.ico', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'favicon.ico'))
-})
-
-// Okay this is getting ridiculous
-app.get('/4eb06008596fe6d1d2b7626552cb86d1.jpg', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '4eb06008596fe6d1d2b7626552cb86d1.jpg'))
-})
-
-app.get('/8c747e1ec6b0a8e1464fb53a4202aa62.png', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '8c747e1ec6b0a8e1464fb53a4202aa62.png'))
-})
-
+// Groupread uses react-router, so we need to redirect direct
+// links to index.html and then react-router can handle the URL
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'index.html'))
+  return res.sendFile(path.join(staticFolder, 'index.html'))
 })
-
-// TODO: this is not a good solution, we can't have a separate route for each file in /build
 
 server.listen(config.PORT, () => {
   logger.info(`Server running on port ${config.PORT}`)
