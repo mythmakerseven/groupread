@@ -84,24 +84,24 @@ const CreateGroup: React.FC = () => {
       return setError('bookTitle', { message: 'Authentication error. Are you signed in?' })
     }
 
-    const res = await dispatch(createGroup({
-      groupObject: groupObject,
-      token: user.data.token
-    }))
+    try {
+      const res = await dispatch(createGroup({
+        groupObject: groupObject,
+        token: user.data.token
+      })).unwrap()
 
-    if (res.error) {
-      return setError('bookTitle', { message: `${res.error.message}` })
+      // Even though the form is about to go out of view, we still need to reset
+      // in case the user opens it again later.
+      dispatch(formUpdateTitle(null))
+      dispatch(formUpdateAuthor(null))
+      dispatch(formUpdateYear(null))
+      dispatch(formUpdateIsbn(null))
+      dispatch(formUpdateOLID(null))
+
+      history.push(`/groups/${res.id}/schedule`)
+    } catch(e) {
+      return setError('bookTitle', { message: `${e.message}` })
     }
-
-    // Even though the form is about to go out of view, we still need to reset
-    // in case the user opens it again later.
-    dispatch(formUpdateTitle(null))
-    dispatch(formUpdateAuthor(null))
-    dispatch(formUpdateYear(null))
-    dispatch(formUpdateIsbn(null))
-    dispatch(formUpdateOLID(null))
-
-    history.push(`/groups/${res.payload.id}/schedule`)
   }
 
   // TODO: more client-side validation to match serverside
