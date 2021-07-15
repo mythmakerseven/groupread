@@ -27,14 +27,13 @@ const LoginForm: React.FC<Props> = ({ setOpen }) => {
       username: data.username,
       password: data.password
     }
-    const res = await dispatch(logInUser(userCredentials))
 
-    // TODO: investigate TypeScript's complaint on the lines below
-    // the code works fine so 🤔
-    if (res.error) {
-      return setError('username', { message: `${res.error.message}` })
+    try {
+      await dispatch(logInUser(userCredentials))
+      setOpen(false)
+    } catch(e) {
+      return setError('username', { message: `${e.message}` })
     }
-    setOpen(false)
   }
 
   return (

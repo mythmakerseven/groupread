@@ -41,7 +41,7 @@ export const logInUser = createAsyncThunk(
       const user = await login.login(loginCredentials)
       return user
     } catch(error) {
-      throw new Error(`${error.response.data.error}`)
+      throw new Error(`${error.message}`)
     }
   }
 )
@@ -53,7 +53,7 @@ export const registerUser = createAsyncThunk(
       const user = await login.register(registerCredentials)
       return user
     } catch(error) {
-      throw new Error(`${error.response.data.error}`)
+      throw new Error(`${error.message}`)
     }
   }
 )
@@ -119,8 +119,8 @@ const userSlice = createSlice({
         }
       }
     }),
-    builder.addCase(logInUser.rejected, () => {
-      return initialState
+    builder.addCase(logInUser.rejected, (state, { error }) => {
+      throw new Error(error.message)
     }),
     builder.addCase(registerUser.fulfilled, (state, { payload }) => {
       const user = payload
@@ -134,8 +134,8 @@ const userSlice = createSlice({
         }
       }
     }),
-    builder.addCase(registerUser.rejected, () => {
-      return initialState
+    builder.addCase(registerUser.rejected, (state, { error }) => {
+      throw new Error(error.message)
     }),
     builder.addCase(getPersonalInfo.fulfilled, (state, { payload }) => {
       return state = {

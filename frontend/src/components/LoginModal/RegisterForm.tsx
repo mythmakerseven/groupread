@@ -30,13 +30,12 @@ const RegisterForm: React.FC<Props> = ({ setOpen }) => {
       email: data.email,
     }
 
-    // see comment on corresponding ./LoginForm code
-    // regarding TypeScript errors
-    const res = await dispatch(registerUser(userCredentials))
-    if (res.error) {
-      return setError('username', { message: `${res.error.message}` })
+    try {
+      await dispatch(registerUser(userCredentials))
+      setOpen(false)
+    } catch(e) {
+      return setError('username', { message: `${e.message}` })
     }
-    setOpen(false)
   }
 
   return (
