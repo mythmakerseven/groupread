@@ -40,7 +40,7 @@ export interface User {
   nameColor: string,
   createdAt: Date,
   updatedAt: Date,
-  UserGroups?: UserGroups
+  UserGroups: UserGroups
 }
 
 export interface Group {
