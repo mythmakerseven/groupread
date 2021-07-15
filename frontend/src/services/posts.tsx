@@ -22,7 +22,7 @@ const sendNewPost = async (id: string, postObject: NewPostObject): Promise<Post>
     url: `${baseUrl}/${id}/`,
     method: 'post',
     data: postObject,
-    validateStatus: status => [200, 400, 404].includes(status),
+    validateStatus: status => [200, 400, 401, 404].includes(status),
     headers: config.headers
   })
 
@@ -38,7 +38,18 @@ const editPost = async (postID: string, postObject: EditPostObject): Promise<Pos
     headers: { Authorization: token }
   }
 
-  const res = await axios.put(`${baseUrl}/edit/${postID}`, postObject, config)
+  const res = await axios({
+    url: `${baseUrl}/edit/${postID}`,
+    method: 'put',
+    data: postObject,
+    validateStatus: status => [200, 400, 401, 404].includes(status),
+    headers: config.headers
+  })
+
+  if (res.status >= 400 && res.status <= 404) {
+    throw new Error(res.data.error)
+  }
+
   return res.data
 }
 

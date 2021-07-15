@@ -36,41 +36,41 @@ const ReplyForm: React.FC<Props> = ({ payloadType, startingText, replyID, setAct
   const handlePost = async (data: { text: string }) => {
     let res
 
-    if (payloadType === PostPayloadType.New) {
-      const postObject = {
-        text: data.text,
-        parent: pid
+    try {
+      if (payloadType === PostPayloadType.New) {
+        const postObject = {
+          text: data.text,
+          parent: pid
+        }
+
+        res = await dispatch(newPost({
+          id: id,
+          postObject: postObject
+        }))
       }
 
-      res = await dispatch(newPost({
-        id: id,
-        postObject: postObject
-      }))
-    }
+      if (payloadType === PostPayloadType.Edit && replyID) {
+        const postObject = {
+          text: data.text
+        }
 
-    if (payloadType === PostPayloadType.Edit && replyID) {
-      const postObject = {
-        text: data.text
+        // If the form is hidable, hide it
+        if (setActive) {
+          setActive(false)
+        }
+
+        res = await dispatch(editPost({
+          postID: replyID,
+          postObject: postObject
+        }))
       }
-
-      // If the form is hidable, hide it
-      if (setActive) {
-        setActive(false)
+      if (!res) {
+        return setError('text', { message: 'We\'re having trouble connecting to the server' })
       }
-
-      res = await dispatch(editPost({
-        postID: replyID,
-        postObject: postObject
-      }))
+    } catch(e) {
+      return setError('text', { message: `${e.message}` })
     }
 
-    if (!res) {
-      return setError('text', { message: 'We\'re having trouble connecting to the server' })
-    }
-
-    if (res.error) {
-      return setError('text', { message: `${res.error.message}` })
-    }
 
     setValue('text', '')
   }

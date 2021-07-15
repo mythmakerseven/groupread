@@ -240,6 +240,9 @@ const groupSlice = createSlice({
         groups: state.groups
       }
     }),
+    builder.addCase(newPost.rejected, (state, { error }) => {
+      throw new Error(error.message)
+    }),
     builder.addCase(newPost.fulfilled, (state, { payload }) => {
       if (payload.type === 'reply') {
         // New post that will be associated with a parent post
@@ -323,6 +326,9 @@ const groupSlice = createSlice({
           pending: false,
           groups: changeReplyPost(state.groups)
         }}
+    }),
+    builder.addCase(editPost.rejected, (state, { error }) => {
+      throw new Error(error.message)
     }),
     builder.addCase(joinGroup.pending, (state) => {
       return state = {
