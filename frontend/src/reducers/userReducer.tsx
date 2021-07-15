@@ -6,9 +6,7 @@ import postService from '../services/posts'
 import { LoginData, RegisterData, UserState } from '../types'
 import users from '../services/users'
 
-export const initialState: UserState = { loading: false, data: null }
-
-// Thunks
+export const initialState: UserState = { loading: true, data: null }
 
 // When the site is reloaded, the login cookie is validated serverside
 // to make sure 1) the user account still exists and 2) the token is still valid
@@ -82,11 +80,11 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(initializeUser.fulfilled, (state, { payload }) => {
       if (!payload) {
-        return state = initialState
+        return initialState
       } else {
         const user = payload
         postService.setToken(user.token)
-        return state = {
+        return {
           loading: false,
           data: {
             Groups: [],
@@ -95,9 +93,8 @@ const userSlice = createSlice({
         }
       }
     }),
-    builder.addCase(initializeUser.pending, (state) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      return state = {
+    builder.addCase(initializeUser.pending, () => {
+      return {
         loading: true,
         data: null
       }
@@ -111,7 +108,7 @@ const userSlice = createSlice({
       postService.setToken(payload.token)
 
       // The type expects a Groups field, so set it here as an empty array to be populated later.
-      return state = {
+      return {
         loading: false,
         data: {
           Groups: [],
@@ -126,7 +123,7 @@ const userSlice = createSlice({
       const user = payload
       window.localStorage.setItem('loggedInGroupreader', JSON.stringify(user))
       postService.setToken(user.token)
-      return state = {
+      return {
         loading: false,
         data: {
           Groups: [],
@@ -138,7 +135,7 @@ const userSlice = createSlice({
       throw new Error(error.message)
     }),
     builder.addCase(getPersonalInfo.fulfilled, (state, { payload }) => {
-      return state = {
+      return {
         loading: false,
         data: {
           ...state.data,
