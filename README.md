@@ -64,35 +64,37 @@ All contributions are licensed under the [GNU Affero General Public License v3.0
 
 ⭐ = priority level
 
-- ~~convert backend to TypeScript~~ ⭐⭐⭐
-
 - moderation tools for group owners ⭐⭐⭐
-
-- migrate to the Google Books API for metadata ⭐⭐⭐
 
 - proper frontend testing with Cypress (current status: cypress is fully set up for component testing and end-to-end testing, and is just waiting for tests to be written) ⭐⭐⭐
 
-- ~~enhanced security (token expiration and validation, etc)~~ ⭐⭐⭐
-
-- ~~fix all remaining TypeScript errors and add strict checks to the build process~~ ⭐⭐
-
-- ~~automated scheduling of discussion threads~~ ⭐⭐
+- migrate to the Google Books API for metadata ⭐⭐
 
 - basic user profile pages, nothing fancy (current status: an API call to fetch your own info is implemented, it should be simple to write another one for getting other users' info with some personal data removed) ⭐⭐
-
-- ~~better looking group list, probably some flexbox with book covers~~ ⭐⭐
-
-- ~~list of groups the current user has joined, preferably as a navbar dropdown~~ ⭐⭐
-
-- ~~editing functionality~~ ⭐⭐
-
-- ~~proper display of authors for books with multiple authors~~ ⭐
 
 - address webpack warning about bundle size to improve loading performance ⭐
 
 - Docker container for easier self-hosting ⭐
 
 - logo ⭐
+
+### Completed
+
+- ~~convert backend to TypeScript~~
+
+- ~~enhanced security (token expiration and validation, etc)~~
+
+- ~~fix all remaining TypeScript errors and add strict checks to the build process~~
+
+- ~~automated scheduling of discussion threads~~
+
+- ~~better looking group list, probably some flexbox with book covers~~
+
+- ~~list of groups the current user has joined, preferably as a navbar dropdown~~
+
+- ~~editing functionality~~
+
+- ~~proper display of authors for books with multiple authors~~
 
 ## Developer notes
 
