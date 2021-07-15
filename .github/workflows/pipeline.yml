@@ -39,6 +39,7 @@ jobs:
           SECRET: ${{ secrets.SECRET }}
           PORT: ${{ secrets.PORT }}
         with:
+          install-command: yarn --immutable --silent
           env: true
           command: yarn test:e2e
           start: yarn start:cypress
