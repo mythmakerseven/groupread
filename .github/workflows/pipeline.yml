@@ -43,3 +43,9 @@ jobs:
           command: yarn test:e2e
           start: yarn start:cypress
           wait-on: http://localhost:3000
+      - name: install doctl (digitalocean deployment tool)
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: deploy on digitalocean
+        run: doctl apps create-deployment ${{ secrets.DIGITALOCEAN_APP_ID }}
