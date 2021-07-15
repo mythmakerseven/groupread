@@ -268,7 +268,13 @@ groupsRouter.post('/schedule/:group', async (req: RequestWithToken, res: express
 
   await Post.bulkCreate(postsToSchedule)
 
-  const posts = await group.getPosts()
+  // const jsonUser = user.toJSON() as UserObject
+  // const postsToReturn = postsToSchedule.map(p => p = {
+  //   ...p,
+  //   User: sanitizeUser(jsonUser)
+  // })
+
+  const posts = await group.getPosts({ include: [{ model: User }] })
   const jsonPosts = posts.map(p => p.toJSON() as PostObject)
   const sortedPosts = organizePosts(jsonPosts)
   return res.status(200).json(sortedPosts)

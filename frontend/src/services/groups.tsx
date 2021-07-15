@@ -72,7 +72,19 @@ const setSchedule = async (weekObject: unknown, groupID: string, token: string):
   const config = {
     headers: { Authorization: `bearer ${token}` }
   }
-  const res = await axios.post(`${baseUrl}/schedule/${groupID}`, weekObject, config)
+
+  const res = await axios({
+    url: `${baseUrl}/schedule/${groupID}`,
+    method: 'post',
+    data: weekObject,
+    validateStatus: status => [200, 400, 404].includes(status),
+    headers: config.headers
+  })
+
+  if (res.status >= 400 && res.status <= 404) {
+    throw new Error(res.data.error)
+  }
+
   return res.data
 }
 

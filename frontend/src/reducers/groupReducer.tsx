@@ -346,10 +346,12 @@ const groupSlice = createSlice({
         groups: state.groups
       }
     }),
+    builder.addCase(setSchedule.rejected, (state, { error }) => {
+      throw new Error(error.message)
+    }),
     builder.addCase(setSchedule.fulfilled, (state, { payload }) => {
       const groupID = payload.groupID
       const newPosts = payload.posts
-
       // The backend responds with a complete list of the group's posts, so we can just overwrite the post array
       return state = {
         pending: false,

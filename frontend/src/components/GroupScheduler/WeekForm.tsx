@@ -36,17 +36,16 @@ const WeekForm: React.FC<Props> = ({ initialWeeks, pageCount }) => {
       return setError('bookTitle', { message: 'Authentication error. Are you signed in?' })
     }
 
-    const res = await dispatch(setSchedule({
-      weekObject: data,
-      groupID: id,
-      token: user.data.token
-    }))
-
-    if (res.error) {
-      return setError('weeks', { message: `${res.error.message}` })
+    try {
+      await dispatch(setSchedule({
+        weekObject: data,
+        groupID: id,
+        token: user.data.token
+      }))
+      return history.push(`/groups/${id}`)
+    } catch(e) {
+      return setError('weeks', { message: `${e.message}` })
     }
-
-    history.push(`/groups/${id}`)
   }
 
   // Find which page the current week should cover

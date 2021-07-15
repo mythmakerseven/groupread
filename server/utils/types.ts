@@ -62,7 +62,8 @@ export interface NewScheduledPost {
   createdAt: Date,
   updatedAt: Date,
   UserId: string,
-  GroupId: string
+  GroupId: string,
+  User?: SanitizedUser
 }
 
 // Missing the passwordHash and email properties so the
