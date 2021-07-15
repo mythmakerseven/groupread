@@ -30,22 +30,21 @@ const GroupNewPost: React.FC = () => {
     )
   }
 
-  const handlePost = async (data) => {
+  const handlePost = async (data: { title: string; text: string }) => {
     const postObject = {
       title: data.title,
       text: data.text,
     }
 
-    const res = await dispatch(newPost({
-      id: id,
-      postObject: postObject
-    }))
-
-    if (res.error) {
-      return setError('title', { message: `${res.error.message}` })
+    try {
+      await dispatch(newPost({
+        id: id,
+        postObject: postObject
+      }))
+      history.push(`/groups/${id}`)
+    } catch(e) {
+      return setError('title', { message: `${e.message}` })
     }
-
-    history.push(`/groups/${id}`)
   }
 
   return (

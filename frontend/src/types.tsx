@@ -87,7 +87,7 @@ export interface Post {
 export interface NewPostObject {
   title?: string,
   text: string,
-  parent: string | null
+  parent?: string
 }
 
 // Can only edit text, not titles/etc

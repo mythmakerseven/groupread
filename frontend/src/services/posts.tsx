@@ -18,7 +18,18 @@ const sendNewPost = async (id: string, postObject: NewPostObject): Promise<Post>
     headers: { Authorization: token }
   }
 
-  const res = await axios.post(`${baseUrl}/${id}/`, postObject, config)
+  const res = await axios({
+    url: `${baseUrl}/${id}/`,
+    method: 'post',
+    data: postObject,
+    validateStatus: status => [200, 400, 404].includes(status),
+    headers: config.headers
+  })
+
+  if (res.status >= 400 && res.status <= 404) {
+    throw new Error(res.data.error)
+  }
+
   return res.data
 }
 
