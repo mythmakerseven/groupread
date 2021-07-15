@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { useAppDispatch } from '../hooks'
+import { useAppDispatch } from '../../hooks'
 import { titleCase } from 'title-case'
-import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../reducers/groupCreationReducer'
+import { formUpdateTitle, formUpdateAuthor, formUpdateYear, formUpdateIsbn, formUpdateOLID } from '../../reducers/groupCreationReducer'
 
 interface Props {
   queryTitle: string | null,

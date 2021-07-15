@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from '@cypress/react'
-import HomePage from './HomePage'
+import HomePage from './index'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 describe('HomePage', () => {

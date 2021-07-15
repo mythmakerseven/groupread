@@ -1,11 +1,11 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { useAppDispatch, useAppSelector } from '../hooks'
-import { newPost } from '../reducers/groupReducer'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { newPost } from '../../reducers/groupReducer'
 import { ErrorMessage } from '@hookform/error-message'
-import ErrorPage from './ErrorPage'
-import { ErrorTypes } from '../types'
+import ErrorPage from '../ErrorPage'
+import { ErrorTypes } from '../../types'
 
 const GroupNewPost: React.FC = () => {
   const { id } = useParams<{ id: string }>()

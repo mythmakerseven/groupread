@@ -4,9 +4,9 @@ import './custom.scss'
 import Navbar from './components/Navbar'
 import GroupView from './components/GroupView'
 import HomePage from './components/HomePage'
-import CreateGroup from './components/CreateGroup'
+import GroupCreation from './components/GroupCreation'
 import { Switch, Route } from 'react-router-dom'
-import GroupNewPost from './components/GroupNewPost'
+import NewPostForm from './components/NewPostForm'
 import GroupList from './components/GroupList'
 import PostView from './components/Posts'
 import Footer from './components/Footer'
@@ -35,7 +35,7 @@ const App: React.FC = () => {
         <Switch>
           <Route path="/groups/create">
             <div className="mobile-container">
-              <CreateGroup />
+              <GroupCreation />
             </div>
           </Route>
           <Route path="/groups/:id/schedule">
@@ -45,7 +45,7 @@ const App: React.FC = () => {
           </Route>
           <Route path="/groups/:id/submit">
             <div className="mobile-container">
-              <GroupNewPost />
+              <NewPostForm />
             </div>
           </Route>
           <Route path="/groups/:id/:pid">

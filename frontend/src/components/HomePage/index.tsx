@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import backgroundImg from '../images/freestocks-OfaDD5o8hpk-unsplash.jpg'
+import backgroundImg from '../../images/freestocks-OfaDD5o8hpk-unsplash.jpg'
 
 const HomePage: React.FC = () => {
   return (

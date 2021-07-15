@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from '@cypress/react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import Footer from './Footer'
+import Footer from './index'
 
 // simple one to make sure cypress is working
 it('Footer', () => {
