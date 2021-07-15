@@ -8,3 +8,12 @@ frontend/cypress/videos
 build/*
 !build/favicon.ico
 !build/index.html
+
+# Yarn stuff
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
