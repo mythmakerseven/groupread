@@ -26,7 +26,9 @@ const GroupBanner: React.FC<Props> = ({ group }) => {
   }
 
   if (!group || !group.members) {
-    return null
+    return (
+      <div className='box has-text-centered group-hero' />
+    )
   }
 
   const memberIDs = group.members.map(m => m.id)
@@ -74,7 +76,7 @@ const GroupBanner: React.FC<Props> = ({ group }) => {
     if (user && memberIDs.includes(user.id)) return null
 
     return (
-      <div className='box hero has-text-centered is-primary mb-4'>
+      <div className='box hero group-hero has-text-centered is-primary mb-4'>
         <div className='hero-body'>
           <h1 className='title'>{displayMembers(group.members)}</h1>
           {handleJoinButton(user ? user.id : null)}
