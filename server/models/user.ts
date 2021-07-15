@@ -37,7 +37,6 @@ class User extends Model<UserAttributes, UserCreationAttributes>
 
   public getGroups!: BelongsToManyGetAssociationsMixin<Group>
   public addGroup!: BelongsToManySetAssociationsMixin<Group, string>
-  // public makeAdmin!: HasManySetAssociationsMixin<Group, string>
 
   public readonly groups?: Group[]
   public readonly posts?: Post[]
@@ -45,7 +44,6 @@ class User extends Model<UserAttributes, UserCreationAttributes>
   public static associations: {
     groups: Association<User, Group>,
     posts: Association<User, Post>,
-    // admin: Association<User>
   }
 }
 
@@ -86,15 +84,5 @@ User.init(
 
 User.belongsToMany(Group, { through: 'UserGroups' })
 Group.belongsToMany(User, { through: 'UserGroups' })
-
-// User.hasMany(Group, {
-//   foreignKey: 'AdminId',
-//   sourceKey: 'id',
-//   as: 'admin'
-// })
-
-// Group.belongsTo(User, {
-//   foreignKey: 'id'
-// })
 
 export default User

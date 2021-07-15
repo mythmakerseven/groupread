@@ -34,12 +34,6 @@ class Post extends Model<PostAttributes, PostCreationAttributes>
   public addPost!: BelongsToManyAddAssociationsMixin<Group, User>
   public setAuthor!: HasOneSetAssociationMixin<User, Post>
   public getAuthor!: HasOneGetAssociationMixin<User>
-
-  // public static associations: {
-  //   members: Association<Group, User>,
-  //   posts: Association<Group, Post>
-  // }
-
 }
 
 Post.init(

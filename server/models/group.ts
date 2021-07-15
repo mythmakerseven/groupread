@@ -50,15 +50,12 @@ class Group extends Model<GroupAttributes, GroupCreationAttributes>
   public updatedAt!: Date
 
   public getUsers!: BelongsToManyGetAssociationsMixin<User>
-  // public setAdmin!: BelongsToSetAssociationMixin<User, string>
   public getPosts!: HasManyGetAssociationsMixin<Post>
 
   public readonly members?: User[]
-  // public readonly admin?: User
   public readonly posts?: Post[]
 
   public static associations: {
-    // admin: Association<User, Group>
     members: Association<User, Group>
     posts: Association<Post, Group>
   }
@@ -105,11 +102,5 @@ Group.init(
     sequelize: db
   }
 )
-
-// add admin id to group
-
-// Group.belongsTo(User, {
-//   as: 'admin'
-// })
 
 export default Group
