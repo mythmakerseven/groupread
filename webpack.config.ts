@@ -13,7 +13,7 @@ const config = {
     rules: [
       {
         test: /\.(tsx|js)$/,
-        loader: 'babel-loader',
+        loader: require.resolve('babel-loader'),
         options: {
           presets: [
             '@babel/preset-env',
@@ -26,16 +26,16 @@ const config = {
         test: /\.s[ac]ss$/i,
         use: [
           // Creates `style` nodes from JS strings
-          'style-loader',
+          require.resolve('style-loader'),
           // Translates CSS into CommonJS
-          'css-loader',
+          require.resolve('css-loader'),
           // Compiles Sass to CSS
-          'sass-loader',
+          require.resolve('sass-loader'),
         ],
       },
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|webp|woff|woff2)$/,
-        loader: 'url-loader',
+        loader: require.resolve('url-loader'),
         options: {
           limit: 10000,
         },
