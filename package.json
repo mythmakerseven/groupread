@@ -4,7 +4,7 @@
   "description": "Self-hosted book club platform",
   "main": "index.js",
   "scripts": {
-    "start": "node build/server/index.js",
+    "start": "yarn node build/server/index.js",
     "dev:server": "yarn tsc-watch --project server/tsconfig.json --onSuccess \"yarn start\"",
     "dev:ui": "webpack serve --mode=development",
     "test:jest": "NODE_ENV=test jest --config ./server/jest.config.ts --verbose --runInBand",

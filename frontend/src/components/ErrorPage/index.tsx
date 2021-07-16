@@ -1,6 +1,6 @@
 import React from 'react'
 import { ErrorTypes } from '../../types'
-import sadFace from '../../images/sad_face.png'
+import sadFace from '../../../static/images/sad_face.png'
 
 interface Props {
   errorType: ErrorTypes
