@@ -70,7 +70,7 @@
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.6",
     "cypress": "^7.6.0",
-    "eslint": "^7.27.0",
+    "eslint": "^7.31.0",
     "eslint-plugin-jest": "^24.3.5",
     "eslint-plugin-react": "^7.24.0",
     "file-loader": "^6.2.0",
